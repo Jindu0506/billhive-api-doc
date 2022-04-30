@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "billhive-facade",
+    "title": "access-control-example",
     "version": "0.0.1",
     "description": "facades",
     "contact": {
@@ -46,6 +46,179 @@
           }
         ],
         "operationId": "ActionController.find"
+      }
+    },
+    "/features": {
+      "post": {
+        "x-controller-name": "FeatureController",
+        "x-operation-name": "create",
+        "tags": [
+          "FeatureController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Feature model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Feature"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewFeature"
+              }
+            }
+          }
+        },
+        "operationId": "FeatureController.create"
+      },
+      "get": {
+        "x-controller-name": "FeatureController",
+        "x-operation-name": "find",
+        "tags": [
+          "FeatureController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of Feature model instances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FeatureWithRelations"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Feature.Filter"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "FeatureController.find"
+      }
+    },
+    "/login": {
+      "post": {
+        "x-controller-name": "AuthController",
+        "x-operation-name": "login",
+        "tags": [
+          "AuthController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return value of AuthController.login"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "operationId": "AuthController.login"
+      }
+    },
+    "/menu/formatted": {
+      "get": {
+        "x-controller-name": "MenuController",
+        "x-operation-name": "findFormatted",
+        "tags": [
+          "MenuController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return value of MenuController.findFormatted"
+          }
+        },
+        "operationId": "MenuController.findFormatted"
+      }
+    },
+    "/menu": {
+      "post": {
+        "x-controller-name": "MenuController",
+        "x-operation-name": "create",
+        "tags": [
+          "MenuController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Menu model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Menu"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewMenu"
+              }
+            }
+          }
+        },
+        "operationId": "MenuController.create"
+      },
+      "get": {
+        "x-controller-name": "MenuController",
+        "x-operation-name": "find",
+        "tags": [
+          "MenuController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of Menu model instances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MenuWithRelations"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Menu.Filter"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "MenuController.find"
       }
     },
     "/ping": {
@@ -108,22 +281,51 @@
         "operationId": "PolicyController.find"
       }
     },
-    "/role/update": {
+    "/products": {
       "post": {
-        "x-controller-name": "PolicyController",
-        "x-operation-name": "roleUpdate",
+        "x-controller-name": "ProductController",
+        "x-operation-name": "create",
         "tags": [
-          "PolicyController"
+          "ProductController"
         ],
         "responses": {
           "200": {
-            "description": "Array of Policy model instances",
+            "description": "Product model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewProduct"
+              }
+            }
+          }
+        },
+        "operationId": "ProductController.create"
+      },
+      "get": {
+        "x-controller-name": "ProductController",
+        "x-operation-name": "find",
+        "tags": [
+          "ProductController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of Product model instances",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PolicyWithRelations"
+                    "$ref": "#/components/schemas/ProductWithRelations"
                   }
                 }
               }
@@ -137,13 +339,59 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Policy.Filter"
+                  "$ref": "#/components/schemas/Product.Filter"
                 }
               }
             }
           }
         ],
-        "operationId": "PolicyController.roleUpdate"
+        "operationId": "ProductController.find"
+      }
+    },
+    "/refreshToken": {
+      "post": {
+        "x-controller-name": "AuthController",
+        "x-operation-name": "refresh",
+        "tags": [
+          "AuthController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "refreshToken"
+                ],
+                "properties": {
+                  "refreshToken": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Reissuing Access Token",
+          "required": true
+        },
+        "operationId": "AuthController.refresh"
       }
     },
     "/role/delete": {
@@ -155,13 +403,85 @@
         ],
         "responses": {
           "200": {
-            "description": "Array of Policy model instances",
+            "description": "Return value of PolicyController.roleDelete"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "operationId": "PolicyController.roleDelete"
+      }
+    },
+    "/role/update": {
+      "post": {
+        "x-controller-name": "PolicyController",
+        "x-operation-name": "roleUpdate",
+        "tags": [
+          "PolicyController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return value of PolicyController.roleUpdate"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "operationId": "PolicyController.roleUpdate"
+      }
+    },
+    "/role": {
+      "post": {
+        "x-controller-name": "PolicyController",
+        "x-operation-name": "login",
+        "tags": [
+          "PolicyController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return value of PolicyController.login"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "operationId": "PolicyController.login"
+      }
+    },
+    "/template-vars": {
+      "get": {
+        "x-controller-name": "TemplateVarController",
+        "x-operation-name": "find",
+        "tags": [
+          "TemplateVarController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of TemplateVar model instances",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PolicyWithRelations"
+                    "$ref": "#/components/schemas/TemplateVarWithRelations"
                   }
                 }
               }
@@ -175,13 +495,37 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Policy.Filter"
+                  "$ref": "#/components/schemas/TemplateVar.Filter"
                 }
               }
             }
           }
         ],
-        "operationId": "PolicyController.roleDelete"
+        "operationId": "TemplateVarController.find"
+      }
+    },
+    "/templates/getPreSignedUrl": {
+      "post": {
+        "x-controller-name": "TemplateController",
+        "x-operation-name": "generatePreSignedUrl",
+        "tags": [
+          "TemplateController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return value of TemplateController.generatePreSignedUrl"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "operationId": "TemplateController.generatePreSignedUrl"
       }
     },
     "/templates": {
@@ -200,12 +544,48 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "$ref": "#/components/schemas/NewTemplate"
               }
             }
           }
         },
         "operationId": "TemplateController.login"
+      },
+      "get": {
+        "x-controller-name": "TemplateController",
+        "x-operation-name": "find",
+        "tags": [
+          "TemplateController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of Template model instances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TemplateWithRelations"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Template.Filter"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "TemplateController.find"
       }
     },
     "/tenantadmin": {
@@ -279,7 +659,9 @@
           "x-parameter-index": 1
         },
         "operationId": "TenantController.updateById"
-      },
+      }
+    },
+    "/tenants/{tenantId}": {
       "delete": {
         "x-controller-name": "TenantController",
         "x-operation-name": "deleteTenant",
@@ -300,7 +682,7 @@
         },
         "parameters": [
           {
-            "name": "id",
+            "name": "tenantId",
             "in": "path",
             "schema": {
               "type": "string"
@@ -336,15 +718,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object"
-              }
-            }
-          }
-        },
         "operationId": "TenantController.find"
       }
     },
@@ -372,10 +745,34 @@
         "operationId": "AuthController.forgetPassword"
       }
     },
+    "/users/reset-password": {
+      "post": {
+        "x-controller-name": "AuthController",
+        "x-operation-name": "resetPassword",
+        "tags": [
+          "AuthController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return value of AuthController.resetPassword"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "operationId": "AuthController.resetPassword"
+      }
+    },
     "/users/{id}": {
       "patch": {
         "x-controller-name": "AuthController",
-        "x-operation-name": "updateUser",
+        "x-operation-name": "updateById",
         "tags": [
           "AuthController"
         ],
@@ -405,64 +802,38 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User.Filter"
+                "type": "object"
               }
             }
           },
           "x-parameter-index": 1
         },
-        "operationId": "AuthController.updateUser"
-      }
-    },
-    "/users/login": {
-      "post": {
-        "x-controller-name": "AuthController",
-        "x-operation-name": "login",
-        "tags": [
-          "AuthController"
-        ],
-        "responses": {
-          "200": {
-            "description": "Return value of AuthController.login"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object"
-              }
-            }
-          }
-        },
-        "operationId": "AuthController.login"
-      }
-    },
-    "/users/reset-password": {
-      "post": {
-        "x-controller-name": "AuthController",
-        "x-operation-name": "resetPassword",
-        "tags": [
-          "AuthController"
-        ],
-        "responses": {
-          "200": {
-            "description": "Return value of AuthController.resetPassword"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object"
-              }
-            }
-          }
-        },
-        "operationId": "AuthController.resetPassword"
+        "operationId": "AuthController.updateById"
       }
     },
     "/users": {
+      "post": {
+        "x-controller-name": "AuthController",
+        "x-operation-name": "create",
+        "tags": [
+          "AuthController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return value of AuthController.create"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "operationId": "AuthController.create"
+      },
       "get": {
         "x-controller-name": "AuthController",
         "x-operation-name": "find",
@@ -499,16 +870,55 @@
         "operationId": "AuthController.find"
       }
     },
-    "/users": {
+    "/webhooks": {
       "post": {
-        "x-controller-name": "AuthController",
+        "x-controller-name": "WebhookController",
         "x-operation-name": "create",
         "tags": [
-          "AuthController"
+          "WebhookController"
         ],
         "responses": {
           "200": {
-            "description": "Return value of AuthController.create"
+            "description": "Webhook model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookDTO"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewWebhook"
+              }
+            }
+          }
+        },
+        "operationId": "WebhookController.create"
+      },
+      "get": {
+        "x-controller-name": "WebhookController",
+        "x-operation-name": "find",
+        "tags": [
+          "WebhookController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of Webhook model instances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WebhookWithRelations"
+                  }
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -518,22 +928,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User.Filter"
+                  "$ref": "#/components/schemas/Webhook.Filter"
                 }
               }
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object"
-              }
-            }
-          }
-        },
-        "operationId": "AuthController.create"
+        "operationId": "WebhookController.find"
       }
     },
     "/whoami": {
@@ -552,17 +953,14 @@
       }
     }
   },
-  "security": [
-    {
-      "jwt": []
-    }
-  ],
-  "servers": [
-    {
-      "url": "/"
-    }
-  ],
   "components": {
+    "securitySchemes": {
+      "jwt": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
       "ActionWithRelations": {
         "title": "ActionWithRelations",
@@ -591,6 +989,224 @@
         "additionalProperties": false,
         "x-typescript-type": "ActionWithRelations"
       },
+      "Feature": {
+        "title": "Feature",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "basePrice": {
+            "type": "number"
+          },
+          "status": {
+            "type": "number"
+          },
+          "uomId": {
+            "type": "string"
+          },
+          "uom": {
+            "type": "string"
+          },
+          "featureId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "NewFeature": {
+        "title": "NewFeature",
+        "type": "object",
+        "description": "(tsType: Feature, schemaOptions: { title: 'NewFeature' })",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "basePrice": {
+            "type": "number"
+          },
+          "status": {
+            "type": "number"
+          },
+          "uomId": {
+            "type": "string"
+          },
+          "uom": {
+            "type": "string"
+          },
+          "featureId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "status"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "Feature"
+      },
+      "FeatureWithRelations": {
+        "title": "FeatureWithRelations",
+        "type": "object",
+        "description": "(tsType: FeatureWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "basePrice": {
+            "type": "number"
+          },
+          "status": {
+            "type": "number"
+          },
+          "uomId": {
+            "type": "string"
+          },
+          "uom": {
+            "type": "string"
+          },
+          "featureId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "status"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "FeatureWithRelations"
+      },
+      "Menu": {
+        "title": "Menu",
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "routeTo": {
+            "type": "string"
+          },
+          "level": {
+            "type": "number"
+          },
+          "sequence": {
+            "type": "number"
+          },
+          "upLabel": {
+            "type": "string"
+          },
+          "status": {
+            "type": "number"
+          },
+          "productId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "level",
+          "sequence",
+          "status",
+          "productId"
+        ],
+        "additionalProperties": false
+      },
+      "NewMenu": {
+        "title": "NewMenu",
+        "type": "object",
+        "description": "(tsType: Menu, schemaOptions: { title: 'NewMenu' })",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "routeTo": {
+            "type": "string"
+          },
+          "level": {
+            "type": "number"
+          },
+          "sequence": {
+            "type": "number"
+          },
+          "upLabel": {
+            "type": "string"
+          },
+          "status": {
+            "type": "number"
+          },
+          "productId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "level",
+          "sequence",
+          "status",
+          "productId"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "Menu"
+      },
+      "MenuWithRelations": {
+        "title": "MenuWithRelations",
+        "type": "object",
+        "description": "(tsType: MenuWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "routeTo": {
+            "type": "string"
+          },
+          "level": {
+            "type": "number"
+          },
+          "sequence": {
+            "type": "number"
+          },
+          "upLabel": {
+            "type": "string"
+          },
+          "status": {
+            "type": "number"
+          },
+          "productId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "level",
+          "sequence",
+          "status",
+          "productId"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "MenuWithRelations"
+      },
       "PolicyWithRelations": {
         "title": "PolicyWithRelations",
         "type": "object",
@@ -599,40 +1215,300 @@
           "tenantId": {
             "type": "string"
           },
-          "userId": {
-            "type": "string"
-          },
           "role": {
-            "type": "string"
-          },
-          "module": {
-            "type": "string"
-          },
-          "action": {
             "type": "string"
           },
           "isAllowed": {
             "type": "boolean"
           },
-          "resourceId": {
+          "action": {
             "type": "string"
           },
+          "resources": {
+            "type": "string"
+          },
+          "page": {
+            "type": "string"
+          },
+          "menu": {
+            "type": "object"
+          },
           "policyId": {
+            "type": "string"
+          },
+          "isTemplate": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "role",
+          "isAllowed",
+          "menu"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "PolicyWithRelations"
+      },
+      "ProductWithRelations": {
+        "title": "ProductWithRelations",
+        "type": "object",
+        "description": "(tsType: ProductWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "productId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "industryType": {
+            "type": "string"
+          },
+          "effectiveFromDate": {
+            "type": "string"
+          },
+          "effectiveToDate": {
+            "type": "string"
+          },
+          "status": {
             "type": "string"
           }
         },
         "required": [
-          "module",
-          "action",
-          "isAllowed"
+          "name",
+          "industryType",
+          "effectiveFromDate",
+          "status"
         ],
         "additionalProperties": false,
-        "x-typescript-type": "PolicyWithRelations"
+        "x-typescript-type": "ProductWithRelations"
+      },
+      "Product": {
+        "title": "Product",
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "industryType": {
+            "type": "string"
+          },
+          "effectiveFromDate": {
+            "type": "string"
+          },
+          "effectiveToDate": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "industryType",
+          "effectiveFromDate",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "NewProduct": {
+        "title": "NewProduct",
+        "type": "object",
+        "description": "(tsType: Omit<Product, 'product_id'>, schemaOptions: { title: 'NewProduct', exclude: [ 'product_id' ] })",
+        "properties": {
+          "productId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "industryType": {
+            "type": "string"
+          },
+          "effectiveFromDate": {
+            "type": "string"
+          },
+          "effectiveToDate": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "industryType",
+          "effectiveFromDate",
+          "status"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "Omit<Product, 'product_id'>"
+      },
+      "TemplateVarWithRelations": {
+        "title": "TemplateVarWithRelations",
+        "type": "object",
+        "description": "(tsType: TemplateVarWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "templateId": {
+            "type": "string"
+          },
+          "entity": {
+            "type": "string"
+          },
+          "variable": {
+            "type": "string"
+          },
+          "constant": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "templateId"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "TemplateVarWithRelations"
+      },
+      "NewTemplate": {
+        "title": "NewTemplate",
+        "type": "object",
+        "description": "(tsType: Omit<TemplateDTO, 'templateId'>, schemaOptions: { title: 'NewTemplate', exclude: [ 'templateId' ] })",
+        "properties": {
+          "tenantId": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "format": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "communicationType": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "format",
+          "subject",
+          "isDefault",
+          "communicationType"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "Omit<TemplateDTO, 'templateId'>"
+      },
+      "TemplateDTO": {
+        "title": "TemplateDTO",
+        "type": "object",
+        "properties": {
+          "templateId": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "format": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "communicationType": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "format",
+          "subject",
+          "isDefault",
+          "communicationType"
+        ],
+        "additionalProperties": false
+      },
+      "TemplateWithRelations": {
+        "title": "TemplateWithRelations",
+        "type": "object",
+        "description": "(tsType: TemplateWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "templateId": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "format": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "attachments": {
+            "type": "object"
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "communicationType": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "format",
+          "subject",
+          "isDefault",
+          "communicationType"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "TemplateWithRelations"
       },
       "Tenant": {
         "title": "Tenant",
         "type": "object",
         "properties": {
+          "tenantId": {
+            "type": "string"
+          },
           "orgName": {
             "type": "string"
           },
@@ -656,6 +1532,9 @@
           },
           "status": {
             "type": "number"
+          },
+          "productId": {
+            "type": "string"
           }
         },
         "required": [
@@ -665,7 +1544,8 @@
           "country",
           "pincode",
           "timezone",
-          "status"
+          "status",
+          "productId"
         ],
         "additionalProperties": false
       },
@@ -710,6 +1590,9 @@
         "type": "object",
         "description": "(tsType: Partial<Tenant>, schemaOptions: { partial: true })",
         "properties": {
+          "tenantId": {
+            "type": "string"
+          },
           "orgName": {
             "type": "string"
           },
@@ -733,10 +1616,170 @@
           },
           "status": {
             "type": "number"
+          },
+          "productId": {
+            "type": "string"
           }
         },
         "additionalProperties": false,
         "x-typescript-type": "Partial<Tenant>"
+      },
+      "WebhookWithRelations": {
+        "title": "WebhookWithRelations",
+        "type": "object",
+        "description": "(tsType: WebhookWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "webhookId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "methodType": {
+            "type": "string"
+          },
+          "contentType": {
+            "type": "string"
+          },
+          "retry": {
+            "type": "boolean"
+          },
+          "body": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "name",
+          "url",
+          "methodType",
+          "contentType",
+          "retry"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "WebhookWithRelations"
+      },
+      "WebhookDTO": {
+        "title": "WebhookDTO",
+        "type": "object",
+        "properties": {
+          "webhookId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "methodType": {
+            "type": "string"
+          },
+          "contentType": {
+            "type": "string"
+          },
+          "retry": {
+            "type": "boolean"
+          },
+          "queryParams": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "authorisation": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "headers": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "body": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "url",
+          "methodType",
+          "contentType",
+          "retry"
+        ],
+        "additionalProperties": false
+      },
+      "NewWebhook": {
+        "title": "NewWebhook",
+        "type": "object",
+        "description": "(tsType: Omit<WebhookDTO, 'webhookId'>, schemaOptions: { title: 'NewWebhook', exclude: [ 'webhookId' ] })",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "methodType": {
+            "type": "string"
+          },
+          "contentType": {
+            "type": "string"
+          },
+          "retry": {
+            "type": "boolean"
+          },
+          "queryParams": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "authorisation": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "headers": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "body": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "url",
+          "methodType",
+          "contentType",
+          "retry"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "Omit<WebhookDTO, 'webhookId'>"
       },
       "Action.Filter": {
         "type": "object",
@@ -814,6 +1857,186 @@
         "additionalProperties": false,
         "x-typescript-type": "@loopback/repository#Filter<Action>"
       },
+      "Feature.Filter": {
+        "type": "object",
+        "title": "Feature.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "where": {
+            "title": "Feature.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "boolean"
+                  },
+                  "description": {
+                    "type": "boolean"
+                  },
+                  "basePrice": {
+                    "type": "boolean"
+                  },
+                  "status": {
+                    "type": "boolean"
+                  },
+                  "uomId": {
+                    "type": "boolean"
+                  },
+                  "uom": {
+                    "type": "boolean"
+                  },
+                  "featureId": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "name",
+                    "description",
+                    "basePrice",
+                    "status",
+                    "uomId",
+                    "uom",
+                    "featureId"
+                  ],
+                  "example": "name"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "Feature.Fields"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<Feature>"
+      },
+      "Menu.Filter": {
+        "type": "object",
+        "title": "Menu.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "where": {
+            "title": "Menu.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "boolean"
+                  },
+                  "icon": {
+                    "type": "boolean"
+                  },
+                  "routeTo": {
+                    "type": "boolean"
+                  },
+                  "level": {
+                    "type": "boolean"
+                  },
+                  "sequence": {
+                    "type": "boolean"
+                  },
+                  "upLabel": {
+                    "type": "boolean"
+                  },
+                  "status": {
+                    "type": "boolean"
+                  },
+                  "productId": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "label",
+                    "icon",
+                    "routeTo",
+                    "level",
+                    "sequence",
+                    "upLabel",
+                    "status",
+                    "productId"
+                  ],
+                  "example": "label"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "Menu.Fields"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<Menu>"
+      },
       "PingResponse": {
         "type": "object",
         "title": "PingResponse",
@@ -881,25 +2104,28 @@
                   "tenantId": {
                     "type": "boolean"
                   },
-                  "userId": {
-                    "type": "boolean"
-                  },
                   "role": {
-                    "type": "boolean"
-                  },
-                  "module": {
-                    "type": "boolean"
-                  },
-                  "action": {
                     "type": "boolean"
                   },
                   "isAllowed": {
                     "type": "boolean"
                   },
-                  "resourceId": {
+                  "action": {
+                    "type": "boolean"
+                  },
+                  "resources": {
+                    "type": "boolean"
+                  },
+                  "page": {
+                    "type": "boolean"
+                  },
+                  "menu": {
                     "type": "boolean"
                   },
                   "policyId": {
+                    "type": "boolean"
+                  },
+                  "isTemplate": {
                     "type": "boolean"
                   }
                 },
@@ -911,13 +2137,14 @@
                   "type": "string",
                   "enum": [
                     "tenantId",
-                    "userId",
                     "role",
-                    "module",
-                    "action",
                     "isAllowed",
-                    "resourceId",
-                    "policyId"
+                    "action",
+                    "resources",
+                    "page",
+                    "menu",
+                    "policyId",
+                    "isTemplate"
                   ],
                   "example": "tenantId"
                 },
@@ -929,6 +2156,270 @@
         },
         "additionalProperties": false,
         "x-typescript-type": "@loopback/repository#Filter<Policy>"
+      },
+      "Product.Filter": {
+        "type": "object",
+        "title": "Product.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "where": {
+            "title": "Product.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "productId": {
+                    "type": "boolean"
+                  },
+                  "name": {
+                    "type": "boolean"
+                  },
+                  "description": {
+                    "type": "boolean"
+                  },
+                  "industryType": {
+                    "type": "boolean"
+                  },
+                  "effectiveFromDate": {
+                    "type": "boolean"
+                  },
+                  "effectiveToDate": {
+                    "type": "boolean"
+                  },
+                  "status": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "productId",
+                    "name",
+                    "description",
+                    "industryType",
+                    "effectiveFromDate",
+                    "effectiveToDate",
+                    "status"
+                  ],
+                  "example": "productId"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "Product.Fields"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<Product>"
+      },
+      "TemplateVar.Filter": {
+        "type": "object",
+        "title": "TemplateVar.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "where": {
+            "title": "TemplateVar.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "templateId": {
+                    "type": "boolean"
+                  },
+                  "entity": {
+                    "type": "boolean"
+                  },
+                  "variable": {
+                    "type": "boolean"
+                  },
+                  "constant": {
+                    "type": "boolean"
+                  },
+                  "url": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "templateId",
+                    "entity",
+                    "variable",
+                    "constant",
+                    "url"
+                  ],
+                  "example": "templateId"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "TemplateVar.Fields"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<TemplateVar>"
+      },
+      "Template.Filter": {
+        "type": "object",
+        "title": "Template.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "where": {
+            "title": "Template.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "templateId": {
+                    "type": "boolean"
+                  },
+                  "tenantId": {
+                    "type": "boolean"
+                  },
+                  "category": {
+                    "type": "boolean"
+                  },
+                  "format": {
+                    "type": "boolean"
+                  },
+                  "subject": {
+                    "type": "boolean"
+                  },
+                  "content": {
+                    "type": "boolean"
+                  },
+                  "attachments": {
+                    "type": "boolean"
+                  },
+                  "isDefault": {
+                    "type": "boolean"
+                  },
+                  "communicationType": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "templateId",
+                    "tenantId",
+                    "category",
+                    "format",
+                    "subject",
+                    "content",
+                    "attachments",
+                    "isDefault",
+                    "communicationType"
+                  ],
+                  "example": "templateId"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "Template.Fields"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<Template>"
       },
       "Tenant.Filter": {
         "type": "object",
@@ -970,6 +2461,9 @@
               {
                 "type": "object",
                 "properties": {
+                  "tenantId": {
+                    "type": "boolean"
+                  },
                   "orgName": {
                     "type": "boolean"
                   },
@@ -993,6 +2487,9 @@
                   },
                   "status": {
                     "type": "boolean"
+                  },
+                  "productId": {
+                    "type": "boolean"
                   }
                 },
                 "additionalProperties": false
@@ -1002,6 +2499,7 @@
                 "items": {
                   "type": "string",
                   "enum": [
+                    "tenantId",
                     "orgName",
                     "address",
                     "city",
@@ -1009,9 +2507,10 @@
                     "country",
                     "pincode",
                     "timezone",
-                    "status"
+                    "status",
+                    "productId"
                   ],
-                  "example": "orgName"
+                  "example": "tenantId"
                 },
                 "uniqueItems": true
               }
@@ -1080,10 +2579,13 @@
                   "password": {
                     "type": "boolean"
                   },
-                  "role": {
+                  "status": {
                     "type": "boolean"
                   },
-                  "status": {
+                  "refreshToken": {
+                    "type": "boolean"
+                  },
+                  "productId": {
                     "type": "boolean"
                   }
                 },
@@ -1100,8 +2602,9 @@
                     "lastName",
                     "email",
                     "password",
-                    "role",
-                    "status"
+                    "status",
+                    "refreshToken",
+                    "productId"
                   ],
                   "example": "userId"
                 },
@@ -1113,7 +2616,109 @@
         },
         "additionalProperties": false,
         "x-typescript-type": "@loopback/repository#Filter<User>"
+      },
+      "Webhook.Filter": {
+        "type": "object",
+        "title": "Webhook.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "where": {
+            "title": "Webhook.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "webhookId": {
+                    "type": "boolean"
+                  },
+                  "name": {
+                    "type": "boolean"
+                  },
+                  "description": {
+                    "type": "boolean"
+                  },
+                  "url": {
+                    "type": "boolean"
+                  },
+                  "methodType": {
+                    "type": "boolean"
+                  },
+                  "contentType": {
+                    "type": "boolean"
+                  },
+                  "retry": {
+                    "type": "boolean"
+                  },
+                  "body": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "webhookId",
+                    "name",
+                    "description",
+                    "url",
+                    "methodType",
+                    "contentType",
+                    "retry",
+                    "body"
+                  ],
+                  "example": "webhookId"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "Webhook.Fields"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<Webhook>"
       }
     }
-  }
+  },
+  "security": [
+    {
+      "jwt": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
 }

@@ -1,2079 +1,1118 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.0.0",
   "info": {
-    "title": "BillHive APIs",
-    "version": "1.0.1",
-    "description": "BillHive API's details",
-    "license": {
-      "name": "Apache 2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    "title": "billhive-facade",
+    "version": "0.0.1",
+    "description": "facades",
+    "contact": {
+      "name": "Mohit Aggarwal",
+      "email": "mohitetc2008@gmail.com"
     }
   },
-  "externalDocs": {
-    "description": "Find out more about Swagger",
-    "url": "http://swagger.io"
-  },
-  "servers": [
-    {
-      "url": "https://7kgwfbqgja.execute-api.ap-south-1.amazonaws.com/v1"
-    }
-  ],
-  "tags": [
-    {
-      "name": "Authentication"
-    },
-    {
-      "name": "Action",
-      "description": "Action is basic entity of roles and responsibilities. Roles and responsibilities consists of action, policy and role. Action indicates action in application. Policy indicates whether the action is allowed or denied in the policy. Policy is further very specific to a module. And role is actual role for an user."
-    },
-    {
-      "name": "Policy"
-    },
-    {
-      "name": "Role",
-      "description": "There are 3 roles - Super Admin, Admin, Standard. Super Admin has full control on application. He can visit details of any tenant/user. This role has been created for administrative and support purpose."
-    },
-    {
-      "name": "Tenant"
-    },
-    {
-      "name": "User"
-    },
-    {
-      "name": "Product",
-      "description": "Everything to do with Products"
-    },
-    {
-      "name": "Feature",
-      "description": "Everything to do with Features"
-    },
-    {
-      "name": "Product Rate Plan",
-      "description": "Everything to do with Product Rate Plan"
-    },
-    {
-      "name": "Customer",
-      "description": "Everything to do with Customers"
-    },
-    {
-      "name": "Contacts",
-      "description": "Everything to do with Contacts"
-    }
-  ],
   "paths": {
-    "/login": {
-      "summary": "login user",
-      "post": {
-        "summary": "login user",
-        "description": "",
-        "operationId": "login",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Login"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LoginResp"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorised",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Authentication"
-        ]
-      }
-    },
-    "/logout": {
-      "summary": "logout user",
+    "/actions": {
       "get": {
-        "summary": "logout user",
-        "description": "",
-        "operationId": "logout",
-        "security": [
-          {
-            "bearerAuth": []
-          }
+        "x-controller-name": "ActionController",
+        "x-operation-name": "find",
+        "tags": [
+          "ActionController"
         ],
         "responses": {
           "200": {
-            "description": "OK Success",
-            "content": {}
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Authentication"
-        ]
-      }
-    },
-    "/changepwd": {
-      "summary": "Change Password",
-      "description": "This API is used to change password. Prerequisite is to login first and then use the token to change the password. This gives you extra security.",
-      "post": {
-        "tags": [
-          "Authentication"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "summary": "Change password for logged in user.",
-        "description": "",
-        "operationId": "change-pwd",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/changepwd"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK Success",
-            "content": {}
-          },
-          "400": {
-            "description": "Bad Request",
+            "description": "Array of Action model instances",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/action": {
-      "summary": "Create action",
-      "description": "Action is basic entity of roles and responsibilities. Actions can only be added by Super Admin",
-      "post": {
-        "tags": [
-          "Action"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "summary": "create action",
-        "description": "",
-        "operationId": "",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Action-Create"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK Success",
-            "content": {}
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/policy": {
-      "summary": "Policy is allow/deny of action. It is part of permission management. Policy is specific to a module.",
-      "post": {
-        "summary": "create a new policy",
-        "description": "",
-        "operationId": "policy-create",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Policy-Create"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK Success",
-            "content": {}
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
+                    "$ref": "#/components/schemas/ActionWithRelations"
                   }
                 }
               }
             }
           }
         },
-        "tags": [
-          "Policy"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
-    "/role": {
-      "summary": "There is an Admin role for each tenant. Admin role has full authority to create new roles and assign them responsibilities.",
-      "post": {
-        "summary": "role",
-        "description": "role",
-        "operationId": "role-create",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Role-Create"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK Success",
-            "content": {}
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Role"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
-    "/tenant": {
-      "summary": "tenant",
-      "post": {
-        "summary": "create tenant account",
-        "description": "",
-        "operationId": "tenant-create",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Tenant-Create"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK Success",
-            "content": {}
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Tenant"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
-    "/user": {
-      "summary": "user",
-      "description": "user",
-      "post": {
-        "summary": "user",
-        "description": "",
-        "operationId": "user-create",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User-Create"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK Success",
-            "content": {}
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "User"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
-    "/product": {
-      "post": {
-        "tags": [
-          "Product"
-        ],
-        "summary": "Creates Product",
-        "operationId": "createProduct",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Product-Create"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Product created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "productId": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Product"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "summary": "Get list of Products",
-        "operationId": "getProducts",
-        "responses": {
-          "200": {
-            "description": "OK Success",
-            "content": {}
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/feature": {
-      "post": {
-        "tags": [
-          "Feature"
-        ],
-        "summary": "Add features to product",
-        "operationId": "addFeature",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Feature-Add"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Product created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "featureCode": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/features": {
-      "get": {
-        "tags": [
-          "Feature"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "summary": "Get list of Features for a product",
-        "operationId": "getFeatures",
         "parameters": [
           {
+            "name": "filter",
             "in": "query",
-            "name": "productId",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Product Id to fetch features"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Action.Filter"
+                }
+              }
+            }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Features-Fetch"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+        "operationId": "ActionController.find"
       }
     },
-    "/productRatePlan": {
+    "/ping": {
       "get": {
+        "x-controller-name": "PingController",
+        "x-operation-name": "ping",
         "tags": [
-          "Product"
+          "PingController"
         ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "summary": "Get list of Products",
-        "operationId": "getProductPlans",
         "responses": {
           "200": {
-            "description": "OK Success",
-            "content": {}
-          },
-          "400": {
-            "description": "Bad Request",
+            "description": "Ping Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PingResponse"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "PingController.ping"
+      }
+    },
+    "/policies": {
+      "get": {
+        "x-controller-name": "PolicyController",
+        "x-operation-name": "find",
+        "tags": [
+          "PolicyController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of Policy model instances",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
+                    "$ref": "#/components/schemas/PolicyWithRelations"
                   }
                 }
               }
             }
           }
-        }
-      },
-      "post": {
-        "tags": [
-          "Product Rate Plan"
+        },
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Policy.Filter"
+                }
+              }
+            }
+          }
         ],
-        "summary": "Creates Product Rate Plan",
-        "operationId": "createProductRatePlan",
+        "operationId": "PolicyController.find"
+      }
+    },
+    "/role/update": {
+      "post": {
+        "x-controller-name": "PolicyController",
+        "x-operation-name": "roleUpdate",
+        "tags": [
+          "PolicyController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of Policy model instances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PolicyWithRelations"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Policy.Filter"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "PolicyController.roleUpdate"
+      }
+    },
+    "/role/delete": {
+      "post": {
+        "x-controller-name": "PolicyController",
+        "x-operation-name": "roleDelete",
+        "tags": [
+          "PolicyController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of Policy model instances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PolicyWithRelations"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Policy.Filter"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "PolicyController.roleDelete"
+      }
+    },
+    "/templates": {
+      "post": {
+        "x-controller-name": "TemplateController",
+        "x-operation-name": "login",
+        "tags": [
+          "TemplateController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return value of TemplateController.login"
+          }
+        },
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProductRatePlan-Create"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "productId": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
+                "type": "object"
               }
             }
           }
-        }
+        },
+        "operationId": "TemplateController.login"
       }
     },
-    "/product/{id}": {
-      "get": {
+    "/tenantadmin": {
+      "post": {
+        "x-controller-name": "TenantController",
+        "x-operation-name": "createTenant",
         "tags": [
-          "Product"
+          "TenantController"
         ],
-        "security": [
-          {
-            "bearerAuth": []
+        "responses": {
+          "200": {
+            "description": "Tenant model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tenant"
+                }
+              }
+            }
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewTenant"
+              }
+            }
+          }
+        },
+        "operationId": "TenantController.createTenant"
+      }
+    },
+    "/tenants/{id}": {
+      "patch": {
+        "x-controller-name": "TenantController",
+        "x-operation-name": "updateById",
+        "tags": [
+          "TenantController"
         ],
-        "summary": "Get list of Products",
-        "operationId": "getProduct",
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Tenant PATCH success"
+                }
+              }
+            }
+          }
+        },
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "Unique identifier of Product",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK Success",
-            "content": {}
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer": {
-      "post": {
-        "tags": [
-          "Customer"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "summary": "Creates Customer",
-        "operationId": "Create Customer",
-        "requestBody": {
-          "description": "List of Customer object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Create_ustomer"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK Success",
-            "content": {}
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "x-codegen-request-body-name": "body"
-      }
-    },
-    "/customer/{customer_id}": {
-      "get": {
-        "tags": [
-          "Customer"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "summary": "Get Customer by Customer id",
-        "operationId": "getCustomerById",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "customer_id",
-            "description": "The name that needs to be fetched. Use Customer for testing. ",
-            "required": true,
             "schema": {
               "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK Success",
-            "content": {}
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Customer"
-        ],
-        "summary": "Updated Customer",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "updateCustomer",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "customer_id",
-            "description": "The name that needs to be fetched. Use Customer for testing. ",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            },
+            "required": true
           }
         ],
         "requestBody": {
-          "description": "Updated Customer object",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Customer"
+                "$ref": "#/components/schemas/TenantPartial"
               }
             }
           },
-          "required": true
+          "x-parameter-index": 1
         },
-        "responses": {
-          "400": {
-            "description": "Invalid  Customer supplied",
-            "content": {}
-          },
-          "404": {
-            "description": "Customer not found",
-            "content": {}
-          }
-        },
-        "x-codegen-request-body-name": "body"
+        "operationId": "TenantController.updateById"
       },
       "delete": {
+        "x-controller-name": "TenantController",
+        "x-operation-name": "deleteTenant",
         "tags": [
-          "Customer"
+          "TenantController"
         ],
-        "summary": "Delete Customer",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "deleteCustomer",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "customer_id",
-            "description": "The name that needs to be fetched. Use Customer for testing. ",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid Customer supplied",
-            "content": {}
-          },
-          "404": {
-            "description": "Customer not found",
-            "content": {}
-          }
-        }
-      }
-    },
-    "/contact": {
-      "post": {
-        "tags": [
-          "Contacts"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "summary": "Creates Contacts",
-        "operationId": "Create Contacts",
-        "requestBody": {
-          "description": "List of Contacts details",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Bill_To"
-                }
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
-            "description": "OK Success",
-            "content": {}
-          },
-          "400": {
-            "description": "Bad Request",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "description": "Tenant Successful deleted"
                 }
               }
             }
           }
         },
-        "x-codegen-request-body-name": "body"
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "operationId": "TenantController.deleteTenant"
       }
     },
-    "/Contacts/{customer_id}": {
+    "/tenants": {
       "get": {
+        "x-controller-name": "TenantController",
+        "x-operation-name": "find",
         "tags": [
-          "Contacts"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "summary": "Get Contact by Customer id",
-        "operationId": "getContactById",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "customer_id",
-            "description": "The customer id that needs to be fetched contact ",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
+          "TenantController"
         ],
         "responses": {
           "200": {
-            "description": "OK Success",
-            "content": {}
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
+            "description": "Return value of TenantController.find"
           }
-        }
-      },
-      "put": {
-        "tags": [
-          "Contacts"
-        ],
-        "summary": "Updated Contact",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "updateContact",
+        },
         "parameters": [
           {
-            "name": "customer_id",
-            "in": "path",
-            "description": "contact that need to be updated",
-            "required": true,
-            "schema": {
-              "type": "string"
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tenant.Filter"
+                }
+              }
             }
           }
         ],
         "requestBody": {
-          "description": "Updated Costomer object",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Bill_To"
+                "type": "object"
+              }
+            }
+          }
+        },
+        "operationId": "TenantController.find"
+      }
+    },
+    "/users/forget-password": {
+      "post": {
+        "x-controller-name": "AuthController",
+        "x-operation-name": "forgetPassword",
+        "tags": [
+          "AuthController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return value of AuthController.forgetPassword"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "operationId": "AuthController.forgetPassword"
+      }
+    },
+    "/users/{id}": {
+      "patch": {
+        "x-controller-name": "AuthController",
+        "x-operation-name": "updateUser",
+        "tags": [
+          "AuthController"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "User PATCH success"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User.Filter"
               }
             }
           },
-          "required": true
+          "x-parameter-index": 1
         },
+        "operationId": "AuthController.updateUser"
+      }
+    },
+    "/users/login": {
+      "post": {
+        "x-controller-name": "AuthController",
+        "x-operation-name": "login",
+        "tags": [
+          "AuthController"
+        ],
         "responses": {
-          "400": {
-            "description": "Invalid  Customer supplied",
-            "content": {}
-          },
-          "404": {
-            "description": "Customer not found",
-            "content": {}
+          "200": {
+            "description": "Return value of AuthController.login"
           }
         },
-        "x-codegen-request-body-name": "body"
-      },
-      "delete": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "operationId": "AuthController.login"
+      }
+    },
+    "/users/reset-password": {
+      "post": {
+        "x-controller-name": "AuthController",
+        "x-operation-name": "resetPassword",
         "tags": [
-          "Customer"
+          "AuthController"
         ],
-        "summary": "Delete Customer",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "deleteContact",
+        "responses": {
+          "200": {
+            "description": "Return value of AuthController.resetPassword"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "operationId": "AuthController.resetPassword"
+      }
+    },
+    "/users": {
+      "get": {
+        "x-controller-name": "AuthController",
+        "x-operation-name": "find",
+        "tags": [
+          "AuthController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return value of AuthController.find"
+          }
+        },
         "parameters": [
           {
-            "in": "path",
-            "name": "customer_id",
-            "description": "The customer id that needs to be fetched contact ",
-            "required": true,
-            "schema": {
-              "type": "string"
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User.Filter"
+                }
+              }
             }
           }
         ],
-        "responses": {
-          "400": {
-            "description": "Invalid Customer supplied",
-            "content": {}
-          },
-          "404": {
-            "description": "Customer not found",
-            "content": {}
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
           }
-        }
+        },
+        "operationId": "AuthController.find"
+      }
+    },
+    "/users": {
+      "post": {
+        "x-controller-name": "AuthController",
+        "x-operation-name": "create",
+        "tags": [
+          "AuthController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return value of AuthController.create"
+          }
+        },
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User.Filter"
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "operationId": "AuthController.create"
+      }
+    },
+    "/whoami": {
+      "get": {
+        "x-controller-name": "AuthController",
+        "x-operation-name": "whoami",
+        "tags": [
+          "AuthController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return value of AuthController.whoami"
+          }
+        },
+        "operationId": "AuthController.whoami"
       }
     }
   },
+  "security": [
+    {
+      "jwt": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
   "components": {
     "schemas": {
-      "ApiResponse": {
+      "ActionWithRelations": {
+        "title": "ActionWithRelations",
         "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "type": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      },
-      "Category": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          }
-        },
-        "xml": {
-          "name": "Category"
-        }
-      },
-      "Tag": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          }
-        },
-        "xml": {
-          "name": "Tag"
-        }
-      },
-      "Login": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "Email id of user",
-            "format": "email"
-          },
-          "password": {
-            "type": "string",
-            "description": "Password"
-          }
-        },
-        "required": [
-          "email",
-          "password"
-        ]
-      },
-      "LoginResp": {
-        "type": "object",
-        "properties": {
-          "token": {
-            "type": "string",
-            "description": "Email id of user"
-          },
-          "role": {
-            "type": "string",
-            "description": "Password"
-          },
-          "permissions": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "$ref": "#/components/schemas/Permission"
-            }
-          }
-        }
-      },
-      "Permission": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "description": "Email id of user"
-          },
-          "name": {
-            "type": "string",
-            "description": "Password"
-          },
-          "module": {
-            "type": "string",
-            "description": "Module"
-          },
-          "statements": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "effect": {
-                  "type": "string",
-                  "description": "Allow or Deny the action"
-                },
-                "actions": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "_id": {
-                        "type": "string",
-                        "description": "Email id of user"
-                      },
-                      "method": {
-                        "type": "string",
-                        "description": "Password"
-                      },
-                      "route": {
-                        "type": "string",
-                        "description": "Password"
-                      },
-                      "name": {
-                        "type": "string",
-                        "description": "Password"
-                      },
-                      "function": {
-                        "type": "string",
-                        "description": "Password"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "changepwd": {
-        "type": "object",
-        "properties": {
-          "oldPassword": {
-            "type": "string",
-            "description": "Old password"
-          },
-          "newPassword": {
-            "type": "string",
-            "description": "New Password"
-          }
-        },
-        "required": [
-          "oldPassword",
-          "newPassword"
-        ]
-      },
-      "Action-Create": {
-        "type": "object",
+        "description": "(tsType: ActionWithRelations, schemaOptions: { includeRelations: true })",
         "properties": {
           "module": {
-            "type": "string",
-            "description": "Module",
-            "format": "enum",
-            "enum": [
-              "policy",
-              "action",
-              "role",
-              "tenant",
-              "*"
-            ]
-          },
-          "accessLevel": {
-            "type": "string",
-            "description": "Access Level",
-            "format": "enum",
-            "enum": [
-              "List",
-              "Read",
-              "Write",
-              "*"
-            ]
+            "type": "string"
           },
           "method": {
-            "type": "string",
-            "description": "Rest API methods",
-            "format": "enum",
-            "enum": [
-              "POST",
-              "GET",
-              "PUT",
-              "DELETE",
-              "*"
-            ]
+            "type": "string"
           },
           "route": {
             "type": "string"
           },
           "name": {
             "type": "string"
+          }
+        },
+        "required": [
+          "module",
+          "method",
+          "route",
+          "name"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "ActionWithRelations"
+      },
+      "PolicyWithRelations": {
+        "title": "PolicyWithRelations",
+        "type": "object",
+        "description": "(tsType: PolicyWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "tenantId": {
+            "type": "string"
           },
-          "function": {
+          "userId": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "module": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "isAllowed": {
+            "type": "boolean"
+          },
+          "resourceId": {
+            "type": "string"
+          },
+          "policyId": {
             "type": "string"
           }
         },
         "required": [
           "module",
-          "accessLevel",
-          "method",
-          "route",
-          "name",
-          "function"
-        ]
+          "action",
+          "isAllowed"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "PolicyWithRelations"
       },
-      "Policy-Create": {
+      "Tenant": {
+        "title": "Tenant",
         "type": "object",
         "properties": {
-          "name": {
+          "orgName": {
             "type": "string"
-          },
-          "statements": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "effect": {
-                  "type": "string",
-                  "description": "effect of action",
-                  "format": "enum",
-                  "enum": [
-                    "Allow",
-                    "Deny"
-                  ]
-                },
-                "actions": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              },
-              "required": [
-                "effect",
-                "actions"
-              ]
-            }
-          }
-        },
-        "required": [
-          "name",
-          "statements"
-        ]
-      },
-      "Role-Create": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "name"
-          },
-          "tenantId": {
-            "type": "string",
-            "description": "tenant Id"
-          },
-          "permissions": {
-            "type": "array",
-            "description": "permissions",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "name",
-          "tenantId",
-          "permissions"
-        ]
-      },
-      "Tenant-Create": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string",
-            "description": "status of tenant",
-            "format": "enum",
-            "enum": [
-              "active",
-              "inactive"
-            ]
-          },
-          "email": {
-            "type": "string",
-            "description": "email of tenant",
-            "format": "email"
           },
           "address": {
-            "type": "string",
-            "description": "address"
+            "type": "string"
           },
           "city": {
-            "type": "string",
-            "description": "city"
+            "type": "string"
           },
           "state": {
-            "type": "string",
-            "description": "state"
-          },
-          "postalCode": {
-            "type": "string",
-            "description": "postal code"
+            "type": "string"
           },
           "country": {
-            "type": "string",
-            "description": "country"
+            "type": "string"
+          },
+          "pincode": {
+            "type": "string"
           },
           "timezone": {
-            "type": "string",
-            "description": "timezone of tenant"
-          }
-        },
-        "required": [
-          "name",
-          "email",
-          "postalCode",
-          "timezone"
-        ]
-      },
-      "User-Create": {
-        "type": "object",
-        "properties": {
-          "firstName": {
-            "type": "string",
-            "description": "first name of user"
-          },
-          "lastName": {
-            "type": "string",
-            "description": "last name of user"
-          },
-          "email": {
-            "type": "string",
-            "description": "email id of user",
-            "format": "email"
-          },
-          "role": {
-            "type": "string",
-            "description": "role of user"
-          },
-          "tenantId": {
-            "type": "string",
-            "description": "tenant id user associated with"
-          }
-        },
-        "required": [
-          "firstName",
-          "email",
-          "role",
-          "tenantId"
-        ]
-      },
-      "Product-Create": {
-        "type": "object",
-        "properties": {
-          "name": {
             "type": "string"
-          },
-          "category": {
-            "type": "string",
-            "description": "Category of Product",
-            "format": "enum",
-            "default": "Base Product",
-            "enum": [
-              "Base Product",
-              "Miscellaneous Product",
-              "Add-On Service"
-            ]
-          },
-          "industry": {
-            "type": "string",
-            "description": "Industry Type",
-            "format": "enum",
-            "enum": [
-              "Telecommunication",
-              "Others"
-            ]
-          },
-          "effectiveFromDate": {
-            "type": "string"
-          },
-          "effectiveToDate": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "name",
-          "category",
-          "effectiveFromDate",
-          "effectiveToDate"
-        ]
-      },
-      "Feature-Add": {
-        "type": "object",
-        "properties": {
-          "productId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "basePrice": {
-            "type": "number",
-            "description": "Category of Product",
-            "format": "float",
-            "multipleOf": 0.01
-          }
-        }
-      },
-      "Features-Fetch": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "productId": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "basePrice": {
-              "type": "number",
-              "description": "Category of Product",
-              "format": "float",
-              "multipleOf": 0.01
-            },
-            "featureCode": {
-              "type": "string",
-              "description": "Feature Code"
-            },
-            "status": {
-              "type": "string",
-              "description": "Status of feature",
-              "format": "enum",
-              "default": "Active",
-              "enum": [
-                "Active",
-                "Inactive"
-              ]
-            },
-            "used": {
-              "type": "string",
-              "description": "Indicates whether feature is used in any plan",
-              "format": "enum",
-              "default": false,
-              "enum": [
-                false,
-                true
-              ]
-            }
-          }
-        }
-      },
-      "ProductRatePlan-Create": {
-        "type": "object",
-        "properties": {
-          "productId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "effectiveFromDate": {
-            "type": "string"
-          },
-          "effectiveToDate": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "productId",
-          "name"
-        ]
-      },
-      "Product-Fetch": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "integer",
-            "description": "unique identifier of product",
-            "format": "int4"
-          },
-          "name": {
-            "type": "string",
-            "description": "Name of the product",
-            "format": "varchar(50)"
           },
           "status": {
-            "type": "string",
-            "description": "Product Status",
-            "format": "enum",
-            "default": "Active",
-            "enum": [
-              "Active",
-              "Inactive",
-              "Deleted"
-            ]
-          },
-          "effective_from": {
-            "type": "string",
-            "description": "Product effective from date. This can be different from created timestamp when you plan to launch your product later than creation date",
-            "format": "date"
-          },
-          "effective_to": {
-            "type": "string",
-            "description": "Product effective end date. This indicates when was the last product was active. It will be null initially and then date when deactivated",
-            "format": "date"
-          },
-          "created_by": {
-            "type": "string",
-            "description": "Representative of Organisation created the product",
-            "format": "varchar(30)"
-          },
-          "created_ts": {
-            "type": "string",
-            "description": "Product created timestamp",
-            "format": "timestamp"
-          },
-          "updated_ts": {
-            "type": "string",
-            "description": "Product last updated timestamp",
-            "format": "timestamp"
+            "type": "number"
           }
         },
-        "xml": {
-          "name": "Product"
-        }
+        "required": [
+          "orgName",
+          "city",
+          "state",
+          "country",
+          "pincode",
+          "timezone",
+          "status"
+        ],
+        "additionalProperties": false
       },
-      "User": {
+      "NewTenant": {
+        "title": "NewTenant",
+        "type": "object",
+        "description": "(tsType: TenantUser, schemaOptions: { title: 'NewTenant' })",
+        "properties": {
+          "tenant": {
+            "type": "object"
+          },
+          "user": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "tenant",
+          "user"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "TenantUser"
+      },
+      "TenantUser": {
+        "title": "TenantUser",
         "type": "object",
         "properties": {
-          "users_id": {
-            "type": "integer",
-            "format": "int4"
+          "tenant": {
+            "type": "object"
           },
-          "name": {
-            "type": "string",
-            "format": "varchar(50)"
+          "user": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "tenant",
+          "user"
+        ],
+        "additionalProperties": false
+      },
+      "TenantPartial": {
+        "title": "TenantPartial",
+        "type": "object",
+        "description": "(tsType: Partial<Tenant>, schemaOptions: { partial: true })",
+        "properties": {
+          "orgName": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "pincode": {
+            "type": "string"
+          },
+          "timezone": {
+            "type": "string"
           },
           "status": {
-            "type": "string",
-            "description": "User Status",
-            "format": "enum",
-            "enum": [
-              "active",
-              "inactive",
-              "deleted"
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "Partial<Tenant>"
+      },
+      "Action.Filter": {
+        "type": "object",
+        "title": "Action.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
             ]
           },
-          "created_on": {
-            "type": "string",
-            "format": "date-time"
+          "where": {
+            "title": "Action.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
           },
-          "updated_on": {
-            "type": "string",
-            "format": "date-time"
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "module": {
+                    "type": "boolean"
+                  },
+                  "method": {
+                    "type": "boolean"
+                  },
+                  "route": {
+                    "type": "boolean"
+                  },
+                  "name": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "module",
+                    "method",
+                    "route",
+                    "name"
+                  ],
+                  "example": "module"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "Action.Fields"
           }
         },
-        "xml": {
-          "name": "User"
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<Action>"
+      },
+      "PingResponse": {
+        "type": "object",
+        "title": "PingResponse",
+        "properties": {
+          "greeting": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "headers": {
+            "type": "object",
+            "properties": {
+              "Content-Type": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
         }
       },
-      "Customer": {
+      "Policy.Filter": {
         "type": "object",
+        "title": "Policy.Filter",
         "properties": {
-          "customer_id": {
+          "offset": {
             "type": "integer",
-            "format": "int4"
+            "minimum": 0
           },
-          "first_name": {
-            "type": "string",
-            "format": "varchar(50)"
-          },
-          "last_name": {
-            "type": "string",
-            "format": "varchar(50)"
-          },
-          "address1": {
-            "type": "string",
-            "format": "varchar(50)"
-          },
-          "address2": {
-            "type": "string",
-            "format": "varchar(50)"
-          },
-          "mobilePhone": {
+          "limit": {
             "type": "integer",
-            "format": "int4"
+            "minimum": 1,
+            "example": 100
           },
-          "cust_status": {
-            "type": "string",
-            "description": "Customer Status",
-            "format": "enum",
-            "enum": [
-              "active",
-              "inactive",
-              "deleted",
-              "suspended"
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
             ]
           },
-          "created_on": {
-            "type": "string",
-            "format": "date-time"
+          "where": {
+            "title": "Policy.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
           },
-          "updated_on": {
-            "type": "string",
-            "format": "date-time"
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "tenantId": {
+                    "type": "boolean"
+                  },
+                  "userId": {
+                    "type": "boolean"
+                  },
+                  "role": {
+                    "type": "boolean"
+                  },
+                  "module": {
+                    "type": "boolean"
+                  },
+                  "action": {
+                    "type": "boolean"
+                  },
+                  "isAllowed": {
+                    "type": "boolean"
+                  },
+                  "resourceId": {
+                    "type": "boolean"
+                  },
+                  "policyId": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "tenantId",
+                    "userId",
+                    "role",
+                    "module",
+                    "action",
+                    "isAllowed",
+                    "resourceId",
+                    "policyId"
+                  ],
+                  "example": "tenantId"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "Policy.Fields"
           }
         },
-        "xml": {
-          "name": "Customer"
-        }
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<Policy>"
       },
-      "Create_ustomer": {
+      "Tenant.Filter": {
         "type": "object",
+        "title": "Tenant.Filter",
         "properties": {
-          "accountNumber": {
+          "offset": {
             "type": "integer",
-            "description": "A unique account number. If no account number is specified, one is generated.",
-            "format": "int4"
+            "minimum": 0
           },
-          "first_name": {
-            "type": "string",
-            "description": "Max 255 characters or less",
-            "format": "varchar(50)"
-          },
-          "last_name": {
-            "type": "string",
-            "description": "Max 255 characters or less",
-            "format": "varchar(50)"
-          },
-          "address1": {
-            "type": "string",
-            "description": "Max 255 characters or less",
-            "format": "varchar(50)"
-          },
-          "address2": {
-            "type": "string",
-            "description": "Max 255 characters or less",
-            "format": "varchar(50)"
-          },
-          "Industry_Id ENUM": {
+          "limit": {
             "type": "integer",
-            "format": "int4"
+            "minimum": 1,
+            "example": 100
           },
-          "Industry_name": {
-            "type": "string",
-            "description": "Customer Industry Name",
-            "format": "enum",
-            "enum": [
-              "active",
-              "inactive",
-              "deleted"
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
             ]
           },
-          "Bill_To": {
-            "$ref": "#/components/schemas/Bill_To"
+          "where": {
+            "title": "Tenant.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
           },
-          "Sold_To": {
-            "$ref": "#/components/schemas/Sold_To"
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "orgName": {
+                    "type": "boolean"
+                  },
+                  "address": {
+                    "type": "boolean"
+                  },
+                  "city": {
+                    "type": "boolean"
+                  },
+                  "state": {
+                    "type": "boolean"
+                  },
+                  "country": {
+                    "type": "boolean"
+                  },
+                  "pincode": {
+                    "type": "boolean"
+                  },
+                  "timezone": {
+                    "type": "boolean"
+                  },
+                  "status": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "orgName",
+                    "address",
+                    "city",
+                    "state",
+                    "country",
+                    "pincode",
+                    "timezone",
+                    "status"
+                  ],
+                  "example": "orgName"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "Tenant.Fields"
           }
         },
-        "xml": {
-          "name": "Customer"
-        }
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<Tenant>"
       },
-      "Bill_To": {
+      "User.Filter": {
         "type": "object",
+        "title": "User.Filter",
         "properties": {
-          "first_name": {
-            "type": "string",
-            "format": "varchar(50)"
-          },
-          "last_name": {
-            "type": "string",
-            "format": "varchar(50)"
-          },
-          "address1": {
-            "type": "string",
-            "format": "varchar(50)"
-          },
-          "address2": {
-            "type": "string",
-            "format": "varchar(50)"
-          },
-          "mobilePhone": {
+          "offset": {
             "type": "integer",
-            "format": "int4"
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "where": {
+            "title": "User.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "boolean"
+                  },
+                  "tenantId": {
+                    "type": "boolean"
+                  },
+                  "firstName": {
+                    "type": "boolean"
+                  },
+                  "lastName": {
+                    "type": "boolean"
+                  },
+                  "email": {
+                    "type": "boolean"
+                  },
+                  "password": {
+                    "type": "boolean"
+                  },
+                  "role": {
+                    "type": "boolean"
+                  },
+                  "status": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "userId",
+                    "tenantId",
+                    "firstName",
+                    "lastName",
+                    "email",
+                    "password",
+                    "role",
+                    "status"
+                  ],
+                  "example": "userId"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "User.Fields"
           }
         },
-        "xml": {
-          "name": "Customer"
-        }
-      },
-      "Sold_To": {
-        "type": "object",
-        "properties": {
-          "first_name": {
-            "type": "string",
-            "format": "varchar(50)"
-          },
-          "last_name": {
-            "type": "string",
-            "format": "varchar(50)"
-          },
-          "address1": {
-            "type": "string",
-            "format": "varchar(50)"
-          },
-          "address2": {
-            "type": "string",
-            "format": "varchar(50)"
-          },
-          "mobilePhone": {
-            "type": "integer",
-            "format": "int4"
-          }
-        },
-        "xml": {
-          "name": "Customer"
-        }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
-      },
-      "Bearer": {
-        "type": "apiKey",
-        "name": "Authorization",
-        "in": "header"
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<User>"
       }
     }
   }

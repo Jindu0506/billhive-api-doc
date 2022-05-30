@@ -1,0 +1,4848 @@
+openapi: 3.0.0
+info:
+  title: Razorpay APIs
+  description: >-
+    Razorpay is an Indian payments solution provider that allows businesses to
+    accept, process and disburse payments with its product suite. Razorpay APIs
+    are completely RESTful and all our responses are returned in JSON.
+
+
+
+    # API Authentication
+
+
+    All Razorpay APIs are authenticated using **Basic Auth**. Basic auth
+    requires the following:
+
+
+    - [YOUR_KEY_ID]
+
+    - [YOUR_KEY_SECRET]
+
+
+    Basic auth expects an Authorization header for each request in the Basic
+    base64token format. Here, base64token is a base64 encoded string of
+    YOUR_KEY_ID:YOUR_KEY_SECRET.
+
+
+    <table>
+
+    <b>Watch Out!</b> <br>
+
+    The Authorization header value should strictly adhere to the format
+    mentioned above. Invalid formats will result in authentication failures. Few
+    examples of invalid headers are:
+
+
+    - BASIC base64token
+
+    - basic base64token
+
+    - Basic "base64token"
+
+    - Basic $base64token
+
+    </table>
+
+
+    # Generate API Key
+
+
+    You can use Razorpay APIs in two modes, Test and Live. The API key is
+    different for each mode.
+
+
+    To generate the API keys:
+
+    1. Log into the <a href="https://dashboard.razorpay.com/app/dashboard"
+    target="_blank">Razorpay Dashboard</a>.
+
+    2. Select the mode (Test or Live) for which you want to generate the API
+    key.
+
+    <br>- Test Mode: The test mode is a simulation mode that you can use to test
+    your integration flow. Your customers will not be able to make payments in
+    this mode.
+
+    <br>- Live Mode: When your integration is complete, in the Dashboard, switch
+    to the live mode and generate live mode API keys. Replace test mode keys
+    with live mode keys in the integration to accept payments from customers.
+
+    3. Navigate to Settings → API Keys → Generate Key to generate key for the
+    selected mode.
+
+
+    # Errors
+
+    All successful responses are returned with HTTP Status code 204. In case of
+    failure, API returns a JSON error response with the parameters that contain
+    the failure reason.
+
+
+    # Understanding Error Response
+
+
+    The error response contains `code`, `description`, `field`, `source`,
+    `step`, and `reason` parameters to understand and troubleshoot the error.
+
+
+    Let us take an example where a merchant tries to add new allowed payer
+    accounts when the overall limit is exceeded.
+
+
+    ```json: Sample Error Response
+
+    {
+      "error": {
+        "code": "BAD_REQUEST_ERROR",
+        "description": "Authentication failed due to incorrect otp",
+        "field": null,
+        "source": "customer",
+        "step": "payment_authentication",
+        "reason": "invalid_otp",
+        "metadata": {
+          "payment_id": "pay_EDNBKIP31Y4jl8",
+          "order_id": "order_DBJKIP31Y4jl8"
+        }
+      }
+    }
+
+    ```
+
+
+    ### Response Parameters
+
+
+    `error`
+
+    : `object` The error object.
+
+
+    `code`
+
+    : `string` Type of the error.
+
+
+    `description`
+
+    : `string` Description of the error.
+
+
+    `field`
+
+    : `string` Name of the parameter in the API request that caused the error.
+
+
+    `source`
+
+    : `string` The point of failure in the specific operation (payment in this
+    case). For example, customer, business
+
+
+    `step`
+
+    : `string` The stage where the transaction failure occurred. The stages can
+    vary depending on the payment method used to complete the transaction.
+
+
+    `reason`
+
+    : `string` The exact error reason. It can be handled programmatically.
+
+
+    `metadata`
+
+    : `object` Contains additional information about the request.
+
+        `payment_id`
+        : `string` Unique identifier of the payment.
+
+        `order_id`
+        : `string` Unique identifier of the order associated with the payment.
+
+    Know more about <a href="/docs/errors/error-codes" target="_blank">Error
+    Codes</a>.
+  version: 1.0.0
+servers:
+  - url: https://api.razorpay.com
+  - url: http://api.razorpay.in
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+security:
+  - basicAuth: []
+tags:
+  - name: Customers APIs
+    description: >-
+      You can create customers with basic details such as name and contact
+      details and use them for various Razorpay solution offerings.
+
+
+      ## List of APIs:
+
+      - <a href="https://razorpay.com/docs/api/customers/#create-a-customer"
+      target="_blank">Create a Customer</a>
+
+      - <a href="https://razorpay.com/docs/api/customers/#edit-customer-details"
+      target="_blank">Edit Customer Details</a>
+
+      - <a href="https://razorpay.com/docs/api/customers/#fetch-all-customers"
+      target="_blank">Fetch all Customers</a>
+
+      - <a href="https://razorpay.com/docs/api/customers/#fetch-customer-by-id"
+      target="_blank">Fetch Customer by ID</a>
+  - name: Orders APIs
+    description: >-
+      Order is an important step in the payment process. Orders and payments go
+      hand-in-hand. For every payment, an order needs to be created. You can
+      create orders using the Orders API.
+
+
+      ## List of APIs:
+
+      - <a href="https://razorpay.com/docs/api/orders/#create-an-order"
+      target="_blank">Create an Order</a>
+
+      - <a href="https://razorpay.com/docs/api/orders/#fetch-orders"
+      target="_blank">Fetch Orders</a>
+
+      - <a href="https://razorpay.com/docs/api/orders/#fetch-an-order-with-id"
+      target="_blank">Fetch an Order With Id</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/orders/#fetch-payments-for-an-order"
+      target="_blank">Fetch Payments for an Order</a>
+
+      - <a href="https://razorpay.com/docs/api/orders/#update-order"
+      target="_blank">Update Order</a>
+  - name: Payments APIs
+    description: >-
+      You can create payments using the Razorpay Standard Checkout.
+      https://razorpay.com/docs/payment-gateway/.
+
+
+      The Payments APIs help you to capture payments and fetch them only.
+
+
+      ## List of APIs
+
+      - <a href="https://razorpay.com/docs/api/payments/#capture-a-payment"
+      target="_blank">Capture a Payment</a>
+
+      - <a href="https://razorpay.com/docs/api/payments/#fetch-a-payment"
+      target="_blank">Fetch a Payment</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/payments/#fetch-multiple-payments"
+      target="_blank">Fetch Multiple Payments</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/payments/#fetch-expanded-card-or-emi-details-for-payments"
+      target="_blank">Fetch Expanded Card or EMI Details for Payments</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/payments/#fetch-payments-based-on-orders"
+      target="_blank">Fetch Payments Based on Orders</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/payments/#fetch-card-details-of-a-payment"
+      target="_blank">Fetch Card Details of a Payment</a>
+
+      - <a href="https://razorpay.com/docs/api/payments/#update-the-payment"
+      target="_blank">Update the Payment</a>
+  - name: Payments APIs > Payment Downtime API
+    description: >-
+      Usually, downtime webhook payloads are delivered within few seconds of the
+      event. However, in some cases, this can be delayed by few minutes due to
+      various reasons.
+
+
+      If you have not received any webhook notifications due to some technical
+      issues, you can use the Fetch Payment Downtime API to fetch the downtime
+      status.
+
+
+      List of APIs:
+
+      - <a
+      href="https://razorpay.com/docs/api/payments/downtime/#fetch-payment-downtime-details"
+      target="_blank">Fetch Payment Downtime Details</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/payments/downtime/#fetch-payment-downtime-details-by-id"
+      target="_blank">Fetch Payment Downtime Details by ID</a>
+  - name: Refunds APIs
+    description: >-
+      You can make full or partial refunds to customers. While issuing refunds,
+      you can choose to process the refunds instantly or at normal speed (within
+      5-7 working days). Razorpay provides you real-time tracking of the
+      processing speed and the status of the initiated refund.
+
+
+      <table>
+
+      <b>Refunds Can be Made Only on Captured Payments</b> <br>
+
+      You can initiate refunds only on those payments that are in captured
+      state. A payment in authorized state is auto-refunded if not captured
+      within 5 days of creation.
+
+      </table>
+
+
+      ## List of APIs
+
+      - <a href="https://razorpay.com/docs/api/refunds/#create-a-normal-refund"
+      target="_blank">Create a Normal Refund</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/refunds/#create-an-instant-refund"
+      target="_blank">Create an Instant Refund</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/refunds/#fetch-multiple-refunds-for-a-payment"
+      target="_blank">Fetch Multiple Refunds for a Payment</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/refunds/#fetch-a-specific-refund-for-a-payment"
+      target="_blank">Fetch a Specific Refund for a Payment</a>
+
+      - <a href="https://razorpay.com/docs/api/refunds/#fetch-all-refunds"
+      target="_blank">Fetch All Refunds</a>
+
+      - <a href="https://razorpay.com/docs/api/refunds/#fetch-refund-by-id"
+      target="_blank">Fetch Refund by ID</a>
+
+      - <a href="https://razorpay.com/docs/api/refunds/#update-refund"
+      target="_blank">Update Refund</a>
+  - name: Settlements APIs
+    description: >-
+      Settlement is the process in which the money received from your customers
+      is settled to your bank account. Settlements are made to the bank account,
+      the details of which you submitted to us as a part of KYC verification.
+
+
+      Settlements for all payments are done in INR (Indian Rupees), irrespective
+      of the currency in which the payment was made. After Razorpay receives the
+      amount, it is settled to your bank account, after fees deduction. Know
+      more about settlements.
+
+
+      ## Settlement Cycle
+
+      By default, the complete process takes a time of T+2 business days for
+      domestic transactions and T+7 days for international transactions, T being
+      the date of capture of payment. This is called the settlement cycle. The
+      settlement cycle is subject to bank approval and can vary based on your
+      business vertical, risk factors and so on.
+
+
+      ## List of APIs
+
+      - <a
+      href="https://razorpay.com/docs/api/settlements/#fetch-all-settlements"
+      target="_blank">Fetch All Settlements</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/settlements/#fetch-settlement-using-id"
+      target="_blank">Fetch Settlement Using ID</a>
+
+      - <a href="https://razorpay.com/docs/api/settlements/#settlement-recon"
+      target="_blank">Settlement Recon</a>
+  - name: Settlements APIs > Instant Settlements
+    description: >-
+      Razorpay On-demand Settlements helps you reduce your settlement period
+      from T+2 days (default settlement cycle) to a few minutes (from the time
+      of the transaction), thus enabling your business to avoid cash-flow
+      challenges and prepare better for working capital requirements.
+
+
+      List of APIs:
+
+      - <a
+      href="https://razorpay.com/docs/api/settlements/#create-an-on-demand-settlement"
+      target="_blank">Create an On-demand Settlement</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/settlements/#fetch-all-on-demand-settlements"
+      target="_blank">Fetch All On-demand Settlements</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/settlements/#fetch-on-demand-settlements-by-id"
+      target="_blank">Fetch On-demand Settlements by ID</a>
+  - name: Disputes APIs
+    description: >-
+      A dispute arises when your customer or the issuing bank questions the
+      validity of a payment. It can be raised due to reasons such as
+      unauthorised charges, failure to deliver promised merchandise or excessive
+      charges levied by you. The chargeback raised by your customer can be filed
+      as a dispute with Razorpay.
+
+
+      Manage customer disputes using the Razorpay Disputes APIs.
+
+
+      ## List of APIs
+
+
+      *   <a
+      href="https://razorpay.com/docs/api/disputes/#fetch-all-disputes">Fetch
+      all Disputes</a>
+
+      *   <a
+      href="https://razorpay.com/docs/api/disputes/#fetch-a-dispute">Fetch a
+      Dispute by ID</a>
+  - name: Invoices APIs
+    description: >-
+      Razorpay Invoices enables you to send invoices to your customers and
+      accept payments instantly.
+
+
+      The invoice contains information regarding the sale such as the name of
+      the ordered products or services, quantity, billing cycle, price breakup,
+      receipt number and customer information.
+
+
+      You can create, update, cancel and delete invoices using our Invoices
+      APIs.
+
+
+      ## List of APIs
+
+
+      - <a href="https://razorpay.com/docs/api/invoices/#create-an-invoice"
+      target="_blank">Create an Invoice</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/invoices/#fetch-multiple-invoices"
+      target="_blank">Fetch Invoices</a>
+
+      - <a href="https://razorpay.com/docs/api/invoices/#fetch-an-invoice"
+      target="_blank">Fetch Invoice by ID</a>
+
+      - <a href="https://razorpay.com/docs/api/invoices/#update-an-invoice"
+      target="_blank">Update an Invoice</a>
+
+      - <a href="https://razorpay.com/docs/api/invoices/#issue-an-invoice"
+      target="_blank">Issue an Invoice</a>
+
+      - <a href="https://razorpay.com/docs/api/invoices/#send-notifications"
+      target="_blank">Send or Resend Notification</a>
+
+      - <a href="https://razorpay.com/docs/api/invoices/#cancel-an-invoice"
+      target="_blank">Cancel an Invoice</a>
+
+      - <a href="https://razorpay.com/docs/api/invoices/#delete-an-invoice"
+      target="_blank">Delete an Invoice</a>
+  - name: Subscriptions APIs
+    description: >-
+      Enable recurring payment schedule, control the billing cycle and get
+      instant alerts on subscription activity with Razorpay Subscriptions.
+
+
+      You can create, fetch, query or cancel plans, subscriptions and add-ons
+      using the <a href="https://razorpay.com/docs/api/subscriptions"
+      target="_blank">Subscriptions API</a>.
+
+
+      ## List of APIs
+
+
+      - <a href="https://razorpay.com/docs/api/subscriptions/#plans"
+      target="_blank">Plan APIs</a>
+
+      - <a href="https://razorpay.com/docs/api/subscriptions/#subscriptions"
+      target="_blank">Subscription APIs</a>
+
+      - <a href="https://razorpay.com/docs/api/subscriptions/#add-on"
+      target="_blank">Add-on APIs</a>
+  - name: Subscriptions APIs > Step 1 - Plans
+    description: >-
+      A plan is a foundation on which a subscription is built. It acts as a
+      reusable template and contains details of the goods or services offered,
+      the amount to be charged and the frequency at which the customer should be
+      charged (billing cycle). Depending upon your business, you can create
+      multiple plans with different billing cycles and pricing.
+
+
+      ## List of APIs
+
+
+      *  
+      [](https://betasite.razorpay.com/docs/postman-api-change/razorpay/api/subscriptions/#fetch-a-plan-by-id)[Create
+      a Plan](https://razorpay.com/docs/api/subscriptions/#create-a-plan)
+
+      *  
+      [](https://betasite.razorpay.com/docs/postman-api-change/razorpay/api/subscriptions/#fetch-a-plan-by-id)[Fetch
+      all Plans](https://razorpay.com/docs/api/subscriptions/#fetch-all-plans)
+
+      *   [Fetch a Plan by
+      ID](https://razorpay.com/docs/api/subscriptions/#fetch-a-plan-by-id)
+  - name: Subscriptions APIs > Step 2 - Subscriptions
+    description: >-
+      Subscriptions allow you to charge a customer's card periodically. A
+      subscription ties a customer to a particular plan you have created. It
+      contains details like the plan, the start date, total number of billing
+      cycles, free trial period (if any) and upfront amount to be collected.
+
+
+      Know more about <a
+      href="https://razorpay.com/docs/api/subscriptions/#subscriptions">Subscriptions
+      APIs</a>.
+
+
+      ## List of APIs
+
+
+      *  
+      [](https://betasite.razorpay.com/docs/postman-api-change/razorpay/api/subscriptions/#fetch-all-invoices-for-a-subscription)[Create
+      a
+      Subscription](https://razorpay.com/docs/api/subscriptions/#create-a-subscription)
+
+      *  
+      [](https://betasite.razorpay.com/docs/postman-api-change/razorpay/api/subscriptions/#fetch-all-invoices-for-a-subscription)[Create
+      a Subscription
+      Link](https://razorpay.com/docs/api/subscriptions/#create-a-subscription-link)
+
+      *  
+      [](https://betasite.razorpay.com/docs/postman-api-change/razorpay/api/subscriptions/#fetch-all-invoices-for-a-subscription)[Fetch
+      All
+      Subscriptions](https://razorpay.com/docs/api/subscriptions/#fetch-all-subscriptions)
+
+      *  
+      [](https://betasite.razorpay.com/docs/postman-api-change/razorpay/api/subscriptions/#fetch-all-invoices-for-a-subscription)[Fetch
+      Subscription by
+      ID](https://razorpay.com/docs/api/subscriptions/#fetch-subscription-by-id)
+
+      *  
+      [](https://betasite.razorpay.com/docs/postman-api-change/razorpay/api/subscriptions/#fetch-all-invoices-for-a-subscription)[Cancel
+      a
+      Subscription](https://razorpay.com/docs/api/subscriptions/#cancel-a-subscription)
+
+      *  
+      [](https://betasite.razorpay.com/docs/postman-api-change/razorpay/api/subscriptions/#fetch-all-invoices-for-a-subscription)[Update
+      a
+      Subscription](https://razorpay.com/docs/api/subscriptions/#update-a-subscription)
+
+      *  
+      [](https://betasite.razorpay.com/docs/postman-api-change/razorpay/api/subscriptions/#fetch-all-invoices-for-a-subscription)[Fetch
+      Details of a Pending
+      Update](https://razorpay.com/docs/api/subscriptions/#fetch-details-of-a-pending-update)
+
+      *  
+      [](https://betasite.razorpay.com/docs/postman-api-change/razorpay/api/subscriptions/#fetch-all-invoices-for-a-subscription)[Cancel
+      an Update](https://razorpay.com/docs/api/subscriptions/#cancel-an-update)
+
+      *  
+      [](https://betasite.razorpay.com/docs/postman-api-change/razorpay/api/subscriptions/#fetch-all-invoices-for-a-subscription)[Pause
+      a
+      Subscription](https://razorpay.com/docs/api/subscriptions/#pause-a-subscription)
+
+      *  
+      [](https://betasite.razorpay.com/docs/postman-api-change/razorpay/api/subscriptions/#fetch-all-invoices-for-a-subscription)[Resume
+      a
+      Subscription](https://razorpay.com/docs/api/subscriptions/#resume-a-subscription)
+
+      *  
+      [](https://betasite.razorpay.com/docs/postman-api-change/razorpay/api/subscriptions/#fetch-all-invoices-for-a-subscription)[Fetch
+      All Invoices for a
+      Subscription](https://razorpay.com/docs/api/subscriptions/#fetch-all-invoices-for-a-subscription)
+  - name: Subscriptions APIs > Add-ons
+    description: >-
+      You can create add-ons to charge the customer an extra amount for a
+      particular billing cycle. Once you create an add-on for a subscription, it
+      is added to the next invoice that is generated. On the next scheduled
+      charge, the customer is charged the add-on amount in addition to their
+      regular subscription amount.
+
+
+      Know more about <a
+      href="https://razorpay.com/docs/api/subscriptions/#add-on">Add-on
+      APIs</a>.
+
+
+      ## List of APIs
+
+
+      *   [Create an
+      Add-on](https://razorpay.com/docs/api/subscriptions/#create-an-add-on)
+
+      *   [Fetch all
+      Add-ons](https://razorpay.com/docs/api/subscriptions/#fetch-all-add-ons)
+
+      *   [Fetch an Add-on by
+      ID](https://razorpay.com/docs/api/subscriptions/#fetch-an-add-on-by-id)
+
+      *   [Delete an
+      Add-on](https://razorpay.com/docs/api/subscriptions/#delete-an-add-on)
+  - name: Payment Links APIs
+    description: >-
+      Payment Links are URLs that you can send to your customers through SMS and
+      email to collect payments from them. Customers can click on the URL, which
+      opens the payment request page, and complete the payment using any of the
+      available payment methods.
+
+
+      You can easily set up and use Payment Links with these
+      [APIs](https://razorpay.com/docs/api/payment-links/).
+
+
+      ## List of APIs
+
+
+      *   [Standard Payment Links](https://razorpay.com/docs/api/payment-links/)
+
+      *   [Custom Payment
+      Links](https://razorpay.com/docs/api/payment-links/customise/)
+
+      *   [Advanced
+      Options](https://razorpay.com/docs/api/payment-links/advanced-options/)
+  - name: Payment Links APIs > Standard Payment Links
+    description: >-
+      Standard Payment Links are normal, non-customized Payment Links, which are
+      not customized as per your business preferences. Know more about these
+      [APIs](https://razorpay.com/docs/api/payment-links/).
+
+
+      ## List of APIs
+
+
+      *   [Create a Payment
+      Link](https://razorpay.com/docs/api/payment-links/#create-payment-link)
+
+      *   [Update a Payment
+      Link](https://razorpay.com/docs/api/payment-links/#update-payment-link)
+
+      *   [Cancel a Payment
+      Link](https://razorpay.com/docs/api/payment-links/#cancel-payment-link)
+
+      *   [Fetch all Payment
+      Links](https://razorpay.com/docs/api/payment-links/#all-payment-links)
+
+      *   [Fetch a Payment
+      Link](https://razorpay.com/docs/api/payment-links/#specific-payment-links-by-id)
+
+      *   [Resend a Payment
+      Link](https://razorpay.com/docs/api/payment-links/#send-or-resend-notifications)
+  - name: Payment Links APIs > Custom Payment Links
+    description: >-
+      You can send standard payment links to customers via email and SMS. When
+      customers click on the payment link, they are redirected to a page hosted
+      by us where they can complete the payment.
+
+
+      The payment request page consists of two sections:
+
+
+      *   Payment Details: Displays details about the payment description,
+      expiry date, payable amount and in case of partial payments, partial
+      amount paid and due.
+
+      *   Checkout: Displays the Phone and Email fields and list the various
+      payment methods available.
+          
+
+      You can customize this hosted page as per your brand and business
+      requirements. For example, you may display only specific payment methods,
+      change the colour of Checkout, and so on.
+
+
+      Know more about - <a
+      href="https://razorpay.com/docs/api/payment-links/customise">Custom
+      Payment Links</a>.
+
+
+      ## **List of APIs**
+
+
+      *   <a
+      href="https://razorpay.com/docs/api/payment-links/customise/checkout-theme/">Implement
+      Thematic Changes in Payment Links Checkout Section</a>
+
+      *   <a
+      href="https://razorpay.com/docs/api/payment-links/customise/merchant-details/">Change
+      Business Name</a>
+
+      *   <a
+      href="https://razorpay.com/docs/api/payment-links/customise/payment-methods/">Customize
+      Payment Methods</a>
+
+      *   <a
+      href="https://razorpay.com/docs/api/payment-links/customise/prefill/">Prefill
+      Checkout Fields</a>
+
+      *   <a
+      href="https://razorpay.com/docs/api/payment-links/customise/read-only/">Set
+      Checkout Fields as Read-Only</a>
+
+      *   <a
+      href="https://razorpay.com/docs/api/payment-links/customise/rename-checkout-labels/">Rename
+      Labels in Checkout Section</a>
+
+      *   <a
+      href="https://razorpay.com/docs/api/payment-links/customise/rename-payment-details-labels/">Rename
+      Labels in Payment Details Section</a>
+  - name: Payment Links APIs > Advanced Options
+    description: >-
+      You can perform advanced configuration on Payment Links to help achieve
+      your business requirements:
+
+
+      1.  You can set up Payment Links so that payments made against the link
+      are automatically transferred to a linked account. This saves you the
+      additional step of making a Transfer API call later.
+
+      2.  To attract and retain customers, you can provide promotional offers on
+      Payment Links such as discounts and cashback. Customers can avail these
+      offers while making payments using Payment Links.
+
+      3.  You can use Razorpay Payment Links to perform third-party validation
+      of bank accounts provided by your customers.
+          
+
+      ## List of APIs
+
+
+      *   [Transfer Payments Received Using Payment
+      Links](https://razorpay.com/docs/api/payment-links/advanced-options/transfers/)
+
+      *   [Offers on Payment
+      Links](https://razorpay.com/docs/api/payment-links/advanced-options/offers/)
+
+      *   [Third-party Validation on Payment
+      Links](https://razorpay.com/docs/api/payment-links/advanced-options/third-party-validation/)
+  - name: >-
+      Payment Links APIs > Advanced Options > Third Party Validation using
+      Netbanking and UPI
+    description: >-
+      Third-party validation is a process using which you can ensure that
+      customers make payments using only those bank accounts that they had
+      provided at the time of registration.
+
+
+      Know more about third-party validation using  <a
+      href="https://razorpay.com/docs/api/payment-links/advanced-options/third-party-validation/"
+      target="_blank">Payment Links API</a>.
+  - name: Smart Collect
+    description: >-
+      Razorpay Smart Collect enables you to create virtual accounts to accept
+      large payments from your customers in the form of bank transfers via NEFT,
+      RTGS and IMPS.
+
+
+      Virtual accounts are similar to bank accounts wherein customers can
+      transfer payments. You can create, retrieve and close virtual accounts
+      using the Smart Collect APIs.
+
+
+      ## List of APIs
+
+
+      *   <a href="https://razorpay.com/docs/api/smart-collect/">Smart
+      Collect</a>
+
+      *   <a href="https://razorpay.com/docs/api/smart-collect-tpv/">Smart
+      Collect-TPV</a>
+  - name: Smart Collect > Smart Collect -TPV
+    description: >-
+      Using Razorpay Smart Collect API, you can comply with the regulatory
+      guidelines to ensure that the customers make payments only from their
+      registered bank accounts (TPV). If payments are made from the unregistered
+      accounts (non-TPV), they are automatically refunded to the customers.
+
+
+      When you create a virtual account, send the allowed_payers array with the
+      customer's bank account_number and ifsc. This helps to identify TPV
+      transactions and automatically refund non-TPV transactions.
+
+
+      Know more about <a href="https://razorpay.com/docs/api/smart-collect-tpv/"
+      target="_blank">third-party validation</a>.
+
+
+      <b>List of APIs</b>:
+
+      - <a
+      href="https://razorpay.com/docs/api/smart-collect-tpv/#create-virtual-account"
+      target="_blank">Create Virtual Account</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/smart-collect-tpv/#add-an-allowed-payer-account"
+      target="_blank">Add an Allowed Payer Account</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/smart-collect-tpv/#fetch-a-virtual-account-by-id"
+      target="_blank">Fetch a Virtual Account by ID</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/smart-collect-tpv/#fetch-all-virtual-accounts"
+      target="_blank">Fetch all Virtual Accounts</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/smart-collect-tpv/#fetch-payments-for-a-virtual-account"
+      target="_blank">Fetch Payments for a Virtual Account</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/smart-collect-tpv/#fetch-payment-details-using-id-and-transfer-method"
+      target="_blank">Fetch Payment Details using ID and Transfer Method</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/smart-collect-tpv/#delete-an-allowed-payer-account"
+      target="_blank">Delete an Allowed Payer Account</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/smart-collect-tpv/#refund-payments-made-to-a-virtual-account"
+      target="_blank">Refund Payments made to a Virtual Account</a>
+
+      - <a
+      href="https://razorpay.com/docs/api/smart-collect-tpv/#close-a-virtual-account"
+      target="_blank">Close a Virtual Account</a>
+  - name: Smart Collect > Smart Collect -TPV > Fetch Operations
+  - name: Smart Collect > Smart Collect
+    description: >-
+      This is the standard version of <a
+      href="https://razorpay.com/docs/api/smart-collect">Smart Collect APIs</a>.
+
+
+      ## List of APIs
+
+
+      *   [Create Virtual
+      Account](https://razorpay.com/docs/api/smart-collect/#create-virtual-account)
+
+      *   [Fetch a Virtual Account by
+      ID](https://razorpay.com/docs/api/smart-collect/#fetch-a-virtual-account-by-id)
+
+      *   [Fetch all Virtual
+      Accounts](https://razorpay.com/docs/api/smart-collect/#fetch-all-virtual-accounts)
+
+      *   [Fetch Payments for a Virtual
+      Account](https://razorpay.com/docs/api/smart-collect/#fetch-payments-for-a-virtual-account)
+
+      *   [Fetch Payment Details using ID and Transfer
+      Method](https://razorpay.com/docs/api/smart-collect/#fetch-payment-details-using-id-and-transfer-method)
+          *   [Bank Transfer](https://razorpay.com/docs/api/smart-collect/#bank-transfer)
+          *   [UPI](https://razorpay.com/docs/api/smart-collect/#upi)
+      *   [Refund Payments made to a Virtual
+      Account](https://razorpay.com/docs/api/smart-collect/#refund-payments-made-to-a-virtual-account)
+
+      *   [Add Receiver to an Existing Virtual
+      Account](https://razorpay.com/docs/api/smart-collect/#add-receiver-to-an-existing-virtual-account)
+
+      *   [Close a Virtual
+      Account](https://razorpay.com/docs/api/smart-collect/#close-a-virtual-account)
+  - name: Smart Collect > Smart Collect > Create Virtual Accounts and VPAs
+  - name: Smart Collect > Smart Collect > Fetch Operations
+  - name: >-
+      Smart Collect > Smart Collect > Fetch Operations > Fetch Payment Details
+      using ID and Transfer Method
+  - name: Route APIs
+    description: >-
+      Razorpay Route enables you to split payments received using the Razorpay
+      Payment Gateway or other products (such as Payment Links, Payment Pages,
+      Invoices, Subscriptions and Smart Collect) and transfer the funds to your
+      vendors.
+
+
+      Know more about [Razorpay Route](https://razorpay.com/docs/route/).
+
+
+      ## List of APIs
+
+
+      *   [Create Transfers from
+      Orders](https://razorpay.com/docs/api/route/#create-transfers-from-orders)
+
+      *   [Create Transfers from
+      Payments](https://razorpay.com/docs/api/route/#create-transfers-from-payments)
+
+      *   [Direct
+      Transfers](https://razorpay.com/docs/api/route/#direct-transfers)
+
+      *   [Fetch Transfers for a
+      Payment](https://razorpay.com/docs/api/route/#fetch-transfers-for-a-payment)
+
+      *   [Fetch Transfer for an
+      Order](https://razorpay.com/docs/api/route/#fetch-transfer-for-an-order)
+
+      *   [Fetch a
+      Transfer](https://razorpay.com/docs/api/route/#fetch-a-transfer)
+
+      *   [Fetch Transfers for a
+      Settlement](https://razorpay.com/docs/api/route/#fetch-transfers-for-a-settlement)
+
+      *   [Fetch Settlement
+      Details](https://razorpay.com/docs/api/route/#fetch-settlement-details)
+
+      *   [Fetch Payments of a Linked
+      Account](https://razorpay.com/docs/api/route/#fetch-payments-of-a-linked-account)
+
+      *   [Refund Payments and Reverse Transfer from a Linked
+      Account](https://razorpay.com/docs/api/route/#refund-payments-and-reverse-transfer-from-a-linked)
+
+      *   [Reverse Transfers from all Linked
+      Accounts](https://razorpay.com/docs/api/route/#reverse-transfers-from-all-linked-accounts)
+
+      *   [Hold Settlements For
+      Transfers](https://razorpay.com/docs/api/route/#hold-settlements-for-transfers)
+
+      *   [Modify Settlement Hold for
+      Transfers](https://razorpay.com/docs/api/route/#modify-settlement-hold-for-transfers)
+  - name: Route APIs > Transfers API
+    description: >-
+      You can transfer funds to your linked accounts using the Razorpay Route
+      Transfer APIs. Know more about [transfers and related
+      fees](https://razorpay.com/docs/route/transfer-example).
+
+
+      ## [Transfer
+      Requirements🔗](https://razorpay.com/docs/api/route/#transfer-requirements)
+
+
+      Below are the requirements to initiate a transfer:
+
+
+      *   Your account must have sufficient funds to process the transfer to the
+      linked account. The transfer will fail in case of insufficient funds.
+
+      *   You can only transfer the `captured` payments.
+
+      *   You can create more than one transfer on a `payment_id`. However, the
+      total transfer amount should not exceed the captured payment amount.
+
+      *   You cannot request a transfer on payment once a refund has been
+      initiated.
+          
+
+      ## [Types of
+      Transfers🔗](https://razorpay.com/docs/api/route/#types-of-transfers)
+
+
+      You can transfer funds to linked accounts using one of the following
+      methods:
+
+
+      *   [Transfer via
+      Orders](https://razorpay.com/docs/api/route/#create-transfers-from-orders)
+      - You can set up a transfer at the time of order creation.
+
+      *   [Transfer via
+      Payments](https://razorpay.com/docs/api/route/#create-transfers-from-payments)
+      - You can initiate a transfer once the payment has been received from the
+      customer.
+
+      *   [Direct
+      Transfer](https://razorpay.com/docs/api/route/#direct-transfers) - You can
+      initiate a transfer directly from existing funds in your Razorpay account.
+  - name: Route APIs > Fetch Details
+    description: Know how to fetch details of transfers and settlements using APIs.
+  - name: Route APIs > Linked Account Settlements
+    description: Know how to hold transfer settlements and modify them using APIs.
+  - name: Route APIs > Refunds and Reversals
+    description: >-
+      Know how to refund payments to customers and reverse transfers from linked
+      accounts.
+  - name: Items APIs
+    description: >-
+      Items are products or services that you bill customers for by adding them
+      to an invoice. You can create an item using APIs. When an item is created,
+      it will appear on the list of items in the Dashboard.
+
+
+      Know more about [Items APIs](https://razorpay.com/docs/api/items/).
+
+
+      ## **List of APIs**
+
+
+      *   [Create an Item](https://razorpay.com/docs/api/items/#create-an-item)
+
+      *   [Fetch an Item](https://razorpay.com/docs/api/items/#fetch-an-item)
+
+      *   [Fetch Multiple
+      Items](https://razorpay.com/docs/api/items/#fetch-multiple-items)
+
+      *   [Update an Item](https://razorpay.com/docs/api/items/#update-an-item)
+
+      *   [Delete an Item](https://razorpay.com/docs/api/items/#delete-an-item)
+  - name: RazorpayX APIs
+    description: >-
+      RazorpayX supercharges your business banking experience. We help business
+      owners and finance teams automate manual, repetitive financial tasks and
+      provide insights into money flow.
+
+
+      Using RazorpayX, you can process:
+
+
+      *   Refunds for customers.
+
+      *   Salary payouts with automated statutory payments such as PF and TDS.
+
+      *   Vendor payouts with automated TDS payments.
+          
+
+      You can make timely payouts on RazorpayX using our developer-friendly
+      [APIs](https://razorpay.com/docs/api/razorpayx/).
+
+
+      ## **List of APIs**
+
+
+      *   [Account
+      Validation](https://razorpay.com/docs/api/razorpayx/account-validation/)
+
+      *   [Contacts](https://razorpay.com/docs/api/razorpayx/contacts/)
+
+      *   [Fund
+      Accounts](https://razorpay.com/docs/api/razorpayx/fund-accounts/)
+
+      *   [Payouts](https://razorpay.com/docs/api/razorpayx/payouts/)
+
+      *   [Payout to
+      Cards](https://razorpay.com/docs/api/razorpayx/payouts-cards/)
+
+      *   [Payouts - Composite
+      API](https://razorpay.com/docs/api/razorpayx/composite-api/)
+
+      *   [Payout
+      Idempotency](https://razorpay.com/docs/api/razorpayx/idempotency/)
+
+      *   [Payout Links](https://razorpay.com/docs/api/razorpayx/payout-links/)
+
+      *   [Account
+      Statement](https://razorpay.com/docs/api/razorpayx/transactions/)
+  - name: RazorpayX APIs > Step 1 - Contacts
+    description: >-
+      A contact is an entity to whom payouts can be made through supported modes
+      such as UPI, IMPS, NEFT and RTGS.
+
+
+      Some important points:
+
+
+      *   A new contact is created if any combination of the following details
+      is unique: name, email, contact, type and reference_id.
+
+      *   If all the above details match the details of an existing contact, the
+      API returns details of the existing contact.
+
+      *   Use the Update Contact API if you want to make changes to an existing
+      contact.
+          
+
+      ## **List of APIs**
+
+
+      *   [Create a
+      Contact](https://razorpay.com/docs/api/razorpayx/contacts/#create-a-contact)
+
+      *   [Update a
+      Contact](https://razorpay.com/docs/api/razorpayx/contacts/#update-a-contact)
+
+      *   [Activate or Deactivate a
+      Contact](https://razorpay.com/docs/api/razorpayx/contacts/#activate-or-deactivate-a-contact)
+
+      *   [Fetch all
+      Contacts](https://razorpay.com/docs/api/razorpayx/contacts/#fetch-all-contacts)
+
+      *   [Fetch a Contact by
+      ID](https://razorpay.com/docs/api/razorpayx/contacts/#fetch-a-contact-by-id)
+  - name: RazorpayX APIs > Step 2 - Fund Accounts
+    description: >-
+      Fund accounts are accounts associated with a contact. Payouts are made to
+      fund accounts.
+
+
+      Currently, RazorpayX supports 4 types of fund accounts:
+
+
+      *   `bank_account`: Make payouts to a beneficiary's bank account via bank
+      transfer using one of the available such as NEFT, IMPS or RTGS.
+
+      *   `vpa` (Virtual Payment Address): Make payouts to a beneficiary's UPI
+      ID via a UPI transfer.
+
+      *   `cards`: Make payouts directly to a beneficiary's card via a bank
+      transfer using one of the available such as NEFT or IMPS.
+
+      *   `wallet`: Make payouts directly to a beneficiary's wallet. Currently,
+      you can make payouts to a beneficiary via an Amazon Pay Gift Card.
+          
+
+      Know more about [Fund
+      Accounts](https://razorpay.com/docs/api/razorpayx/fund-accounts/).
+
+
+      ## **List of APIs**
+
+
+      *   [Create a Fund
+      Account](https://razorpay.com/docs/api/razorpayx/fund-accounts/#create-a-fund-account)
+          *   [Bank Account](https://razorpay.com/docs/api/razorpayx/fund-accounts/#bank-account)
+          *   [VPA (UPI ID)](https://razorpay.com/docs/api/razorpayx/fund-accounts/#vpa-upi-id)
+      *   [Activate or Deactivate a Fund
+      Account](https://razorpay.com/docs/api/razorpayx/fund-accounts/#activate-or-deactivate-a-fund-account)[](https://razorpay.com/docs/api/razorpayx/fund-accounts/#path-parameters)
+
+      *   [Fetch All Fund
+      Accounts](https://razorpay.com/docs/api/razorpayx/fund-accounts/#fetch-all-fund-accounts)
+
+      *   [Fetch Fund Account Details by
+      ID](https://razorpay.com/docs/api/razorpayx/fund-accounts/#fetch-fund-account-details-by-id)
+  - name: RazorpayX APIs > Step 3 - Payouts
+    description: >-
+      A payout is the transfer of funds from your business account to a
+      contact's fund account.
+
+
+      Know more about
+      [Payouts](https://razorpay.com/docs/razorpayx/payouts/payout-overview/).
+
+
+      ## **List of APIs**
+
+
+      *   [Create a
+      Payout](https://razorpay.com/docs/api/razorpayx/payouts/#create-a-payout)
+          *   [Bank Accounts](https://razorpay.com/docs/api/razorpayx/payouts/#bank-accounts)
+          *   [VPA (UPI ID)](https://razorpay.com/docs/api/razorpayx/payouts/#vpa-upi-id)
+      *   [Fetch All
+      Payouts](https://razorpay.com/docs/api/razorpayx/payouts/#fetch-all-payouts)
+
+      *   [Fetch a Payout by
+      ID](https://razorpay.com/docs/api/razorpayx/payouts/#fetch-a-payout-by-id)
+
+      *   [Cancel a Queued
+      Payout](https://razorpay.com/docs/api/razorpayx/payouts/#cancel-a-queued-payout)
+  - name: RazorpayX APIs > Composite API
+    description: >-
+      The composite API allows you to make a payout using a single API call.
+      This reduces the number of calls you would otherwise need to make to
+      create a payout. The composite API also gives you the flexibility to
+      either create a new contact and fund account or use existing contact and
+      fund account details (contact_id and fund_account_id) to make a payout.
+
+        
+      Know more about the [Composite
+      API](https://razorpay.com/docs/api/razorpayx/composite-api/).
+  - name: RazorpayX APIs > Payout Links
+    description: >-
+      Payout Links enable you to make payouts to those contacts whose fund
+      accounts details are not readily available with you. You can use these
+      links to collect the customer's fund account details and then process
+      refunds, reimbursement and cashback to them without additional follow up.
+
+
+      Know more about [Payout Links
+      API](https://razorpay.com/docs/api/razorpayx/payout-links/).
+
+
+      ## **List of APIs**
+
+
+      *   [Create a Payout
+      Link](https://razorpay.com/docs/api/razorpayx/payout-links/#create-a-payout-link)
+
+      *   [Fetch All Payout
+      Links](https://razorpay.com/docs/api/razorpayx/payout-links/#fetch-all-payout-links)
+
+      *   [Fetch Payout Link by
+      ID](https://razorpay.com/docs/api/razorpayx/payout-links/#fetch-payout-link-by-id)
+
+      *   [Cancel a Payout
+      Link](https://razorpay.com/docs/api/razorpayx/payout-links/#cancel-a-payout-link)
+  - name: RazorpayX APIs > Transaction Statements
+    description: >-
+      The inflow of funds to your business account, payouts to a contact's fund
+      account and reversals are all recorded as transactions against your
+      business account. You can fetch details of a particular transaction or
+      details of all transactions via
+      [APIs](https://razorpay.com/docs/api/razorpayx/transactions/).
+
+
+      ## **List of APIs**
+
+
+      *   [Fetch all
+      Transactions](https://razorpay.com/docs/api/razorpayx/transactions/#fetch-all-transactions)
+
+      *   [Fetch Transaction by
+      ID](https://razorpay.com/docs/api/razorpayx/transactions/#fetch-transaction-by-id)
+  - name: RazorpayX APIs > Account Validation
+    description: >-
+      Account validation is the process of validating your contact's bank
+      account details or virtual payment address (VPA). Know more about this
+      [API](https://razorpay.com/docs/api/razorpayx/account-validation/).
+
+
+      ## List of APIs
+
+
+      *   [Validate a Bank
+      Account](https://razorpay.com/docs/api/razorpayx/account-validation/#validate-a-bank-account)
+          *   [Create a Contact](https://razorpay.com/docs/api/razorpayx/account-validation/#create-a-contact)
+          *   [Create Fund Account](https://razorpay.com/docs/api/razorpayx/account-validation/#create-fund-account)
+          *   [Validate Bank Account](https://razorpay.com/docs/api/razorpayx/account-validation/#validate-bank-account)
+      *   [Validate a
+      VPA](https://razorpay.com/docs/api/razorpayx/account-validation/#validate-a-vpa)
+          *   [Create a Contact](https://razorpay.com/docs/api/razorpayx/account-validation/#create-a-contact-1)
+          *   [Create Fund Account](https://razorpay.com/docs/api/razorpayx/account-validation/#create-fund-account-1)
+          *   [Validate VPA](https://razorpay.com/docs/api/razorpayx/account-validation/#validate-vpa)
+      *   [Fetch all Account Validation
+      Transactions](https://razorpay.com/docs/api/razorpayx/account-validation/#fetch-all-account-validation-transactions)
+
+      *   [Fetch Account Validation Transaction by
+      ID](https://razorpay.com/docs/api/razorpayx/account-validation/#fetch-account-validation-transaction-by-id)
+  - name: Partners APIs
+  - name: Partners APIs > Sub-merchant Onboarding APIs
+    description: >-
+      As a Partner, you can use the Sub-Merchant Onboarding APIs to onboard
+      merchants from your platform. The sub-merchants can complete the KYC
+      process in the Partner's platform itself and need not log into Razorpay's
+      platform.
+
+
+      Razorpay Sub-Merchant Onboarding APIs are RESTful. All our responses are
+      returned in JSON.
+
+
+      You can use Razorpay APIs in two modes, `Test` and `Live`. The [API
+      key](https://razorpay.com/docs/partners/onboarding-api/#generate-api-key)
+      is different for each mode.
+
+
+      To complete the onboarding process for the sub-merchant, check the [KYC
+      document
+      requirements](https://razorpay.com/docs/partners/onboarding-api/appendix/#kyc-requirements).
+  - name: Partners APIs > Sub-merchant Onboarding APIs > Account APIs
+    description: >-
+      You can use the Account APIs to create a sub-merchant account. After an
+      account gets created, an `account_id` is assigned.
+
+
+      You can create, fetch, and update a sub-merchant account using these APIs.
+  - name: Partners APIs > Sub-merchant Onboarding APIs > Stakeholder APIs
+    description: >-
+      You can use the Stakeholders APIs to add a stakeholder for an account.
+      Each stakeholder will have their KYC.
+
+
+      **Handy Tip**  
+        
+      A stakeholder can be a signatory or an owner of the business.
+
+
+      You can create, fetch and update stakeholders using
+      [these](https://razorpay.com/docs/api/partners/stakeholder/) APIs.
+  - name: Partners APIs > Sub-merchant Onboarding APIs > Documents API
+    description: >-
+      Use the Document APIs to upload and fetch documents for the KYC
+      verification process.
+
+
+      **Watch Out!**
+
+
+      *   The maximum supported file size for a JPG/PNG is 4MB.
+
+      *   The maximum supported file size for a PDF is 2MB.
+
+      *   Do not pass file URLs instead of uploading documents.
+
+      *   If you have uploaded the document but mandatory field-level  
+          parameters are not passed in the API, you need to re-execute the  
+          Documents API with the same document and pass the fields.
+          
+
+      Know more about [Documents
+      APIs.](https://razorpay.com/docs/api/partners/upload-document/)
+  - name: >-
+      Partners APIs > Sub-merchant Onboarding APIs > Product Configuration
+      Request APIs
+    description: >-
+      You can use the Product Configuration APIs to configure and activate
+      Razorpay products for a sub-merchant account according to their
+      requirements. For example, if you need our Payment Gateway product for all
+      sub-merchants or Payment Gateway for one sub-merchant and Payment Link
+      product for another sub-merchant, you can do so using this API. You can
+      also accept terms and conditions using this API.
+
+
+      You can create, fetch and update product configuration requests using
+      these APIs.
+
+
+      Know more about the [Product Configuration
+      APIs](https://razorpay.com/docs/api/partners/product-configuration/).
+  - name: Partners APIs > Sub-merchant Onboarding APIs > Webhooks API
+    description: >-
+      You can use the Webhooks APIs to receive event notifications or subscribe
+      to events happening in a sub-merchant's account for the integration
+      installed.
+
+
+      You can create, fetch, update and delete webhooks using these APIs.
+
+
+      Know more about [Webhook
+      Events](https://razorpay.com/docs/partners/api/#subscribe-to-webhooks) and
+      check the [sample
+      payloads](https://razorpay.com/docs/webhooks/payloads/partners) for
+      Sub-Merchant Onboarding Events.
+  - name: Partners APIs > Sub-merchant Onboarding APIs > Terms and Conditions API
+    description: >-
+      You can use the Terms and Conditions APIs to accept and fetch terms and
+      conditions for a sub-merchant.
+
+
+      #
+      [Workflow🔗](https://razorpay.com/docs/api/partners/terms-conditions/#workflow)
+
+
+      Given below is the workflow:
+
+
+      1\. As a partner, it is your responsibility to show respective terms and
+      conditions to the sub-merchants before you start onboarding to a product.
+      The APIs used for it will be [Fetch Product Terms and Conditions
+      API.](https://razorpay.com/docs/api/partners/terms-conditions/#fetch-terms-and-conditions-for-a-sub-merchant)
+
+
+      2\. You should display these web pages to your sub-merchants on your
+      interface.
+
+
+      3\. Record the acceptance of terms and transmit that to Razorpay using
+      either [Request a Product Configuration
+      API](https://razorpay.com/docs/api/partners/product-configuration/#request-a-product-configuration)
+      or [Update a Product Configuration
+      API](https://razorpay.com/docs/api/partners/product-configuration/#update-a-product-configuration).
+paths:
+  /v1/customers:
+    post:
+      tags:
+        - Customers APIs
+      summary: Create a Customer
+      description: >-
+        Create a customer using the Create a Customer API. You can add your
+        customer's name, email and contact number. In the response, you will
+        receive a customer_id.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/customers/#create-a-customer"
+        target="_blank">Create a Customer API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Gaurav Kumar
+                email: gaurav.kumar@example.com
+                contact: '9123456780'
+                fail_existing: '1'
+                gstin: 12ABCDE2356F7GH
+                notes:
+                  notes_key_1: Tea, Earl Grey, Hot
+                  notes_key_2: Tea, Earl Grey… decaf.
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Customers APIs
+      summary: Fetch all Customers
+      description: >-
+        Retrieve details of all customers using the Fetch all Customers API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/customers/#fetch-all-customers"
+        target="_blank">Fetch all Customers API</a>.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/customers/{cust_id}:
+    get:
+      tags:
+        - Customers APIs
+      summary: Fetch Customer by ID
+      description: >-
+        Retrieve details of a specific customer using the Fetch a Customer by ID
+        API. You can send the customer_id as a path parameter to retrieve the
+        customer details.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/customers/#fetch-customer-by-id"
+        target="_blank">Fetch a Customer by ID API</a>.
+      parameters:
+        - name: cust_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - Customers APIs
+      summary: Edit a Customer
+      description: >-
+        Update details of a specific customer using the Edit a Customer API. You
+        can send the customer_id as a path parameter to access and edit the
+        customer details.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/customers/#edit-customer-details"
+        target="_blank">Edit a Customer API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Saurav Kumar
+                email: saurav.kumar@example.com
+                contact: '9876543210'
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: cust_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/orders:
+    post:
+      tags:
+        - Route APIs > Transfers API
+      summary: Transfer via Orders
+      description: "You can set up a transfer of funds when creating an order using the Orders API. This can be done by passing the\_`transfers`\_parameters as part of the Order API request body.\n\nKnow more about this [API](https://razorpay.com/docs/api/route/#create-transfers-from-orders)."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: |-
+                {
+                    "amount": 200,
+                    "payment_capture": 1,
+                    "currency":"INR",
+                    "transfers": [
+                        {
+                            "account": "acc_id",//Please replace with appropriate ID.
+                            "amount": 100,
+                            "currency": "INR",
+                            "notes": {
+                                "branch": "Acme Corp Bangalore North",
+                                "name": "Gaurav Kumar"
+                            },
+                            "linked_account_notes": [
+                                "branch"
+                            ],
+                            "on_hold": true,
+                            "on_hold_until": 1691222870
+                        },
+                        {
+                            "account": "acc_id",//Please replace with appropriate ID.
+                            "amount": 100,
+                            "currency": "INR",
+                            "notes": {
+                                "branch": "Acme Corp Bangalore South",
+                                "name": "Saurav Kumar"
+                            },
+                            "linked_account_notes": [
+                                "branch"
+                            ],
+                            "on_hold": false,
+                            "on_hold_until": null
+                        }
+                    ]
+                }
+      parameters:
+        - name: content-type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Orders APIs
+      summary: Fetch Orders
+      description: >-
+        Fetch all orders created on your account using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/orders/#fetch-orders"
+        target="_blank">Fetch all Orders API</a>.
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/orders/{order_id}:
+    get:
+      tags:
+        - Orders APIs
+      summary: Fetch Orders by ID
+      description: >-
+        Fetch a particular order with the order_id using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/orders/#fetch-an-order-with-id"
+        target="_blank">Fetch Orders by ID API</a>.
+      parameters:
+        - name: order_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Orders APIs
+      summary: Update Order
+      description: >-
+        Update a particular order using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/orders/#update-order"
+        target="_blank">Update an Order API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                notes:
+                  notes_key_1: Beam me up Scotty
+                  notes_key_2: Engage
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: order_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/orders/{order_id}/payments:
+    get:
+      tags:
+        - Payments APIs
+      summary: Fetch Payment based on Order
+      description: >-
+        Fetch the details of payments made to a particular order using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/payments/#fetch-payments-based-on-orders"
+        target="_blank">Fetch a Payment by ID API</a>.
+      parameters:
+        - name: order_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payments/downtimes:
+    get:
+      tags:
+        - Payments APIs > Payment Downtime API
+      summary: Fetch Payment Downtime Details
+      description: >-
+        Fetch details of all payment downtimes using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/payments/downtime/#fetch-payment-downtime-details"
+        target="_blank">Fetch Payment Downtime Details API</a>
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payments/downtimes/down_F1cxDoHWD4fkQt:
+    get:
+      tags:
+        - Payments APIs > Payment Downtime API
+      summary: Fetch Payment Downtime Details by ID
+      description: >-
+        Fetch details of particular payment downtime using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/payments/downtime/#fetch-payment-downtime-details-by-id"
+        target="_blank">Fetch Payment Downtime Details by ID API</a>
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payments/:
+    get:
+      tags:
+        - Payments APIs
+      summary: Fetch Expanded Card or EMI Details for Payments
+      description: >-
+        Fetch the expanded details of the card used to make a payment using the
+        API. 
+
+
+        You can also fetch expanded details for an EMI. In this case, the URL
+        is:
+
+        `https://api.razorpay.com/v1/payments/?expand[]=emi`
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/payments/#fetch-expanded-card-or-emi-details-for-payments"
+        target="_blank">Fetch Expanded Card or EMI Details for Payments API</a>.
+      parameters:
+        - name: expand[]
+          in: query
+          schema:
+            type: string
+          example: card
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payments/{pay_id}:
+    get:
+      tags:
+        - Payments APIs
+      summary: Fetch Payment by ID
+      description: >-
+        Fetch the details of a particular payment using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/payments/#fetch-a-payment"
+        target="_blank">Fetch a Payment by ID API</a>.
+      parameters:
+        - name: pay_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Payments APIs
+      summary: Update Payment
+      description: >-
+        Update the details of a specific payment using the API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/payments/#update-the-payment"
+        target="_blank">Update a Payment API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                note:
+                  notes_key_1: Beam me up Scotty
+                  notes_key_2: Engage
+      parameters:
+        - name: pay_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payments/{pay_id}/card:
+    get:
+      tags:
+        - Payments APIs
+      summary: Fetch Card Details for a Payment
+      description: >-
+        Fetch the details of the card used to make a payment using the API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/payments/#fetch-card-details-of-a-payment"
+        target="_blank">Fetch Card Details of a Payment API</a>.
+      parameters:
+        - name: pay_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payments/{pay_id}/capture:
+    post:
+      tags:
+        - Payments APIs
+      summary: Capture a Payment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                amount: 100
+                currency: INR
+      parameters:
+        - name: pay_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payments/{pay_id}/refund:
+    post:
+      tags:
+        - Route APIs > Refunds and Reversals
+      summary: Refunds
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/route/#refund-payments-and-reverse-transfer-from-a-linked)
+        to refund payments to customers and reverse transfers from linked
+        accounts.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                amount: 100
+                reverse_all: 1
+      parameters:
+        - name: content-type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: pay_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/refunds:
+    get:
+      tags:
+        - Refunds APIs
+      summary: Fetch Refunds
+      description: >-
+        Fetch all refunds created by you using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/refunds/#fetch-all-refunds"
+        target="_blank">Fetch all Refunds API.</a>
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/refunds/{rfnd_id}:
+    get:
+      tags:
+        - Refunds APIs
+      summary: Fetch Refund by ID
+      description: >-
+        Fetch a specific refund created by you using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/refunds/#fetch-refund-by-id"
+        target="_blank">Fetch a Refund API.</a>
+      parameters:
+        - name: rfnd_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Refunds APIs
+      summary: Update Refund
+      description: >-
+        Update a specific refund using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/refunds/#update-refund"
+        target="_blank">Update a Refund API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                notes:
+                  notes_key_1: Beam me up Scotty.
+                  notes_key_2: Engage
+      parameters:
+        - name: rfnd_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payments/{pay_id}/refunds/{rfnd_id}:
+    get:
+      tags:
+        - Refunds APIs
+      summary: Fetch a Specific Refund for a Payment
+      description: >-
+        Fetch a specific refund for a specific payment using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/refunds/#fetch-a-specific-refund-for-a-payment"
+        target="_blank">Fetch a Specific Refund for a Specific Payment API.</a>
+      parameters:
+        - name: pay_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: rfnd_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payments/{pay_id}/refunds:
+    get:
+      tags:
+        - Refunds APIs
+      summary: Fetch All Refunds for a Payment
+      description: >-
+        Fetch multiple refunds for a specific payment using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/refunds/#fetch-multiple-refunds-for-a-payment"
+        target="_blank">Fetch all Refunds for a Payment API</a>.
+      parameters:
+        - name: pay_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/settlements/ondemand:
+    post:
+      tags:
+        - Settlements APIs > Instant Settlements
+      summary: Create Instant Settlement
+      description: >-
+        Create an on-demand settlement using this API. Here, `amount` is a
+        mandatory parameter.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/settlements/#create-an-on-demand-settlement"
+        target="_blank">Create an On-demand Settlement API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                amount: 50000
+                max_balance: 0
+                description: Need this to make vendor payouts
+                notes:
+                  notes_key_1: Tea, Earl Grey, Hot
+                  notes_key_2: Tea, Earl Grey… decaf.
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Settlements APIs > Instant Settlements
+      summary: Fetch all Instant Settlements
+      description: >-
+        Fetch all on-demand settlements created by you using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/settlements/#fetch-all-on-demand-settlements"
+        target="_blank">Fetch all On-demand Settlements API</a>.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/settlements/ondemand/{sod_id}:
+    get:
+      tags:
+        - Settlements APIs > Instant Settlements
+      summary: Fetch Instant Settlement by ID
+      description: >-
+        Fetch a specific on-demand settlement created by you using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/settlements/#fetch-on-demand-settlements-by-id"
+        target="_blank">Fetch On-demand Settlements by ID API</a>.
+      parameters:
+        - name: sod_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/settlements/recon/combined:
+    get:
+      tags:
+        - Settlements APIs
+      summary: Settlements Recon
+      description: >-
+        Fetch a list of all transactions such as payments, refunds, transfers
+        and adjustments that have been settled to you for a particular day or
+        month, using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/settlements/#settlement-recon"
+        target="_blank">Settlement Recon API</a>.
+      parameters:
+        - name: year
+          in: query
+          schema:
+            type: integer
+          example: '2019'
+        - name: month
+          in: query
+          schema:
+            type: integer
+          example: '09'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/settlements/{setl_id}:
+    get:
+      tags:
+        - Settlements APIs
+      summary: Fetch Settlement by ID
+      description: >-
+        Fetch details of a particular settlement using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/settlements/#fetch-settlement-using-id"
+        target="_blank">Fetch Settlement by ID API</a>.
+      parameters:
+        - name: setl_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/settlements:
+    get:
+      tags:
+        - Settlements APIs
+      summary: Fetch All Settlements
+      description: >-
+        Fetch details of all settlements using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/settlements/#fetch-all-settlements"
+        target="_blank">Fetch All Settlements API</a>.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/disputes:
+    get:
+      tags:
+        - Disputes APIs
+      summary: Fetch a Dispute by ID
+      description: >-
+        Fetch the details of a particular dispute using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/disputes/#fetch-all-disputes"
+        target="_blank">Fetch All Disputes API</a>.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/invoices:
+    post:
+      tags:
+        - Invoices APIs
+      summary: Create an Invoice
+      description: >-
+        Create an Invoice using the Create an Invoice API.
+
+
+        Some points to note. You can:
+
+        - Create a blank invoice (with no details at all) in draft state.
+
+        - Update it with necessary information.
+
+        - Issue it at a later time with the Issue Invoice API. Only after the
+        invoice is issued, you will get a short URL. Also, only after the
+        invoice is issued, it can be sent to customers and the corresponding
+        payment can be made against it.
+
+        - Use <a href="https://razorpay.com/docs/api/items/"
+        target="_blank">Items APIs</a> to create items which you can later use
+        as a template to create line items in an invoice.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/invoices/#create-an-invoice"
+        target="_blank">Create an Invoice API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                type: invoice
+                description: Domestic invoice for Gaurav Kumar.
+                partial_payment: true
+                customer:
+                  name: Gaurav Kumar
+                  contact: '9876543210'
+                  email: gaurav.kumar@example.com
+                  billing_address:
+                    line1: Ground FLoor, Millennium Tower, 1st Avenue
+                    line2: 1st Avenue
+                    zipcode: '560001'
+                    city: Bangalore
+                    state: Karnataka
+                    country: India
+                  shipping_address:
+                    line1: 3rd FLoor, Nakamura Tower, Bomaye Boulevard
+                    line2: Baker Street
+                    zipcode: '560001'
+                    city: Bangalore
+                    state: Karnataka
+                    country: in
+                line_items:
+                  - name: Crate of sea weed
+                    description: Crate of sea weed.
+                    amount: 20000
+                    currency: INR
+                    quantity: 1
+                  - item_id: '{item_id}'
+                sms_notify: 1
+                email_notify: 1
+                draft: '1'
+                date: 1588076279
+                expire_by: 1924991999
+                receipt: Receipt No. 1
+                comment: Fresh sea weed mowed this morning
+                terms: No Returns; No Refunds
+                notes:
+                  notes_key_1: Tea, Earl Grey, Hot
+                  notes_key_2: Tea, Earl Grey… decaf.
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Invoices APIs
+      summary: Fetch Invoices
+      description: >-
+        Fetch all invoices created by you using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/invoices/#fetch-multiple-invoices"
+        target="_blank">Fetch all Invoices API</a>.
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+          example: invoice
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/invoices/{inv_id}:
+    get:
+      tags:
+        - Invoices APIs
+      summary: Fetch Invoice by Id
+      description: >-
+        Fetch an invoice created by you using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/invoices/#fetch-an-invoice"
+        target="_blank">Fetch an Invoice API</a>.
+      parameters:
+        - name: inv_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Invoices APIs
+      summary: Update an Invoice
+      description: >-
+        Update an invoice using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/invoices/#update-an-invoice"
+        target="_blank">Update an Invoice API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                partial_payment: true
+                customer:
+                  name: Saurav Kumar
+                  contact: '9123456789'
+                  email: saurav.kumar@example.com
+                line_items:
+                  - name: Crate of Red Herbs
+                    description: Red Herbs from Resident Evil
+                    amount: 50000
+                    currency: INR
+                    quantity: 5
+                  - item_id: '{item_id}'
+                sms_notify: 1
+                email_notify: 1
+                draft: '1'
+                date: 1588076279
+                expire_by: 1924991999
+                receipt: Receipt No. 1
+                comment: Fresh herbs mowed this morning
+                terms: No Returns; No Refunds
+                notes:
+                  notes_key_1: Beam me up Scotty.
+                  notes_key_2: Engage
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: inv_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Invoices APIs
+      summary: Delete an Invoice
+      description: >-
+        Delete an invoice using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/invoices/#delete-an-invoice"
+        target="_blank">Delete an Invoice API</a>.
+      parameters:
+        - name: inv_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/invoices/{inv_id}/issue:
+    post:
+      tags:
+        - Invoices APIs
+      summary: Issue an Invoice
+      description: >-
+        Issue an invoice using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/invoices/#issue-an-invoice"
+        target="_blank">Issue an Invoice API</a>.
+      requestBody:
+        content: {}
+      parameters:
+        - name: inv_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/invoices/{inv_id}/notify_by/{medium}:
+    post:
+      tags:
+        - Invoices APIs
+      summary: Send or Resend Notification
+      description: >-
+        Send or resend an invoice notification using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/invoices/#send-notifications"
+        target="_blank">Send/Resend a Notification API</a>.
+      requestBody:
+        content: {}
+      parameters:
+        - name: inv_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: medium
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/invoices/{inv_id}/cancel:
+    post:
+      tags:
+        - Invoices APIs
+      summary: Cancel an Invoice
+      description: >-
+        Cancel an invoice using this API.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/invoices/#cancel-an-invoice"
+        target="_blank">Cancel an Invoice API</a>.
+      requestBody:
+        content: {}
+      parameters:
+        - name: inv_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/plans:
+    post:
+      tags:
+        - Subscriptions APIs > Step 1 - Plans
+      summary: Create Plan
+      description: >-
+        You must create a plan before creating a subscription via the Checkout
+        or using the Subscription Link feature.
+
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/subscriptions/#create-a-plan"
+        target="_blank">Create a Plan</a> API.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                period: weekly
+                interval: 1
+                item:
+                  name: Test plan - Weekly
+                  amount: 69900
+                  currency: INR
+                  description: Description for the test plan - Weekly
+                notes:
+                  notes_key_1: Tea, Earl Grey, Hot
+                  notes_key_2: Tea, Earl Grey… decaf.
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Subscriptions APIs > Step 1 - Plans
+      summary: Fetch All Plans
+      description: >-
+        You can fetch all the plans created by you.
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/subscriptions/#fetch-all-plans"
+        target="_blank">Fetch all Plans</a> API.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/plans/{plan_id}:
+    get:
+      tags:
+        - Subscriptions APIs > Step 1 - Plans
+      summary: Fetch Plans by ID
+      description: >-
+        You can fetch a particular plan using its ID.
+
+        Know more about the <a
+        href="https://razorpay.com/docs/api/subscriptions/#fetch-a-plan-by-id"
+        target="_blank">Fetch a Plan</a> API.
+      parameters:
+        - name: plan_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/subscriptions:
+    post:
+      tags:
+        - Subscriptions APIs > Step 2 - Subscriptions
+      summary: Create Subscription Link
+      description: >-
+        You can create a subscription link using the a <a
+        href="https://razorpay.com/docs/api/subscriptions/#create-a-subscription-link"
+        target="_blank">Create a Subscription Link API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                plan_id: '{plan_id}'
+                total_count: 12
+                quantity: 1
+                start_at: 1735689600
+                expire_by: 1893456000
+                customer_notify: 1
+                addons:
+                  - item:
+                      name: Delivery charges
+                      amount: 30000
+                      currency: INR
+                notes:
+                  notes_key_1: Tea, Earl Grey, Hot
+                  notes_key_2: Tea, Earl Grey… decaf.
+                offer_id: '{offer_id}'
+                notify_info:
+                  notify_phone: '9123456789'
+                  notify_email: gaurav.kumar@example.com
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Subscriptions APIs > Step 2 - Subscriptions
+      summary: Fetch All Subscriptions
+      description: >-
+        You can fetch all the subscriptions created by you using the <a
+        href="https://razorpay.com/docs/api/subscriptions/#fetch-all-subscriptions"
+        target="_blank">Fetch All Subscriptions API</a>.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/subscriptions/{sub_id}:
+    get:
+      tags:
+        - Subscriptions APIs > Step 2 - Subscriptions
+      summary: Fetch Subscriptions by ID
+      description: >-
+        You can fetch a specific subscription created by you using the <a
+        href="https://razorpay.com/docs/api/subscriptions/#fetch-subscription-by-id"
+        target="_blank">Fetch a Subscription API</a>.
+      parameters:
+        - name: sub_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Subscriptions APIs > Step 2 - Subscriptions
+      summary: Update Subscription
+      description: >-
+        You can update a specific subscription created by you using the <a
+        href="https://razorpay.com/docs/api/subscriptions/#update-a-subscription"
+        target="_blank">Update a Subscription API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                plan_id: '{plan_id}'
+                quantity: 3
+                remaining_count: 6
+                schedule_change_at: now
+                customer_notify: 1
+                offer_id: '{offer_id}'
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: sub_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/subscriptions/{sub_id}/cancel:
+    post:
+      tags:
+        - Subscriptions APIs > Step 2 - Subscriptions
+      summary: Cancel Subscription
+      description: >-
+        You can cancel a specific subscription created by you using the <a
+        href="https://razorpay.com/docs/api/subscriptions/#cancel-a-subscription"
+        target="_blank">Cancel a Subscription API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                cancel_at_cycle_end: 0
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: sub_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/subscriptions/{sub_id}/retrieve_scheduled_changes:
+    get:
+      tags:
+        - Subscriptions APIs > Step 2 - Subscriptions
+      summary: Fetch Details of a Pending Update
+      description: >-
+        You can fetch the details of a pending update using the <a
+        href="https://razorpay.com/docs/api/subscriptions/#fetch-details-of-a-pending-update"
+        target="_blank">Fetch details of a pending update API</a>.
+      parameters:
+        - name: sub_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/subscriptions/{sub_id}/cancel_scheduled_changes:
+    post:
+      tags:
+        - Subscriptions APIs > Step 2 - Subscriptions
+      summary: Cancel Pending Update
+      description: >-
+        You can cancel a pending update using the <a
+        href="https://razorpay.com/docs/api/subscriptions/#cancel-an-update"
+        target="_blank">Cancel a pending update API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: sub_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/subscriptions/{sub_id}/pause:
+    post:
+      tags:
+        - Subscriptions APIs > Step 2 - Subscriptions
+      summary: Pause a Subscription
+      description: >-
+        You can pause a subscription using the <a
+        href="https://razorpay.com/docs/api/subscriptions/#pause-a-subscription"
+        target="_blank">Pause a Subscription API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                pause_at: now
+      parameters:
+        - name: sub_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/subscriptions/{sub_id}/resume:
+    post:
+      tags:
+        - Subscriptions APIs > Step 2 - Subscriptions
+      summary: Resume a Subscription
+      description: >-
+        You can resume a paused subscription using the <a
+        href="https://razorpay.com/docs/api/subscriptions/#resume-a-subscription"
+        target="_blank">Resume a Subscription API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                resume_at: now
+      parameters:
+        - name: sub_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1//invoices:
+    get:
+      tags:
+        - Subscriptions APIs > Step 2 - Subscriptions
+      summary: Fetch All Invoices for a Subscription
+      description: >-
+        You can fetch all invoices for a subscription using the <a
+        href="https://razorpay.com/docs/api/subscriptions/#fetch-all-invoices-for-a-subscription"
+        target="_blank">Fetch All Invoices for a Subscription API</a>. Here, the
+        count indicates the number of invoices generated for the subscription.
+      parameters:
+        - name: subscription_id
+          in: query
+          schema:
+            type: string
+          example: '{sub_id}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/subscriptions/{sub_id}/addons:
+    post:
+      tags:
+        - Subscriptions APIs > Add-ons
+      summary: Create Add-on
+      description: >-
+        You can create an add-on using the <a
+        href="https://razorpay.com/docs/api/subscriptions/#create-an-add-on"
+        target="_blank">Create an Add-on API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                item:
+                  name: Extra appala (papadum)
+                  amount: 30000
+                  currency: INR
+                  description: 1 extra oil fried appala with meals
+                quantity: 2
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: sub_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/addons/:
+    get:
+      tags:
+        - Subscriptions APIs > Add-ons
+      summary: Fetch All Add-ons
+      description: >-
+        You can fetch all add-ons created by you using the <a
+        href="https://razorpay.com/docs/api/subscriptions/#fetch-all-add-ons"
+        target="_blank">Fetch all Add-ons API</a>.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/addons/{ao_id}:
+    get:
+      tags:
+        - Subscriptions APIs > Add-ons
+      summary: Fetch Add-on by ID
+      description: >-
+        You can fetch a particular add-on created by you using the <a
+        href="https://razorpay.com/docs/api/subscriptions/#fetch-an-add-on-by-id"
+        target="_blank">Fetch an Add-on API</a>.
+      parameters:
+        - name: ao_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Subscriptions APIs > Add-ons
+      summary: Delete Add-on
+      description: >-
+        You can delete a particular add-on created by you using the <a
+        href="https://razorpay.com/docs/api/subscriptions/#delete-an-add-on"
+        target="_blank">Delete an Add-on API</a>.
+      parameters:
+        - name: ao_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payment_links:
+    post:
+      tags:
+        - Payment Links APIs > Advanced Options
+      summary: Offers on Payment Links
+      description: >-
+        Using Razorpay Offers, you can provide discounts or cashback on Payment
+        Links issued to customers. You can restrict the payment methods on which
+        the Offers are applied and limit their usage to a defined time period.
+
+
+        Know more about this <a
+        href="https://razorpay.com/docs/api/payment-links/advanced-options/offers/"
+        target="_blank">API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                amount: 3400
+                currency: INR
+                accept_partial: false
+                reference_id: '#425'
+                description: 'Payment for policy no #23456'
+                customer:
+                  name: Gaurav Kumar
+                  contact: '+919999999999'
+                  email: gaurav.kumar@example.com
+                notify:
+                  sms: true
+                  email: true
+                reminder_enable: false
+                options:
+                  order:
+                    offers:
+                      - offer_F4WMTC3pwFKnzq
+                      - offer_F4WJHqvGzw8dWF
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payment_links/{plink_id}:
+    patch:
+      tags:
+        - Payment Links APIs > Standard Payment Links
+      summary: Update a Payment Link
+      description: >-
+        You can update a specific payment link using the <a
+        href="https://razorpay.com/docs/api/payment-links/#update-payment-link"
+        target="_blank">Update a Payment Link API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                notes:
+                  policy_name: Jivan Asha
+      parameters:
+        - name: plink_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Payment Links APIs > Standard Payment Links
+      summary: Fetch a Payment Link
+      description: >-
+        You can fetch a specific payment link using the <a
+        href="https://razorpay.com/docs/api/payment-links/#specific-payment-links-by-id"
+        target="_blank">Fetch a Payment Link API</a>.
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: plink_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payment_links/{plink_id}/cancel:
+    post:
+      tags:
+        - Payment Links APIs > Standard Payment Links
+      summary: Cancel a Payment Link
+      description: >-
+        You can cancel a specific payment link using the <a
+        href="https://razorpay.com/docs/api/payment-links/#cancel-payment-link"
+        target="_blank">Cancel a Payment Link</a> API.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: plink_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payment_links/:
+    get:
+      tags:
+        - Payment Links APIs > Standard Payment Links
+      summary: Fetch all Payment Links
+      description: >-
+        You can fetch all payment links using the <a
+        href="https://razorpay.com/docs/api/payment-links/#all-payment-links"
+        target="_blank">Fetch all Payment Links API</a>.
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Payment Links APIs > Advanced Options
+      summary: Transfer Payment Link Amount to Linked Account
+      description: >-
+        Using Razorpay Payment Links, you can transfer the payments received
+        from your customers automatically to your linked accounts. You no longer
+        need to create a separate transfer using Razorpay Route Transfers API.
+        Instead, you can use the order parameter in <a
+        href="https://razorpay.com/docs/api/payment-links/advanced-options/transfers/"
+        target="_blank">Create Payment Links API</a> to automate the transfer
+        once the payment is received from the customer.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                amount: 1500
+                currency: INR
+                accept_partial: false
+                reference_id: '#aasasw8'
+                description: 'Payment for policy no #23456'
+                customer:
+                  name: Gaurav Kumar
+                  contact: '+919999999999'
+                  email: gaurav.kumar@example.com
+                notify:
+                  sms: true
+                  email: true
+                reminder_enable: true
+                options:
+                  order:
+                    transfers:
+                      - account: acc_CPRsN1LkFccllA
+                        amount: 500
+                        currency: INR
+                        notes:
+                          branch: Acme Corp Bangalore North
+                          name: Bhairav Kumar
+                        linked_account_notes:
+                          - branch
+                      - account: acc_CNo3jSI8OkFJJJ
+                        amount: 500
+                        currency: INR
+                        notes:
+                          branch: Acme Corp Bangalore South
+                          name: Saurav Kumar
+                        linked_account_notes:
+                          - branch
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payment_links/{plink_id}/notify_by/sms:
+    post:
+      tags:
+        - Payment Links APIs > Standard Payment Links
+      summary: Resend a Payment Link
+      description: >-
+        You can resend a specific payment link using the <a
+        href="https://razorpay.com/docs/api/payment-links/#send-or-resend-notifications"
+        target="_blank">Resend a Payment Link</a> API.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: plink_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/virtual_accounts/{va_id}:
+    get:
+      tags:
+        - Smart Collect > Smart Collect > Fetch Operations
+      summary: Fetch a Virtual Account By ID
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/smart-collect/#fetch-a-virtual-account-by-id)
+        to fetch a specific virtual account using its ID.
+      parameters:
+        - name: va_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/virtual_accounts:
+    get:
+      tags:
+        - Smart Collect > Smart Collect > Fetch Operations
+      summary: Fetch All Virtual Accounts
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/smart-collect/#fetch-all-virtual-accounts)
+        to fetch all the virtual accounts created by you.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Smart Collect > Smart Collect > Create Virtual Accounts and VPAs
+      summary: Create Virtual Account and VPA
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/smart-collect/#sample-code-for-both--vpa-and-bank-account)
+        to create a Virtual Account and a VPA using Razorpay Smart Collect APIs.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: |-
+                {
+                    "receivers": {
+                        "types": [
+                            "vpa",
+                            "bank_account"
+                        ]
+                    },
+                    "description": "Receive payment instalment from Gaurav Kumar- Flat No 105",
+                    "customer_id": "cust_id",//Replace customer_id
+                    "close_by": 1681615838
+                }
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/virtual_accounts/{va_id}/payments:
+    get:
+      tags:
+        - Smart Collect > Smart Collect > Fetch Operations
+      summary: Fetch Payments Made to a Virtual Account
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/smart-collect/#fetch-payments-for-a-virtual-account)
+        to retrieve payments made to a specific virtual account.
+      parameters:
+        - name: va_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payments/{pay_id}/bank_transfer:
+    get:
+      tags:
+        - >-
+          Smart Collect > Smart Collect > Fetch Operations > Fetch Payment
+          Details using ID and Transfer Method
+      summary: Method is Bank Transfer
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/smart-collect/#bank-transfer) to
+        retrieve details of a payment using the Payment ID and transfer method.
+      parameters:
+        - name: pay_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/virtual_accounts/{va_id}/close:
+    post:
+      tags:
+        - Smart Collect > Smart Collect
+      summary: Close a Virtual Account
+      description: >-
+        You can use this
+        [API](https://razorpay.com/docs/api/smart-collect/#close-a-virtual-account)
+        to close a virtual account.
+      requestBody:
+        content: {}
+      parameters:
+        - name: va_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/virtual_accounts/{va_id}/receiver:
+    post:
+      tags:
+        - Smart Collect > Smart Collect -TPV
+      summary: Update a Virtual Account
+      description: You can add a receiver to a virtual account using this API.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                receivers:
+                  types:
+                    - vpa
+      parameters:
+        - name: va_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/virtual_accounts/{va_id}/allowed_payers:
+    post:
+      tags:
+        - Smart Collect > Smart Collect -TPV
+      summary: Add an Allowed Payer Account
+      description: >-
+        You can add an allowed payer to a virtual account using this <a
+        href="https://razorpay.com/docs/api/smart-collect-tpv/#add-an-allowed-payer-account"
+        target="_blank">API</a>.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                type: bank_account
+                bank_account:
+                  ifsc: UTIB0000013
+                  account_number: '914010012345679'
+      parameters:
+        - name: va_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/virtual_accounts/va_DlGmm7jInLudH9/allowed_payers/ba_DlGmm9mSj8fjRM:
+    delete:
+      tags:
+        - Smart Collect > Smart Collect -TPV
+      summary: Delete an Allowed Payer Account
+      description: >-
+        You can delete an allowed payer from a virtual account using this <a
+        href="https://razorpay.com/docs/api/smart-collect-tpv/#delete-an-allowed-payer-account"
+        target="_blank">API</a>.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payments/{pay_id}/upi_transfer:
+    get:
+      tags:
+        - >-
+          Smart Collect > Smart Collect > Fetch Operations > Fetch Payment
+          Details using ID and Transfer Method
+      summary: Method is UPI Transfer
+      description: >-
+        Use this [API](https://razorpay.com/docs/api/smart-collect/#upi) to
+        retrieve details of a payment using the Payment ID and transfer method.
+      parameters:
+        - name: pay_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/virtual_accounts/{va_id}/receivers:
+    post:
+      tags:
+        - Smart Collect > Smart Collect
+      summary: Update a Virtual Account
+      description: >-
+        You can use this
+        [API](https://razorpay.com/docs/api/smart-collect/#add-receiver-to-an-existing-virtual-account)
+        to add a receiver to a virtual account.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                types:
+                  - vpa
+                vpa:
+                  descriptor: gaurikumar
+      parameters:
+        - name: va_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payments/{pay_id}/transfers:
+    post:
+      tags:
+        - Route APIs > Linked Account Settlements
+      summary: Hold Settlements For Transfers
+      description: >-
+        When transferring payment to an account, you can choose to put the
+        transfer settlement on hold indefinitely or until a defined time. You
+        can change these settings anytime via this
+        [API](https://razorpay.com/docs/api/route/#hold-settlements-for-transfers)
+        until the settlement is made. When you put a transfer settlement on
+        hold, the settlement will not happen until you release it.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: |-
+                {
+                    "transfers": [
+                        {
+                            "amount": 100,
+                            "account": "acc_id",//Please replace with appropriate ID.
+                            "currency": "INR",
+                            "on_hold": 1
+                        }
+                    ]
+                }
+      parameters:
+        - name: content-type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: pay_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Route APIs > Fetch Details
+      summary: Fetch Transfers for a Payment
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/route/#fetch-transfers-for-a-payment)
+        to fetch the collection of all transfers created on a specific Payment
+        ID.
+      parameters:
+        - name: pay_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/transfers:
+    post:
+      tags:
+        - Route APIs > Transfers API
+      summary: Direct Transfer
+      description: >-
+        You can transfer funds to your linked accounts directly from your
+        account balance using the Direct Transfers
+        [API](https://razorpay.com/docs/api/route/#direct-transfers).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: |-
+                {
+                    "account": "acc_id",//Please replace with appropriate ID.
+                    "amount": 100,
+                    "currency": "INR"
+                }
+      parameters:
+        - name: content-type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Route APIs > Fetch Details
+      summary: Fetch Settlement Details
+      description: "Use this [API](https://razorpay.com/docs/api/route/#fetch-settlement-details) to fetch the details of settlements made to linked accounts.\n\nYou must append\_`?expand[]=recipient_settlement`\_as the query parameter to the fetch transfer request. This would return a\_`settlement`\_entity along with the\_`transfer`\_entity."
+      parameters:
+        - name: expand[]
+          in: query
+          schema:
+            type: string
+          example: recipient_settlement
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/orders/{order_id}/:
+    get:
+      tags:
+        - Route APIs > Fetch Details
+      summary: Fetch Transfers for an Order
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/route/#fetch-transfer-for-an-order)
+        to fetch the collection of all transfers created on a specific Order ID.
+      parameters:
+        - name: expand[]
+          in: query
+          schema:
+            type: string
+          example: transfers
+        - name: order_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/transfers/{trf_id}:
+    get:
+      tags:
+        - Route APIs > Fetch Details
+      summary: Fetch a Transfer
+      description: >-
+        Use this [API](https://razorpay.com/docs/api/route/#fetch-a-transfer) to
+        fetch details of a specific transfer.
+      parameters:
+        - name: ''
+          in: header
+          schema:
+            type: string
+        - name: trf_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Route APIs > Linked Account Settlements
+      summary: Modify Transfer Settlement Hold
+      description: "Use this [API](https://razorpay.com/docs/api/route/#modify-settlement-hold-for-transfers) to modify the settlement configuration for a particular\_`transfer_id`. On a successful request, the API responds with the modified transfer entity."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                on_hold: 1
+                on_hold_until: 1979691505
+      parameters:
+        - name: content-type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: trf_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payments:
+    get:
+      tags:
+        - Route APIs > Fetch Details
+      summary: Fetch Payments of a Linked Account
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/route/#fetch-payments-of-a-linked-account)
+        to fetch a list of all the payments received by a linked account.
+      parameters:
+        - name: X-Razorpay-Account
+          in: header
+          schema:
+            type: string
+          example: '{acc_id}'
+        - name: count
+          in: query
+          schema:
+            type: integer
+          example: '2'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/transfers/{trf_id}/reversals:
+    post:
+      tags:
+        - Route APIs > Refunds and Reversals
+      summary: Transfer Reversals
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                amount: 100
+      parameters:
+        - name: content-type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: trf_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/items:
+    post:
+      tags:
+        - Items APIs
+      summary: Create an Item
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Yellow Herb
+                description: Yellow herb from Resident Evil
+                amount: 50000
+                currency: INR
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Items APIs
+      summary: Fetch Items
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/items/#fetch-multiple-items) to
+        fetch multiple items.
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/items/{item_id}:
+    get:
+      tags:
+        - Items APIs
+      summary: Fetch Item by ID
+      description: >-
+        Use this [API](https://razorpay.com/docs/api/items/#fetch-an-item) to
+        fetch a specific item.
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: item_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Items APIs
+      summary: Update an Item
+      description: >-
+        Use this [API](https://razorpay.com/docs/api/items/#update-an-item) to
+        update a specific item.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Green Herb
+                description: Green herb from Resident Evil
+                amount: 70000
+                currency: INR
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: item_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Items APIs
+      summary: Delete an Item
+      description: >-
+        Use this [API](https://razorpay.com/docs/api/items/#delete-an-item) to
+        delete a specific item.
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: item_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/contacts:
+    post:
+      tags:
+        - RazorpayX APIs > Account Validation
+      summary: Create Contact
+      description: "\t\t\t"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Test
+                email: test@example.com
+                contact: '9876543210'
+                type: vendor
+                reference_id: '12345'
+                notes:
+                  note_key: Beam me up Scotty Updated
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - RazorpayX APIs > Account Validation
+      summary: Fetch all Contacts
+      description: Use this API to fetch all contacts.
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: count
+          in: query
+          schema:
+            type: integer
+          example: '100'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/contacts/{cont_id}:
+    get:
+      tags:
+        - RazorpayX APIs > Step 1 - Contacts
+      summary: Fetch Contact by ID
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/razorpayx/contacts/#fetch-a-contact-by-id)
+        to fetch the details of a specific contact.
+      parameters:
+        - name: cont_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - RazorpayX APIs > Step 1 - Contacts
+      summary: Activate or Deactivate a Contact
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/razorpayx/contacts/#activate-or-deactivate-a-contact)
+        to update a particular contact.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                active: false
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: cont_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/fund_accounts:
+    post:
+      tags:
+        - RazorpayX APIs > Account Validation
+      summary: Create - Fund Account - VPA
+      description: Create Fund Account with UPI VPA
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                contact_id: '{contact_id}'
+                account_type: vpa
+                vpa:
+                  address: gaurav-kumar@exampleupi
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - RazorpayX APIs > Account Validation
+      summary: Fetch all Fund Accounts
+      description: Use this API to fetch all fund accounts.
+      parameters:
+        - name: count
+          in: query
+          schema:
+            type: integer
+          example: '100'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/fund_accounts/{fa_id}:
+    get:
+      tags:
+        - RazorpayX APIs > Step 2 - Fund Accounts
+      summary: Fetch Fund Account by ID
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/razorpayx/fund-accounts/#fetch-fund-account-details-by-id)
+        to fetch a specific fund account.
+      parameters:
+        - name: fa_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payouts:
+    post:
+      tags:
+        - RazorpayX APIs
+      summary: Idempotent Request
+      description: "To make a request idempotent, add the header\_`X-Payout-Idempotency`\_to the request and pass an idempotency key against it.\n\nAn idempotency key is a unique value generated by you. Our servers use this key to recognize subsequent retries of the same request.\n\nThe idempotency key (4-36 characters) can only contain alphabets, numbers, hyphens, underscores and space. For example,\_`53cda91c-8f81-4e77-bbb9-7388f4ac6bf4`. We recommend you generate the key using a version 4 (random) UUID generator.\n\nKnow more about [Idempotent Requests](https://razorpay.com/docs/api/razorpayx/idempotency/)."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                account_number: '7878780080316316'
+                fund_account_id: fa_00000000000001
+                amount: 1000000
+                currency: INR
+                mode: IMPS
+                purpose: refund
+                queue_if_low_balance: true
+                reference_id: Acme Transaction ID 12345
+                narration: Acme Corp Fund Transfer
+                notes:
+                  notes_key_1: Tea, Earl Grey, Hot
+                  notes_key_2: Tea, Earl Grey… decaf.
+      parameters:
+        - name: X-Payout-Idempotency
+          in: header
+          schema:
+            type: string
+          example: 53cda91c-8f81-4e77-bbb9-7388f4ac6bf4
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - RazorpayX APIs > Step 3 - Payouts
+      summary: Fetch all Payouts
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/razorpayx/payouts/#fetch-all-payouts)
+        to fetch all the payouts created by you.
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: account_number
+          in: query
+          schema:
+            type: string
+          example: '{account_number}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payouts/{pout_id}:
+    get:
+      tags:
+        - RazorpayX APIs > Step 3 - Payouts
+      summary: Fetch Payout by ID
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/razorpayx/payouts/#fetch-a-payout-by-id)
+        to fetch a specific payout created by you.
+      parameters:
+        - name: pout_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payouts/{pout_id}/cancel:
+    post:
+      tags:
+        - RazorpayX APIs > Step 3 - Payouts
+      summary: Cancel Queued Payouts
+      description: "Use this [API](https://razorpay.com/docs/api/razorpayx/payouts/#cancel-a-queued-payout) to cancel a specific payout created by you.\n\n**Handy Tips**:  \nYou can only cancel payouts that are in the\_`queued`\_state. It is not possible to cancel payouts that have any other status."
+      requestBody:
+        content: {}
+      parameters:
+        - name: pout_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payout-links:
+    post:
+      tags:
+        - RazorpayX APIs > Payout Links
+      summary: Create Payout Link (using customer_id)
+      description: "Use this\_[API](https://razorpay.com/docs/api/razorpayx/payout-links/#create-a-payout-link)\_to create a Payout Link."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                account_number: account_number
+                contact:
+                  id: '{cont_id}'
+                amount: 1000
+                currency: INR
+                purpose: refund
+                description: Payout link for Gaurav Kumar
+                receipt: Receipt No. 1
+                notes:
+                  random_key_1: Make it so.
+                  random_key_2: Tea. Earl Grey. Hot.
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - RazorpayX APIs > Payout Links
+      summary: Fetch Payout Links
+      description: "Use this\_[API](https://razorpay.com/docs/api/razorpayx/payout-links/#fetch-all-payout-links)\_to fetch all Payout Links."
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payout-links/{poutlk_id}:
+    get:
+      tags:
+        - RazorpayX APIs > Payout Links
+      summary: Fetch Payout Link by ID
+      description: "Use this [API](https://razorpay.com/docs/api/razorpayx/payout-links/#fetch-payout-link-by-id)\_to fetch a specific Payout Link."
+      parameters:
+        - name: poutlk_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/payout-links/{poutlk_id}/cancel:
+    post:
+      tags:
+        - RazorpayX APIs > Payout Links
+      summary: Cancel Payout Link
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/razorpayx/payout-links/#cancel-a-payout-link)
+        to cancel a payout link.
+      requestBody:
+        content: {}
+      parameters:
+        - name: poutlk_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/transactions:
+    get:
+      tags:
+        - RazorpayX APIs > Transaction Statements
+      summary: Fetch all Transactions
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/razorpayx/transactions/#fetch-all-transactions)
+        to fetch details of all transactions.
+      parameters:
+        - name: account_number
+          in: query
+          schema:
+            type: string
+          example: '{account_number}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/transactions/{txn_id}:
+    get:
+      tags:
+        - RazorpayX APIs > Transaction Statements
+      summary: Fetch Transaction by ID
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/razorpayx/transactions/#fetch-transaction-by-id)
+        to fetch details of a specific transaction.
+      parameters:
+        - name: txn_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/fund_accounts/validations:
+    post:
+      tags:
+        - RazorpayX APIs > Account Validation
+      summary: Validate Fund Account
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/razorpayx/account-validation/#validate-bank-account)
+        to create an account validation transaction.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                account_number: '{account_number}'
+                fund_account:
+                  id: '{fund_account_id}'
+                amount: 100
+                currency: INR
+                notes:
+                  random_key_1: Make it so.
+                  random_key_2: Tea. Earl Grey. Hot.
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - RazorpayX APIs > Account Validation
+      summary: Fetch  all Account Validation Transactions
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/razorpayx/account-validation/#fetch-all-account-validation-transactions)
+        to fetch all account validation transactions.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/fund_accounts/validations/{fav_id}:
+    get:
+      tags:
+        - RazorpayX APIs > Account Validation
+      summary: Fetch  Account Validation Transactions by ID
+      description: >-
+        Use this
+        [API](https://razorpay.com/docs/api/razorpayx/account-validation/#fetch-account-validation-transaction-by-id)
+        to fetch details of a specific account validation transaction.
+      parameters:
+        - name: fav_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v2/accounts:
+    post:
+      tags:
+        - Partners APIs > Sub-merchant Onboarding APIs > Account APIs
+      summary: Create an Account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: gauriagain.kumar@example.org
+                phone: '9999999999'
+                legal_business_name: Acme Corp
+                business_type: partnership
+                customer_facing_business_name: Example
+                profile:
+                  category: healthcare
+                  subcategory: clinic
+                  addresses:
+                    operation:
+                      street1: 507, Koramangala 6th block
+                      street2: Kormanagala
+                      city: Bengaluru
+                      state: Karnataka
+                      postal_code: 560047
+                      country: IN
+                    registered:
+                      street1: 507, Koramangala 1st block
+                      street2: MG Road
+                      city: Bengaluru
+                      state: Karnataka
+                      postal_code: 560034
+                      country: IN
+                  business_model: Healthcare E-commerce platform
+                legal_info:
+                  pan: AAACL1234C
+                  gst: 18AABCU9603R1ZM
+                brand:
+                  color: FFFFFF
+                notes:
+                  internal_ref_id: '123123'
+                tos_acceptance:
+                  date: null
+                  ip: null
+                  user_agent: null
+                contact_info:
+                  chargeback:
+                    email: cb@example.org
+                  refund:
+                    email: cb@example.org
+                  support:
+                    email: support@example.org
+                    phone: '9999999998'
+                    policy_url: https://www.google.com
+                apps:
+                  websites:
+                    - https://www.example.org
+                  android:
+                    - url: playstore.example.org
+                      name: Example
+                  ios:
+                    - url: appstore.example.org
+                      name: Example
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v2/accounts/{account_id}:
+    get:
+      tags:
+        - Partners APIs > Sub-merchant Onboarding APIs > Account APIs
+      summary: Fetch an Account
+      description: >-
+        Use this API to fetch the details of an account.
+
+
+        Know more about the [Fetch an Account
+        API](https://razorpay.com/docs/api/partners/account-onboarding/#fetch-an-account).
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Partners APIs > Sub-merchant Onboarding APIs > Account APIs
+      summary: Update an Account
+      description: >-
+        Use this API to update the details of an account.
+
+
+        Know more about the [Update an
+        Account](https://razorpay.com/docs/api/partners/account-onboarding/#update-an-account)
+        API.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                customer_facing_business_name: ABCD Ltd
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Partners APIs > Sub-merchant Onboarding APIs > Account APIs
+      summary: Delete an Account
+      description: >-
+        Use this API to delete an account.
+
+
+        Know more about the [Delete an Account
+        API](https://razorpay.com/docs/api/partners/account-onboarding/#delete-an-account).
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v2/accounts/{account_id}/stakeholders:
+    post:
+      tags:
+        - Partners APIs > Sub-merchant Onboarding APIs > Stakeholder APIs
+      summary: Create a Stakeholder
+      description: >-
+        Use this API to create a stakeholder.
+
+
+        Know more about the [Create a Stakeholder
+        API](https://razorpay.com/docs/api/partners/stakeholder/#create-a-stakeholder).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                percentage_ownership: 10
+                name: Gaurav Kumar
+                email: gaurav.kumar@example.com
+                relationship:
+                  director: true
+                  executive: false
+                phone:
+                  primary: '7474747474'
+                  secondary: '7474747474'
+                addresses:
+                  residential:
+                    street: 506, Koramangala 1st block
+                    city: Bengaluru
+                    state: Karnataka
+                    postal_code: '560034'
+                    country: IN
+                kyc:
+                  pan: AVOPB1111K
+                notes:
+                  random_key_by_partner: random_value
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Partners APIs > Sub-merchant Onboarding APIs > Stakeholder APIs
+      summary: Fetch all Stakeholders
+      description: >-
+        Use this API to fetch all stakeholders.
+
+
+        Know more about the [Fetch all Stakeholders
+        API](https://razorpay.com/docs/api/partners/stakeholder/#fetch-all-stakeholders).
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v2/accounts/{account_id}/stakeholders/{stakeholder_id}:
+    get:
+      tags:
+        - Partners APIs > Sub-merchant Onboarding APIs > Stakeholder APIs
+      summary: Fetch a Stakeholder
+      description: >-
+        Use this API to fetch a stakeholder.
+
+
+        Know more about the [Fetch a Stakeholder
+        API](https://razorpay.com/docs/api/partners/stakeholder/#fetch-a-stakeholder).
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: stakeholder_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Partners APIs > Sub-merchant Onboarding APIs > Stakeholder APIs
+      summary: Update a Stakeholder
+      description: >-
+        Use this API to update a stakeholder.
+
+
+        Know more about the [Update a Stakeholder
+        API](https://razorpay.com/docs/api/partners/stakeholder/#update-a-stakeholder).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                percentage_ownership: 20
+                name: Gauri Kumar
+                email: gauri.kumar@example.com
+                relationship:
+                  director: false
+                  executive: true
+                phone:
+                  primary: '9898989898'
+                  secondary: '9898989898'
+                addresses:
+                  residential:
+                    street: 507, Koramangala 1st block
+                    city: Bangalore
+                    state: Karnataka
+                    postal_code: '560035'
+                    country: IN
+                kyc:
+                  pan: AVOPB1111J
+                notes:
+                  random_key_by_partner: random_value2
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: stakeholder_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v2/accounts/{account_id}/stakeholders/{stakeholder_id}/documents:
+    post:
+      tags:
+        - Partners APIs > Sub-merchant Onboarding APIs > Documents API
+      summary: Upload Stakeholder Documents
+      description: >-
+        Use the API to upload signatory documents for a stakeholder.
+
+
+        Know more about the [Upload Stakeholder Documents
+        API](https://razorpay.com/docs/api/partners/upload-document/#upload-stakeholder-documents).
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  example: '@/Users/your_name/Downloads/sample_uploaded.jpeg'
+                document_type:
+                  type: string
+                  example: aadhar_front
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: stakeholder_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v2/accounts/{account_id}/documents:
+    post:
+      tags:
+        - Partners APIs > Sub-merchant Onboarding APIs > Documents API
+      summary: Upload Account Documents
+      description: >-
+        Use the API to upload business documents for a sub-merchant's account.
+
+
+        Know more about the [Upload Account Documents
+        API](https://razorpay.com/docs/api/partners/upload-document/#upload-account-documents).
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  example: '@/Users/your_name/Downloads/sample_uploaded.jpeg'
+                document_type:
+                  type: string
+                  example: business_proof_url
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Partners APIs > Sub-merchant Onboarding APIs > Documents API
+      summary: Fetch Account Documents
+      description: >-
+        Use the API to fetch business documents for a sub-merchant's account.
+
+
+        Know more about the [Fetch Account Documents
+        API](https://razorpay.com/docs/api/partners/upload-document/#fetch-account-documents).
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v2/accounts/{account_id}/stakeholders/{stakeholders_id}/documents:
+    get:
+      tags:
+        - Partners APIs > Sub-merchant Onboarding APIs > Documents API
+      summary: Fetch Stakeholders Documents
+      description: >-
+        Use the API to fetch the files uploaded for a stakeholder.
+
+
+        Know more about the [Fetch Stakeholders Documents
+        API](https://razorpay.com/docs/api/partners/upload-document/#fetch-stakeholder-documents).
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: stakeholders_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v2/accounts/{account_id}/products:
+    post:
+      tags:
+        - >-
+          Partners APIs > Sub-merchant Onboarding APIs > Product Configuration
+          Request APIs
+      summary: Request a Product Configuration
+      description: >-
+        Use this API to request a product configuration. You can also use this
+        API to accept terms and conditions for a product.
+
+
+        Know more about the [Request a Product Configuration
+        API](https://razorpay.com/docs/api/partners/product-configuration/#request-a-product-configuration).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                product_name: payment_gateway
+                tnc_accepted: true
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v2/accounts/{account_id}/products/{product_id}:
+    patch:
+      tags:
+        - >-
+          Partners APIs > Sub-merchant Onboarding APIs > Product Configuration
+          Request APIs
+      summary: Update a Product Configuration
+      description: >-
+        Use this API to update a product configuration. You can also use this
+        API to accept terms and conditions.
+
+
+        Know more about the [Update a Product Configuration
+        API](https://razorpay.com/docs/api/partners/product-configuration/#update-a-product-configuration).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                notifications:
+                  email:
+                    - gaurav.kumar@example.com
+                    - acd@gmail.com
+                checkout:
+                  theme_color: '#528FFF'
+                refund:
+                  default_refund_speed: optimum
+                settlements:
+                  account_number: '1234567890'
+                  ifsc_code: HDFC0000317
+                  beneficiary_name: Gaurav Kumar
+                tnc_accepted: true
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: product_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - >-
+          Partners APIs > Sub-merchant Onboarding APIs > Product Configuration
+          Request APIs
+      summary: Fetch a Product Configuration
+      description: >-
+        Use this API to retrieve the details of a product for a given
+        sub-merchant's account.
+
+
+        Know more about the [Fetch a Product Configuration
+        API](https://razorpay.com/docs/api/partners/product-configuration/#fetch-a-product-configuration).
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: product_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v2/accounts/{account_id}/webhooks:
+    post:
+      tags:
+        - Partners APIs > Sub-merchant Onboarding APIs > Webhooks API
+      summary: Create a Webhook
+      description: >-
+        Use this API to create a webhook.
+
+
+        Know more about the [Create a
+        Webhook](https://razorpay.com/docs/api/partners/webhooks/#create-a-webhook)
+        API.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                url: https://en1mwkqoqioct.x.pipedream.net
+                alert_email: gaurav.kumar@example.com
+                secret: '12345'
+                events:
+                  - payment.authorized
+                  - payment.failed
+                  - payment.captured
+                  - payment.dispute.created
+                  - refund.failed
+                  - refund.created
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Partners APIs > Sub-merchant Onboarding APIs > Webhooks API
+      summary: Fetch all Webhooks
+      description: >-
+        Use this API to fetch all webhooks.
+
+
+        Know more about the [Fetch all
+        Webhooks](https://razorpay.com/docs/api/partners/webhooks/#fetch-all-webhooks)
+        API.
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v2/accounts/{account_id}/webhooks/{webhook_id}:
+    get:
+      tags:
+        - Partners APIs > Sub-merchant Onboarding APIs > Webhooks API
+      summary: Fetch a Webhook
+      description: >-
+        Use this API to fetch a webhook.
+
+
+        Know more about the [Fetch a
+        Webhook](https://razorpay.com/docs/api/partners/webhooks/#fetch-a-webhook)
+        API.
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: webhook_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v2/accounts/{account_id}/webhooks/{webhooks_id}:
+    patch:
+      tags:
+        - Partners APIs > Sub-merchant Onboarding APIs > Webhooks API
+      summary: Update a Webhook
+      description: >-
+        Use this API to update a webhook.
+
+
+        Know more about the [Update a
+        Webhook](https://razorpay.com/docs/api/partners/webhooks/#update-a-webhook)
+        API.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                url: https://www.linkedin.com
+                events:
+                  - refund.created
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: webhooks_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Partners APIs > Sub-merchant Onboarding APIs > Webhooks API
+      summary: Delete a Webhook
+      description: >-
+        Use this API to delete a webhook.
+
+
+        Know more about the [Delete a
+        Webhook](https://razorpay.com/docs/api/partners/webhooks/#delete-a-webhook)
+        API.
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: webhooks_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v2/accounts/{account_id}/tnc:
+    post:
+      tags:
+        - >-
+          Partners APIs > Sub-merchant Onboarding APIs > Terms and Conditions
+          API
+      summary: '[Deprecated] Accept Terms and Conditions'
+      description: >-
+        **Deprecation Notice**
+
+
+        We deprecated this API in February 2022. We do not support this API
+        anymore.
+
+
+        Use the [Product Configuration
+        APIs](https://razorpay.com/docs/api/partners/product-configuration/) to
+        accept terms and conditions.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                accepted: true
+      parameters:
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v2/products/{product_name}/tnc:
+    post:
+      tags:
+        - >-
+          Partners APIs > Sub-merchant Onboarding APIs > Terms and Conditions
+          API
+      summary: Fetch Terms and Conditions for a Sub-merchant
+      description: >-
+        Use this API to accept the terms and conditions for a merchant.
+
+
+        Know more about the [Fetch Terms and Conditions
+        API](https://razorpay.com/docs/api/partners/terms-conditions/#fetch-terms-and-conditions-for-a-sub-merchant).
+      requestBody:
+        content: {}
+      parameters:
+        - name: product_name
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}

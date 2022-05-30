@@ -12,7 +12,7 @@
   "paths": {
     "/actions": {
       "get": {
-        "x-controller-name": "ActionController",
+        "x-controller-name": "Action",
         "x-operation-name": "find",
         "tags": [
           "ActionController"
@@ -50,7 +50,7 @@
     },
     "/features/{id}": {
       "patch": {
-        "x-controller-name": "FeatureController",
+        "x-controller-name": "Feature",
         "x-operation-name": "updateById",
         "tags": [
           "FeatureController"
@@ -90,7 +90,7 @@
         "operationId": "FeatureController.updateById"
       },
       "delete": {
-        "x-controller-name": "FeatureController",
+        "x-controller-name": "Feature",
         "x-operation-name": "deleteById",
         "tags": [
           "FeatureController"
@@ -122,7 +122,7 @@
     },
     "/features": {
       "post": {
-        "x-controller-name": "FeatureController",
+        "x-controller-name": "Feature",
         "x-operation-name": "create",
         "tags": [
           "FeatureController"
@@ -151,7 +151,7 @@
         "operationId": "FeatureController.create"
       },
       "get": {
-        "x-controller-name": "FeatureController",
+        "x-controller-name": "Feature",
         "x-operation-name": "find",
         "tags": [
           "FeatureController"
@@ -189,7 +189,7 @@
     },
     "/login": {
       "post": {
-        "x-controller-name": "AuthController",
+        "x-controller-name": "Auth",
         "x-operation-name": "login",
         "tags": [
           "AuthController"
@@ -213,7 +213,7 @@
     },
     "/menu/formatted": {
       "get": {
-        "x-controller-name": "MenuController",
+        "x-controller-name": "Menu",
         "x-operation-name": "findFormatted",
         "tags": [
           "MenuController"
@@ -228,7 +228,7 @@
     },
     "/menu": {
       "post": {
-        "x-controller-name": "MenuController",
+        "x-controller-name": "Menu",
         "x-operation-name": "create",
         "tags": [
           "MenuController"
@@ -257,7 +257,7 @@
         "operationId": "MenuController.create"
       },
       "get": {
-        "x-controller-name": "MenuController",
+        "x-controller-name": "Menu",
         "x-operation-name": "find",
         "tags": [
           "MenuController"
@@ -295,7 +295,7 @@
     },
     "/microservices": {
       "post": {
-        "x-controller-name": "MicroservicesController",
+        "x-controller-name": "Microservices",
         "x-operation-name": "create",
         "tags": [
           "MicroservicesController"
@@ -324,7 +324,7 @@
         "operationId": "MicroservicesController.create"
       },
       "get": {
-        "x-controller-name": "MicroservicesController",
+        "x-controller-name": "Microservices",
         "x-operation-name": "find",
         "tags": [
           "MicroservicesController"
@@ -362,7 +362,7 @@
     },
     "/notifications": {
       "get": {
-        "x-controller-name": "NotificationController",
+        "x-controller-name": "Notification",
         "x-operation-name": "find",
         "tags": [
           "NotificationController"
@@ -400,7 +400,7 @@
     },
     "/ping": {
       "get": {
-        "x-controller-name": "PingController",
+        "x-controller-name": "Ping",
         "x-operation-name": "ping",
         "tags": [
           "PingController"
@@ -422,7 +422,7 @@
     },
     "/policies": {
       "get": {
-        "x-controller-name": "PolicyController",
+        "x-controller-name": "Policy",
         "x-operation-name": "find",
         "tags": [
           "PolicyController"
@@ -460,7 +460,7 @@
     },
     "/product-rate-plan-components": {
       "post": {
-        "x-controller-name": "ProductRatePlanComponentController",
+        "x-controller-name": "ProductRatePlanComponent",
         "x-operation-name": "create",
         "tags": [
           "ProductRatePlanComponentController"
@@ -489,7 +489,7 @@
         "operationId": "ProductRatePlanComponentController.create"
       },
       "get": {
-        "x-controller-name": "ProductRatePlanComponentController",
+        "x-controller-name": "ProductRatePlanComponent",
         "x-operation-name": "find",
         "tags": [
           "ProductRatePlanComponentController"
@@ -527,7 +527,7 @@
     },
     "/product-rate-plans": {
       "post": {
-        "x-controller-name": "ProductRatePlanController",
+        "x-controller-name": "ProductRatePlan",
         "x-operation-name": "create",
         "tags": [
           "ProductRatePlanController"
@@ -556,7 +556,7 @@
         "operationId": "ProductRatePlanController.create"
       },
       "get": {
-        "x-controller-name": "ProductRatePlanController",
+        "x-controller-name": "ProductRatePlan",
         "x-operation-name": "find",
         "tags": [
           "ProductRatePlanController"
@@ -594,7 +594,7 @@
     },
     "/products/{id}": {
       "patch": {
-        "x-controller-name": "ProductController",
+        "x-controller-name": "Product",
         "x-operation-name": "updateById",
         "tags": [
           "ProductController"
@@ -634,7 +634,7 @@
         "operationId": "ProductController.updateById"
       },
       "get": {
-        "x-controller-name": "ProductController",
+        "x-controller-name": "Product",
         "x-operation-name": "findById",
         "tags": [
           "ProductController"
@@ -664,7 +664,7 @@
         "operationId": "ProductController.findById"
       },
       "delete": {
-        "x-controller-name": "ProductController",
+        "x-controller-name": "Product",
         "x-operation-name": "deleteById",
         "tags": [
           "ProductController"
@@ -696,7 +696,7 @@
     },
     "/products": {
       "post": {
-        "x-controller-name": "ProductController",
+        "x-controller-name": "Product",
         "x-operation-name": "create",
         "tags": [
           "ProductController"
@@ -725,7 +725,7 @@
         "operationId": "ProductController.create"
       },
       "get": {
-        "x-controller-name": "ProductController",
+        "x-controller-name": "Product",
         "x-operation-name": "find",
         "tags": [
           "ProductController"
@@ -763,7 +763,7 @@
     },
     "/refreshToken": {
       "post": {
-        "x-controller-name": "AuthController",
+        "x-controller-name": "Auth",
         "x-operation-name": "refresh",
         "tags": [
           "AuthController"
@@ -809,7 +809,7 @@
     },
     "/role/delete": {
       "post": {
-        "x-controller-name": "PolicyController",
+        "x-controller-name": "Policy",
         "x-operation-name": "roleDelete",
         "tags": [
           "PolicyController"
@@ -833,7 +833,7 @@
     },
     "/role/update": {
       "post": {
-        "x-controller-name": "PolicyController",
+        "x-controller-name": "Policy",
         "x-operation-name": "roleUpdate",
         "tags": [
           "PolicyController"
@@ -857,7 +857,7 @@
     },
     "/role": {
       "post": {
-        "x-controller-name": "PolicyController",
+        "x-controller-name": "Policy",
         "x-operation-name": "login",
         "tags": [
           "PolicyController"
@@ -881,7 +881,7 @@
     },
     "/template-vars": {
       "get": {
-        "x-controller-name": "TemplateVarController",
+        "x-controller-name": "TemplateVar",
         "x-operation-name": "find",
         "tags": [
           "TemplateVarController"
@@ -919,7 +919,7 @@
     },
     "/templates/getPreSignedUrl": {
       "post": {
-        "x-controller-name": "TemplateController",
+        "x-controller-name": "Template",
         "x-operation-name": "generatePreSignedUrl",
         "tags": [
           "TemplateController"
@@ -943,7 +943,7 @@
     },
     "/templates/{id}": {
       "delete": {
-        "x-controller-name": "TemplateController",
+        "x-controller-name": "Template",
         "x-operation-name": "deleteById",
         "tags": [
           "TemplateController"
@@ -975,7 +975,7 @@
     },
     "/templates": {
       "post": {
-        "x-controller-name": "TemplateController",
+        "x-controller-name": "Template",
         "x-operation-name": "login",
         "tags": [
           "TemplateController"
@@ -997,7 +997,7 @@
         "operationId": "TemplateController.login"
       },
       "get": {
-        "x-controller-name": "TemplateController",
+        "x-controller-name": "Template",
         "x-operation-name": "find",
         "tags": [
           "TemplateController"
@@ -1035,7 +1035,7 @@
     },
     "/tenantadmin": {
       "post": {
-        "x-controller-name": "TenantController",
+        "x-controller-name": "Tenant",
         "x-operation-name": "createTenant",
         "tags": [
           "TenantController"
@@ -1066,7 +1066,7 @@
     },
     "/tenants/{id}": {
       "patch": {
-        "x-controller-name": "TenantController",
+        "x-controller-name": "Tenant",
         "x-operation-name": "updateById",
         "tags": [
           "TenantController"
@@ -1108,7 +1108,7 @@
     },
     "/tenants/{tenantId}": {
       "delete": {
-        "x-controller-name": "TenantController",
+        "x-controller-name": "Tenant",
         "x-operation-name": "deleteTenant",
         "tags": [
           "TenantController"
@@ -1140,7 +1140,7 @@
     },
     "/tenants": {
       "get": {
-        "x-controller-name": "TenantController",
+        "x-controller-name": "Tenant",
         "x-operation-name": "find",
         "tags": [
           "TenantController"
@@ -1168,7 +1168,7 @@
     },
     "/uoms/{id}": {
       "patch": {
-        "x-controller-name": "UomController",
+        "x-controller-name": "Uom",
         "x-operation-name": "updateById",
         "tags": [
           "UomController"
@@ -1208,7 +1208,7 @@
         "operationId": "UomController.updateById"
       },
       "delete": {
-        "x-controller-name": "UomController",
+        "x-controller-name": "Uom",
         "x-operation-name": "deleteById",
         "tags": [
           "UomController"
@@ -1240,7 +1240,7 @@
     },
     "/uoms": {
       "post": {
-        "x-controller-name": "UomController",
+        "x-controller-name": "Uom",
         "x-operation-name": "create",
         "tags": [
           "UomController"
@@ -1269,7 +1269,7 @@
         "operationId": "UomController.create"
       },
       "get": {
-        "x-controller-name": "UomController",
+        "x-controller-name": "Uom",
         "x-operation-name": "find",
         "tags": [
           "UomController"
@@ -1307,7 +1307,7 @@
     },
     "/users/forget-password": {
       "post": {
-        "x-controller-name": "AuthController",
+        "x-controller-name": "Auth",
         "x-operation-name": "forgetPassword",
         "tags": [
           "AuthController"
@@ -1331,7 +1331,7 @@
     },
     "/users/reset-password": {
       "post": {
-        "x-controller-name": "AuthController",
+        "x-controller-name": "Auth",
         "x-operation-name": "resetPassword",
         "tags": [
           "AuthController"
@@ -1355,7 +1355,7 @@
     },
     "/users/{id}": {
       "patch": {
-        "x-controller-name": "AuthController",
+        "x-controller-name": "Auth",
         "x-operation-name": "updateById",
         "tags": [
           "AuthController"
@@ -1397,7 +1397,7 @@
     },
     "/users": {
       "post": {
-        "x-controller-name": "AuthController",
+        "x-controller-name": "Auth",
         "x-operation-name": "create",
         "tags": [
           "AuthController"
@@ -1419,7 +1419,7 @@
         "operationId": "AuthController.create"
       },
       "get": {
-        "x-controller-name": "AuthController",
+        "x-controller-name": "Auth",
         "x-operation-name": "find",
         "tags": [
           "AuthController"
@@ -1456,7 +1456,7 @@
     },
     "/webhooks": {
       "post": {
-        "x-controller-name": "WebhookController",
+        "x-controller-name": "Webhook",
         "x-operation-name": "create",
         "tags": [
           "WebhookController"
@@ -1485,7 +1485,7 @@
         "operationId": "WebhookController.create"
       },
       "get": {
-        "x-controller-name": "WebhookController",
+        "x-controller-name": "Webhook",
         "x-operation-name": "find",
         "tags": [
           "WebhookController"
@@ -1523,7 +1523,7 @@
     },
     "/whoami": {
       "get": {
-        "x-controller-name": "AuthController",
+        "x-controller-name": "Auth",
         "x-operation-name": "whoami",
         "tags": [
           "AuthController"

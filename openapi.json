@@ -15,7 +15,7 @@
         "x-controller-name": "Action",
         "x-operation-name": "find",
         "tags": [
-          "ActionController"
+          "Action"
         ],
         "responses": {
           "200": {
@@ -53,7 +53,7 @@
         "x-controller-name": "Feature",
         "x-operation-name": "updateById",
         "tags": [
-          "FeatureController"
+          "Feature"
         ],
         "responses": {
           "204": {
@@ -93,7 +93,7 @@
         "x-controller-name": "Feature",
         "x-operation-name": "deleteById",
         "tags": [
-          "FeatureController"
+          "Feature"
         ],
         "responses": {
           "204": {
@@ -125,7 +125,7 @@
         "x-controller-name": "Feature",
         "x-operation-name": "create",
         "tags": [
-          "FeatureController"
+          "Feature"
         ],
         "responses": {
           "200": {
@@ -154,7 +154,7 @@
         "x-controller-name": "Feature",
         "x-operation-name": "find",
         "tags": [
-          "FeatureController"
+          "Feature"
         ],
         "responses": {
           "200": {
@@ -192,7 +192,7 @@
         "x-controller-name": "Auth",
         "x-operation-name": "login",
         "tags": [
-          "AuthController"
+          "Auth"
         ],
         "responses": {
           "200": {
@@ -216,7 +216,7 @@
         "x-controller-name": "Menu",
         "x-operation-name": "findFormatted",
         "tags": [
-          "MenuController"
+          "Menu"
         ],
         "responses": {
           "200": {
@@ -231,7 +231,7 @@
         "x-controller-name": "Menu",
         "x-operation-name": "create",
         "tags": [
-          "MenuController"
+          "Menu"
         ],
         "responses": {
           "200": {
@@ -260,7 +260,7 @@
         "x-controller-name": "Menu",
         "x-operation-name": "find",
         "tags": [
-          "MenuController"
+          "Menu"
         ],
         "responses": {
           "200": {
@@ -298,7 +298,7 @@
         "x-controller-name": "Microservices",
         "x-operation-name": "create",
         "tags": [
-          "MicroservicesController"
+          "Microservices"
         ],
         "responses": {
           "200": {
@@ -327,7 +327,7 @@
         "x-controller-name": "Microservices",
         "x-operation-name": "find",
         "tags": [
-          "MicroservicesController"
+          "Microservices"
         ],
         "responses": {
           "200": {
@@ -365,7 +365,7 @@
         "x-controller-name": "Notification",
         "x-operation-name": "find",
         "tags": [
-          "NotificationController"
+          "Notification"
         ],
         "responses": {
           "200": {
@@ -403,7 +403,7 @@
         "x-controller-name": "Ping",
         "x-operation-name": "ping",
         "tags": [
-          "PingController"
+          "Ping"
         ],
         "responses": {
           "200": {
@@ -425,7 +425,7 @@
         "x-controller-name": "Policy",
         "x-operation-name": "find",
         "tags": [
-          "PolicyController"
+          "Policy"
         ],
         "responses": {
           "200": {
@@ -463,7 +463,7 @@
         "x-controller-name": "ProductRatePlanComponent",
         "x-operation-name": "create",
         "tags": [
-          "ProductRatePlanComponentController"
+          "ProductRatePlanComponent"
         ],
         "responses": {
           "200": {
@@ -492,7 +492,7 @@
         "x-controller-name": "ProductRatePlanComponent",
         "x-operation-name": "find",
         "tags": [
-          "ProductRatePlanComponentController"
+          "ProductRatePlanComponent"
         ],
         "responses": {
           "200": {
@@ -530,7 +530,7 @@
         "x-controller-name": "ProductRatePlan",
         "x-operation-name": "create",
         "tags": [
-          "ProductRatePlanController"
+          "ProductRatePlan"
         ],
         "responses": {
           "200": {
@@ -559,7 +559,7 @@
         "x-controller-name": "ProductRatePlan",
         "x-operation-name": "find",
         "tags": [
-          "ProductRatePlanController"
+          "ProductRatePlan"
         ],
         "responses": {
           "200": {
@@ -597,7 +597,7 @@
         "x-controller-name": "Product",
         "x-operation-name": "updateById",
         "tags": [
-          "ProductController"
+          "Product"
         ],
         "responses": {
           "204": {
@@ -637,7 +637,7 @@
         "x-controller-name": "Product",
         "x-operation-name": "findById",
         "tags": [
-          "ProductController"
+          "Product"
         ],
         "responses": {
           "200": {
@@ -667,7 +667,7 @@
         "x-controller-name": "Product",
         "x-operation-name": "deleteById",
         "tags": [
-          "ProductController"
+          "Product"
         ],
         "responses": {
           "204": {
@@ -699,7 +699,7 @@
         "x-controller-name": "Product",
         "x-operation-name": "create",
         "tags": [
-          "ProductController"
+          "Product"
         ],
         "responses": {
           "200": {
@@ -728,7 +728,7 @@
         "x-controller-name": "Product",
         "x-operation-name": "find",
         "tags": [
-          "ProductController"
+          "Product"
         ],
         "responses": {
           "200": {
@@ -766,7 +766,7 @@
         "x-controller-name": "Auth",
         "x-operation-name": "refresh",
         "tags": [
-          "AuthController"
+          "Auth"
         ],
         "responses": {
           "200": {
@@ -812,7 +812,7 @@
         "x-controller-name": "Policy",
         "x-operation-name": "roleDelete",
         "tags": [
-          "PolicyController"
+          "Policy"
         ],
         "responses": {
           "200": {
@@ -836,7 +836,7 @@
         "x-controller-name": "Policy",
         "x-operation-name": "roleUpdate",
         "tags": [
-          "PolicyController"
+          "Policy"
         ],
         "responses": {
           "200": {
@@ -860,7 +860,7 @@
         "x-controller-name": "Policy",
         "x-operation-name": "login",
         "tags": [
-          "PolicyController"
+          "Policy"
         ],
         "responses": {
           "200": {
@@ -884,7 +884,7 @@
         "x-controller-name": "TemplateVar",
         "x-operation-name": "find",
         "tags": [
-          "TemplateVarController"
+          "TemplateVar"
         ],
         "responses": {
           "200": {
@@ -922,7 +922,7 @@
         "x-controller-name": "Template",
         "x-operation-name": "generatePreSignedUrl",
         "tags": [
-          "TemplateController"
+          "Template"
         ],
         "responses": {
           "200": {
@@ -946,7 +946,7 @@
         "x-controller-name": "Template",
         "x-operation-name": "deleteById",
         "tags": [
-          "TemplateController"
+          "Template"
         ],
         "responses": {
           "204": {
@@ -978,7 +978,7 @@
         "x-controller-name": "Template",
         "x-operation-name": "login",
         "tags": [
-          "TemplateController"
+          "Template"
         ],
         "responses": {
           "200": {
@@ -1000,7 +1000,7 @@
         "x-controller-name": "Template",
         "x-operation-name": "find",
         "tags": [
-          "TemplateController"
+          "Template"
         ],
         "responses": {
           "200": {
@@ -1038,7 +1038,7 @@
         "x-controller-name": "Tenant",
         "x-operation-name": "createTenant",
         "tags": [
-          "TenantController"
+          "Tenant"
         ],
         "responses": {
           "200": {
@@ -1069,7 +1069,7 @@
         "x-controller-name": "Tenant",
         "x-operation-name": "updateById",
         "tags": [
-          "TenantController"
+          "Tenant"
         ],
         "responses": {
           "204": {
@@ -1111,7 +1111,7 @@
         "x-controller-name": "Tenant",
         "x-operation-name": "deleteTenant",
         "tags": [
-          "TenantController"
+          "Tenant"
         ],
         "responses": {
           "200": {
@@ -1143,7 +1143,7 @@
         "x-controller-name": "Tenant",
         "x-operation-name": "find",
         "tags": [
-          "TenantController"
+          "Tenant"
         ],
         "responses": {
           "200": {
@@ -1171,7 +1171,7 @@
         "x-controller-name": "Uom",
         "x-operation-name": "updateById",
         "tags": [
-          "UomController"
+          "Uom"
         ],
         "responses": {
           "204": {
@@ -1211,7 +1211,7 @@
         "x-controller-name": "Uom",
         "x-operation-name": "deleteById",
         "tags": [
-          "UomController"
+          "Uom"
         ],
         "responses": {
           "204": {
@@ -1243,7 +1243,7 @@
         "x-controller-name": "Uom",
         "x-operation-name": "create",
         "tags": [
-          "UomController"
+          "Uom"
         ],
         "responses": {
           "200": {
@@ -1272,7 +1272,7 @@
         "x-controller-name": "Uom",
         "x-operation-name": "find",
         "tags": [
-          "UomController"
+          "Uom"
         ],
         "responses": {
           "200": {
@@ -1310,7 +1310,7 @@
         "x-controller-name": "Auth",
         "x-operation-name": "forgetPassword",
         "tags": [
-          "AuthController"
+          "Auth"
         ],
         "responses": {
           "200": {
@@ -1334,7 +1334,7 @@
         "x-controller-name": "Auth",
         "x-operation-name": "resetPassword",
         "tags": [
-          "AuthController"
+          "Auth"
         ],
         "responses": {
           "200": {
@@ -1358,7 +1358,7 @@
         "x-controller-name": "Auth",
         "x-operation-name": "updateById",
         "tags": [
-          "AuthController"
+          "Auth"
         ],
         "responses": {
           "204": {
@@ -1400,7 +1400,7 @@
         "x-controller-name": "Auth",
         "x-operation-name": "create",
         "tags": [
-          "AuthController"
+          "Auth"
         ],
         "responses": {
           "200": {
@@ -1422,7 +1422,7 @@
         "x-controller-name": "Auth",
         "x-operation-name": "find",
         "tags": [
-          "AuthController"
+          "Auth"
         ],
         "responses": {
           "200": {
@@ -1459,7 +1459,7 @@
         "x-controller-name": "Webhook",
         "x-operation-name": "create",
         "tags": [
-          "WebhookController"
+          "Webhook"
         ],
         "responses": {
           "200": {
@@ -1488,7 +1488,7 @@
         "x-controller-name": "Webhook",
         "x-operation-name": "find",
         "tags": [
-          "WebhookController"
+          "Webhook"
         ],
         "responses": {
           "200": {
@@ -1526,7 +1526,7 @@
         "x-controller-name": "Auth",
         "x-operation-name": "whoami",
         "tags": [
-          "AuthController"
+          "Auth"
         ],
         "responses": {
           "200": {

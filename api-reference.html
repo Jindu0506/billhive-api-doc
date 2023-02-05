@@ -22,11 +22,44 @@
   width: 185px;
   height: 50px;
   margin-left: -30px;
-  margin-top: 5px;
+  margin-top: -5px;
   background: url('black.svg') no-repeat;
   background-position: center center;
   display: inline-block;
   background-size: contain;
+}
+
+.landing-page-nav{
+  z-index: 5 !important;
+    top: 0;
+    position: fixed;
+    width: 100%;
+    background: transparent;
+    box-shadow: initial;
+}
+
+.container{
+  height: 55px;
+}
+
+.align-items-center {
+    align-items: center !important;
+}
+
+.justify-content-between {
+    justify-content: space-between !important;
+}
+
+.d-flex {
+    display: flex !important;
+}
+
+.redoc-box{
+  margin-top: 55px;
+}
+
+nav {
+  background-color: white;
 }
   </style>
 </head>
@@ -35,32 +68,17 @@
   <!-- <redoc spec-url='https://bitbucket.org/jindu0506/billhive-api-doc/raw/HEAD/swagger.json'></redoc> -->
   <!-- <redoc spec-url='https://raw.githubusercontent.com/Jindu0506/billhive-api-doc/main/openapi.json'></redoc>
     <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"> </script> -->
-  <nav class="ng-tns-c29-0">
-    <div class="container d-flex align-items-center justify-content-between"><a routerlink="/home/home"
-        class="navbar-logo pull-left" ng-reflect-router-link="/home/home" href="/home/home"><span
-          class="logo-single"></span><span class="dark"></span></a>
-      <!-- <ul class="navbar-nav d-none d-lg-flex flex-row">
-        <li class="nav-item font-weight-semibold"><a routerlink="/home/home" ng-reflect-router-link="/home/home"
-            href="/home/home">Why BillHive?</a></li>
-        <li class="nav-item font-weight-semibold"><a routerlink="/home/partners" ng-reflect-router-link="/home/partners"
-            href="/home/partners">Partners</a></li>
-        <li class="nav-item font-weight-semibold"><a routerlink="/home/resources"
-            ng-reflect-router-link="/home/resources" href="/home/resources">Resources</a></li>
-        <li class="nav-item font-weight-semibold"><a routerlink="/home/pricing" ng-reflect-router-link="/home/pricing"
-            href="/home/pricing">Pricing</a></li>
-        <li class="nav-item font-weight-semibold"><a routerlink="/home/about-us" ng-reflect-router-link="/home/about-us"
-            href="/home/about-us">About Us</a></li>
-        <li class="nav-item pl-4"><a target="_blank" routerlink="/login"
-            class="login-btn btn-outline-semi-light btn-sm pr-4 pl-4" ng-reflect-target="_blank"
-            ng-reflect-router-link="/login" href="/login">Login</a></li>
-        <li class="nav-item pl-4"><a target="_blank" class="btn btn-outline-semi-light btn-sm pr-4 pl-4">Get a Demo</a>
-        </li>
-      </ul> -->
-      <span class="mobile-menu-button"><i class="simple-icon-menu"></i></span>
+    <div class="landing-page-nav">
+      <nav>
+          <div class="container d-flex align-items-center justify-content-between">
+              <a class="navbar-logo pull-left" routerLink="/home/home">
+                  <span class="logo-single"></span>
+              </a>
+          </div>
+      </nav>
     </div>
-  </nav>
 
-  <div id="redoc_container"></div>
+  <div class="redoc-box" id="redoc_container"></div>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/redoc-try-it-out/dist/try-it-out.min.js"></script>
   <script>
     RedocTryItOut.init(

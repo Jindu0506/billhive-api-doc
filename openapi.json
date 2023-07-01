@@ -123,44 +123,6 @@
           "operationId": "AccountController.deleteById"
         }
       },
-      "/accounts": {
-        "get": {
-          "x-controller-name": "AccountController",
-          "x-operation-name": "find",
-          "tags": [
-            "Customer"
-          ],
-          "responses": {
-            "200": {
-              "description": "Array of Account model instances",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/AccountWithRelations"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "parameters": [
-            {
-              "name": "filter",
-              "in": "query",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Account.Filter1"
-                  }
-                }
-              }
-            }
-          ],
-          "operationId": "AccountController.find"
-        }
-      },
       "/actions": {
         "get": {
           "x-controller-name": "ActionController",
@@ -326,7 +288,7 @@
             "Customer"
           ],
           "summary": "Create a customer",
-          "description": "Create a customer. Customer can either be an organization or a individual.",
+          "description": "Create a customer. \nCustomer can either be an organization or a individual.",
           "responses": {
             "200": {
               "description": "Account model instance",
@@ -349,6 +311,44 @@
             }
           },
           "operationId": "AccountController.create"
+        },
+        "get": {
+          "x-controller-name": "AccountController",
+          "x-operation-name": "find",
+          "tags": [
+            "Customer"
+          ],
+          "summary": "List customers",
+          "description": "Retrieves a list of customers added.",
+          "responses": {
+            "200": {
+              "description": "Array of Account model instances",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/AccountWithRelations"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "parameters": [
+            {
+              "name": "filter",
+              "in": "query",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Account.Filter1"
+                  }
+                }
+              }
+            }
+          ],
+          "operationId": "AccountController.find"
         }
       },
       "/download/{filename}": {
@@ -8338,130 +8338,6 @@
           "additionalProperties": false,
           "x-typescript-type": "@loopback/repository#Filter<Account>"
         },
-        "Account.Filter1": {
-          "type": "object",
-          "title": "Account.Filter",
-          "properties": {
-            "offset": {
-              "type": "integer",
-              "minimum": 0
-            },
-            "limit": {
-              "type": "integer",
-              "minimum": 1,
-              "example": 100
-            },
-            "skip": {
-              "type": "integer",
-              "minimum": 0
-            },
-            "order": {
-              "oneOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              ]
-            },
-            "where": {
-              "title": "Account.WhereFilter",
-              "type": "object",
-              "additionalProperties": true
-            },
-            "fields": {
-              "oneOf": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "tenantId": {
-                      "type": "boolean"
-                    },
-                    "accountId": {
-                      "type": "boolean"
-                    },
-                    "name": {
-                      "type": "boolean"
-                    },
-                    "communicationProfile": {
-                      "type": "boolean"
-                    },
-                    "orgName": {
-                      "type": "boolean"
-                    },
-                    "firstName": {
-                      "type": "boolean"
-                    },
-                    "lastName": {
-                      "type": "boolean"
-                    },
-                    "accountType": {
-                      "type": "boolean"
-                    },
-                    "parentAccountId": {
-                      "type": "boolean"
-                    },
-                    "autoPay": {
-                      "type": "boolean"
-                    },
-                    "currency": {
-                      "type": "boolean"
-                    },
-                    "balance": {
-                      "type": "boolean"
-                    },
-                    "mrr": {
-                      "type": "boolean"
-                    },
-                    "netTermDays": {
-                      "type": "boolean"
-                    },
-                    "createdOn": {
-                      "type": "boolean"
-                    },
-                    "status": {
-                      "type": "boolean"
-                    }
-                  },
-                  "additionalProperties": false
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "enum": [
-                      "tenantId",
-                      "accountId",
-                      "name",
-                      "communicationProfile",
-                      "orgName",
-                      "firstName",
-                      "lastName",
-                      "accountType",
-                      "parentAccountId",
-                      "autoPay",
-                      "currency",
-                      "balance",
-                      "mrr",
-                      "netTermDays",
-                      "createdOn",
-                      "status"
-                    ],
-                    "example": "tenantId"
-                  },
-                  "uniqueItems": true
-                }
-              ],
-              "title": "Account.Fields"
-            }
-          },
-          "additionalProperties": false,
-          "x-typescript-type": "@loopback/repository#Filter<Account>"
-        },
         "Action.Filter": {
           "type": "object",
           "title": "Action.Filter",
@@ -8661,6 +8537,130 @@
           },
           "additionalProperties": false,
           "x-typescript-type": "@loopback/repository#Filter<Charge>"
+        },
+        "Account.Filter1": {
+          "type": "object",
+          "title": "Account.Filter",
+          "properties": {
+            "offset": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "example": 100
+            },
+            "skip": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "order": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "where": {
+              "title": "Account.WhereFilter",
+              "type": "object",
+              "additionalProperties": true
+            },
+            "fields": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "tenantId": {
+                      "type": "boolean"
+                    },
+                    "accountId": {
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type": "boolean"
+                    },
+                    "communicationProfile": {
+                      "type": "boolean"
+                    },
+                    "orgName": {
+                      "type": "boolean"
+                    },
+                    "firstName": {
+                      "type": "boolean"
+                    },
+                    "lastName": {
+                      "type": "boolean"
+                    },
+                    "accountType": {
+                      "type": "boolean"
+                    },
+                    "parentAccountId": {
+                      "type": "boolean"
+                    },
+                    "autoPay": {
+                      "type": "boolean"
+                    },
+                    "currency": {
+                      "type": "boolean"
+                    },
+                    "balance": {
+                      "type": "boolean"
+                    },
+                    "mrr": {
+                      "type": "boolean"
+                    },
+                    "netTermDays": {
+                      "type": "boolean"
+                    },
+                    "createdOn": {
+                      "type": "boolean"
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "tenantId",
+                      "accountId",
+                      "name",
+                      "communicationProfile",
+                      "orgName",
+                      "firstName",
+                      "lastName",
+                      "accountType",
+                      "parentAccountId",
+                      "autoPay",
+                      "currency",
+                      "balance",
+                      "mrr",
+                      "netTermDays",
+                      "createdOn",
+                      "status"
+                    ],
+                    "example": "tenantId"
+                  },
+                  "uniqueItems": true
+                }
+              ],
+              "title": "Account.Fields"
+            }
+          },
+          "additionalProperties": false,
+          "x-typescript-type": "@loopback/repository#Filter<Account>"
         },
         "Feature.Filter": {
           "type": "object",

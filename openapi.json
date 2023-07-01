@@ -288,7 +288,7 @@
             "Customer"
           ],
           "summary": "Create a customer",
-          "description": "Create a customer. <br/>Customer can either be an organization or a individual.",
+          "description": "Create a customer. <br>Customer can either be an organization or a individual.",
           "responses": {
             "200": {
               "description": "Account model instance",

@@ -130,6 +130,7 @@
           "tags": [
             "AccountController"
           ],
+          "description": "Create an account",
           "responses": {
             "200": {
               "description": "Account model instance",

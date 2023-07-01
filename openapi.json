@@ -15,7 +15,7 @@
           "x-controller-name": "AccountController",
           "x-operation-name": "updateById",
           "tags": [
-            "AccountController"
+            "Customer"
           ],
           "responses": {
             "204": {
@@ -55,7 +55,7 @@
           "x-controller-name": "AccountController",
           "x-operation-name": "findById",
           "tags": [
-            "AccountController"
+            "Customer"
           ],
           "responses": {
             "200": {
@@ -96,7 +96,7 @@
           "x-controller-name": "AccountController",
           "x-operation-name": "deleteById",
           "tags": [
-            "AccountController"
+            "Customer"
           ],
           "responses": {
             "204": {
@@ -128,7 +128,7 @@
           "x-controller-name": "AccountController",
           "x-operation-name": "find",
           "tags": [
-            "AccountController"
+            "Customer"
           ],
           "responses": {
             "200": {
@@ -323,7 +323,7 @@
           "x-controller-name": "AccountController",
           "x-operation-name": "create",
           "tags": [
-            "AccountController"
+            "Customer"
           ],
           "summary": "Create a customer",
           "description": "Create a customer. Customer can either be an organization or a individual.",

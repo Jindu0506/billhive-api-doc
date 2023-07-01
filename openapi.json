@@ -124,36 +124,6 @@
         }
       },
       "/accounts": {
-        "post": {
-          "x-controller-name": "AccountController",
-          "x-operation-name": "create",
-          "tags": [
-            "AccountController"
-          ],
-          "description": "Create an account",
-          "responses": {
-            "200": {
-              "description": "Account model instance",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Account"
-                  }
-                }
-              }
-            }
-          },
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NewAccountInfo"
-                }
-              }
-            }
-          },
-          "operationId": "AccountController.create"
-        },
         "get": {
           "x-controller-name": "AccountController",
           "x-operation-name": "find",
@@ -346,6 +316,39 @@
             }
           ],
           "operationId": "ChargeController.find"
+        }
+      },
+      "/customers": {
+        "post": {
+          "x-controller-name": "AccountController",
+          "x-operation-name": "create",
+          "tags": [
+            "AccountController"
+          ],
+          "summary": "Create a customer",
+          "description": "Create a customer. Customer can either be an organization or a individual.",
+          "responses": {
+            "200": {
+              "description": "Account model instance",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Account"
+                  }
+                }
+              }
+            }
+          },
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewAccountInfo"
+                }
+              }
+            }
+          },
+          "operationId": "AccountController.create"
         }
       },
       "/download/{filename}": {

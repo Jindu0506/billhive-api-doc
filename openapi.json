@@ -12,6 +12,8 @@
     "paths": {
         "/accounts/register": {
             "post": {
+                "summary": "Register an account", // Rename the endpoint here
+      "description": "Endpoint description",
                 "x-controller-name": "AccountController",
                 "x-operation-name": "register",
                 "tags": [

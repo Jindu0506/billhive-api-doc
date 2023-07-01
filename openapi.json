@@ -38,7 +38,7 @@
                         }
                     }
                 },
-                "operationId": "AccountController.register"
+                "operationId": "Register a customer"
             }
         },
         "/accounts/{id}": {

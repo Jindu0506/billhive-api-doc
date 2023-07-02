@@ -3260,7 +3260,7 @@
       "ContactPersonExcluding_accountId-tenantId_": {
         "title": "ContactPersonExcluding_accountId-tenantId_",
         "type": "object",
-        "description": "(tsType: Omit<ContactPerson, 'accountId' | 'tenantId'>, schemaOptions: { exclude: [ 'accountId', 'tenantId' ] })",
+        "description": "Only available for Organization. This contact is considered as sold-to contact. Product and services are sold to this contact. This contact acts as main point of contact from the organisation. (tsType: Omit<ContactPerson, 'accountId' | 'tenantId'>, schemaOptions: { exclude: [ 'accountId', 'tenantId' ] })",
         "properties": {
           "firstName": {
             "type": "string"
@@ -3275,8 +3275,7 @@
             "type": "string"
           }
         },
-        "additionalProperties": false,
-        "x-typescript-type": "Omit<ContactPerson, 'accountId' | 'tenantId'>"
+        "additionalProperties": false
       },
       "ContactExcluding_accountId-tenantId_": {
         "title": "ContactExcluding_accountId-tenantId_",
@@ -3437,6 +3436,7 @@
       "ContactPerson": {
         "title": "ContactPerson",
         "type": "object",
+        "description": "Only available for Organization. This contact is considered as sold-to contact. Product and services are sold to this contact. This contact acts as main point of contact from the organisation.",
         "properties": {
           "firstName": {
             "type": "string"

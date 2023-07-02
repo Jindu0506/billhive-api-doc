@@ -3351,6 +3351,7 @@
           "status": {
             "type": "string",
             "description": "Represents current status of customer.",
+            "default": "Draft",
             "enum": [
               "Draft",
               "In Trial",

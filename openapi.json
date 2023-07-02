@@ -3278,6 +3278,70 @@
         "additionalProperties": false,
         "x-typescript-type": "Omit<ContactPerson, 'accountId' | 'tenantId'>"
       },
+      "ContactExcluding_accountId-tenantId_": {
+        "title": "ContactExcluding_accountId-tenantId_",
+        "type": "object",
+        "description": "(tsType: Omit<Contact, 'accountId' | 'tenantId'>, schemaOptions: { exclude: [ 'accountId', 'tenantId' ] })",
+        "properties": {
+          "contactId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Bill To",
+              "Sold To",
+              "Others",
+              "Bill & Sold To"
+            ]
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "postalcode": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Active",
+              "Inactive"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "firstName",
+          "lastName",
+          "phone",
+          "email",
+          "status"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "Omit<Contact, 'accountId' | 'tenantId'>"
+      },
       "NewAccountInfo": {
         "title": "NewAccountInfo",
         "type": "object",
@@ -3351,7 +3415,6 @@
           "status": {
             "type": "string",
             "description": "Represents current status of customer.",
-            "default": "Draft",
             "enum": [
               "Draft",
               "In Trial",
@@ -3359,6 +3422,9 @@
               "Inactive",
               "Dormant"
             ]
+          },
+          "billToContact": {
+            "$ref": "#/components/schemas/ContactExcluding_accountId-tenantId_"
           }
         },
         "required": [
@@ -3385,6 +3451,78 @@
             "type": "string"
           }
         },
+        "additionalProperties": false
+      },
+      "Contact": {
+        "title": "Contact",
+        "type": "object",
+        "properties": {
+          "contactId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Bill To",
+              "Sold To",
+              "Others",
+              "Bill & Sold To"
+            ]
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "postalcode": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Active",
+              "Inactive"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "firstName",
+          "lastName",
+          "accountId",
+          "phone",
+          "email",
+          "tenantId",
+          "status"
+        ],
         "additionalProperties": false
       },
       "AccountInfo": {
@@ -3475,6 +3613,9 @@
               "Inactive",
               "Dormant"
             ]
+          },
+          "billToContact": {
+            "$ref": "#/components/schemas/Contact"
           }
         },
         "required": [
@@ -4364,78 +4505,6 @@
         ],
         "additionalProperties": false,
         "x-typescript-type": "SmtpServerWithRelations"
-      },
-      "Contact": {
-        "title": "Contact",
-        "type": "object",
-        "properties": {
-          "contactId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "Bill To",
-              "Sold To",
-              "Others",
-              "Bill & Sold To"
-            ]
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "accountId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "address": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
-          "state": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string"
-          },
-          "postalcode": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "tenantId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "Active",
-              "Inactive"
-            ]
-          }
-        },
-        "required": [
-          "type",
-          "firstName",
-          "lastName",
-          "accountId",
-          "phone",
-          "email",
-          "tenantId",
-          "status"
-        ],
-        "additionalProperties": false
       },
       "NewContact": {
         "title": "NewContact",

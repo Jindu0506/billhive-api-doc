@@ -3294,16 +3294,20 @@
             "$ref": "#/components/schemas/ContactPersonExcluding_accountId-tenantId_"
           },
           "orgName": {
-            "type": "string"
+            "type": "string",
+            "description": "Mandatory if accountType is Organization. As its name suggests, it is name of the organisation."
           },
           "firstName": {
-            "type": "string"
+            "type": "string",
+            "description": "Mandatory if accountType is Individual. First name of the customer"
           },
           "lastName": {
-            "type": "string"
+            "type": "string",
+            "description": "Optional <br> Lirst name of the customer"
           },
           "accountType": {
             "type": "string",
+            "description": "Represents the type of customer.",
             "enum": [
               "Organisation",
               "Individual"
@@ -3311,13 +3315,16 @@
           },
           "parentAccountId": {
             "type": "string",
+            "description": "Optional <br>In an account hierarchy, the parent account ID refers to the unique identifier of the account that is considered the parent or superior account in the hierarchy. It represents the relationship between different accounts within a hierarchical structure.",
             "format": "uuid"
           },
           "autoPay": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Optional <br>Auto Pay refers to the automatic collection of payment for a subscription or service.<br>Default value: false"
           },
           "currency": {
             "type": "string",
+            "description": "Preferred currency customer would like to deal in. <br>Not mandatory to create a customer but it should be updated before subscription to any service.",
             "enum": [
               "INR",
               "USD",
@@ -3326,20 +3333,24 @@
             ]
           },
           "balance": {
-            "type": "number"
+            "type": "number",
+            "description": "Balance of the account"
           },
           "mrr": {
             "type": "number"
           },
           "netTermDays": {
-            "type": "number"
+            "type": "number",
+            "description": "Optional <br>Net term days, also known as payment terms or credit terms, refer to the number of days a buyer has to pay an invoice or outstanding balance to a seller or vendor. It specifies the timeframe within which payment is expected to be made after the delivery of goods or completion of services."
           },
           "createdOn": {
             "type": "string",
+            "description": "Timestamp when customer is created. No need to mention as system automatically capture this.",
             "format": "date-time"
           },
           "status": {
             "type": "string",
+            "description": "Represents current status of customer.",
             "enum": [
               "Draft",
               "In Trial",
@@ -3350,6 +3361,7 @@
           }
         },
         "required": [
+          "communicationProfile",
           "accountType"
         ],
         "additionalProperties": false,
@@ -3398,16 +3410,20 @@
             "$ref": "#/components/schemas/ContactPerson"
           },
           "orgName": {
-            "type": "string"
+            "type": "string",
+            "description": "Mandatory if accountType is Organization. As its name suggests, it is name of the organisation."
           },
           "firstName": {
-            "type": "string"
+            "type": "string",
+            "description": "Mandatory if accountType is Individual. First name of the customer"
           },
           "lastName": {
-            "type": "string"
+            "type": "string",
+            "description": "Optional <br> Lirst name of the customer"
           },
           "accountType": {
             "type": "string",
+            "description": "Represents the type of customer.",
             "enum": [
               "Organisation",
               "Individual"
@@ -3415,13 +3431,16 @@
           },
           "parentAccountId": {
             "type": "string",
+            "description": "Optional <br>In an account hierarchy, the parent account ID refers to the unique identifier of the account that is considered the parent or superior account in the hierarchy. It represents the relationship between different accounts within a hierarchical structure.",
             "format": "uuid"
           },
           "autoPay": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Optional <br>Auto Pay refers to the automatic collection of payment for a subscription or service.<br>Default value: false"
           },
           "currency": {
             "type": "string",
+            "description": "Preferred currency customer would like to deal in. <br>Not mandatory to create a customer but it should be updated before subscription to any service.",
             "enum": [
               "INR",
               "USD",
@@ -3430,20 +3449,24 @@
             ]
           },
           "balance": {
-            "type": "number"
+            "type": "number",
+            "description": "Balance of the account"
           },
           "mrr": {
             "type": "number"
           },
           "netTermDays": {
-            "type": "number"
+            "type": "number",
+            "description": "Optional <br>Net term days, also known as payment terms or credit terms, refer to the number of days a buyer has to pay an invoice or outstanding balance to a seller or vendor. It specifies the timeframe within which payment is expected to be made after the delivery of goods or completion of services."
           },
           "createdOn": {
             "type": "string",
+            "description": "Timestamp when customer is created. No need to mention as system automatically capture this.",
             "format": "date-time"
           },
           "status": {
             "type": "string",
+            "description": "Represents current status of customer.",
             "enum": [
               "Draft",
               "In Trial",
@@ -3456,6 +3479,7 @@
         "required": [
           "tenantId",
           "accountId",
+          "communicationProfile",
           "accountType"
         ],
         "additionalProperties": false

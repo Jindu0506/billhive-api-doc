@@ -3284,7 +3284,8 @@
         "description": "(tsType: Omit<AccountInfo, 'accountId' | 'tenantId'>, schemaOptions: { title: 'NewAccountInfo', exclude: [ 'accountId', 'tenantId' ] })",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Name of the account. It will be organization name if accountType is \"Organisation\" and concatenation of first name and last name if accountType is \"Individual\""
           },
           "communicationProfile": {
             "$ref": "#/components/schemas/CommunicationProfileExcluding_accountId-tenantId_"
@@ -3383,10 +3384,12 @@
           },
           "accountId": {
             "type": "string",
+            "description": "Unique Identifier of customer",
             "format": "uuid"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Name of the account. It will be organization name if accountType is \"Organisation\" and concatenation of first name and last name if accountType is \"Individual\""
           },
           "communicationProfile": {
             "$ref": "#/components/schemas/CommunicationProfile"

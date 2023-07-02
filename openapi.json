@@ -3285,7 +3285,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Name of the account. It will be organization name if accountType is \"Organisation\" and concatenation of first name and last name if accountType is \"Individual\""
+            "description": "Optional <br>Name of the account. It will be organization name if accountType is \"Organisation\" and concatenation of first name and last name if accountType is \"Individual\""
           },
           "communicationProfile": {
             "$ref": "#/components/schemas/CommunicationProfileExcluding_accountId-tenantId_"
@@ -3389,7 +3389,7 @@
           },
           "name": {
             "type": "string",
-            "description": "Name of the account. It will be organization name if accountType is \"Organisation\" and concatenation of first name and last name if accountType is \"Individual\""
+            "description": "Optional <br>Name of the account. It will be organization name if accountType is \"Organisation\" and concatenation of first name and last name if accountType is \"Individual\""
           },
           "communicationProfile": {
             "$ref": "#/components/schemas/CommunicationProfile"

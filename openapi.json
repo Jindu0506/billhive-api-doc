@@ -10,6 +10,230 @@
     }
   },
   "paths": {
+    "/accounts/{accountId}/payment-methods": {
+      "get": {
+        "x-controller-name": "AccountController",
+        "x-operation-name": "findPaymentMethods",
+        "tags": [
+          "Customer"
+        ],
+        "summary": "List payment methods for a customer",
+        "description": "Updates payment method details for a customer.",
+        "responses": {
+          "200": {
+            "description": "Array of PaymentMethod model instances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PaymentMethodWithRelations"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentMethod.Filter"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "AccountController.findPaymentMethods"
+      }
+    },
+    "/accounts/{id}": {
+      "patch": {
+        "x-controller-name": "AccountController",
+        "x-operation-name": "updateById",
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Update a customer",
+        "description": "Updates the customer resource.",
+        "responses": {
+          "204": {
+            "description": "Account PATCH success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountPartial"
+              }
+            }
+          },
+          "x-parameter-index": 1
+        },
+        "operationId": "AccountController.updateById"
+      },
+      "get": {
+        "x-controller-name": "AccountController",
+        "x-operation-name": "findById",
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Fetch a customer",
+        "description": "Retrieves the details of the desired customer. You can use the unique identifier for a particular customer to retrieve the desired details.",
+        "responses": {
+          "200": {
+            "description": "Account model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account.Filter"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "AccountController.findById"
+      },
+      "delete": {
+        "x-controller-name": "AccountController",
+        "x-operation-name": "deleteById",
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Delete a customer",
+        "description": "Deletes a specific account asynchronously.",
+        "responses": {
+          "204": {
+            "description": "Account PATCH success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "operationId": "AccountController.deleteById"
+      }
+    },
+    "/accounts": {
+      "post": {
+        "x-controller-name": "AccountController",
+        "x-operation-name": "create",
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Create a customer",
+        "description": "Creates a customer account with an optional sold-to contact. contactPerson represents sold-to contact.<br><br>The transaction is atomic; if any part fails for any reason, the entire transaction is rolled back.",
+        "responses": {
+          "200": {
+            "description": "Account model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewAccountInfo"
+              }
+            }
+          }
+        },
+        "operationId": "AccountController.create"
+      },
+      "get": {
+        "x-controller-name": "AccountController",
+        "x-operation-name": "find",
+        "tags": [
+          "Customer"
+        ],
+        "summary": "List customers",
+        "description": "Retrieves a list of customers added.",
+        "responses": {
+          "200": {
+            "description": "Array of Account model instances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AccountWithRelations"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account.Filter1"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "AccountController.find"
+      }
+    },
     "/actions": {
       "get": {
         "x-controller-name": "ActionController",
@@ -165,182 +389,6 @@
           }
         ],
         "operationId": "ChargeController.find"
-      }
-    },
-    "/customers/{id}": {
-      "patch": {
-        "x-controller-name": "AccountController",
-        "x-operation-name": "updateById",
-        "tags": [
-          "Customer"
-        ],
-        "summary": "Update a customer",
-        "description": "Updates the customer resource.",
-        "responses": {
-          "204": {
-            "description": "Account PATCH success"
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AccountPartial"
-              }
-            }
-          },
-          "x-parameter-index": 1
-        },
-        "operationId": "AccountController.updateById"
-      },
-      "get": {
-        "x-controller-name": "AccountController",
-        "x-operation-name": "findById",
-        "tags": [
-          "Customer"
-        ],
-        "summary": "Fetch a customer",
-        "description": "Retrieves the details of the desired customer. You can use the unique identifier for a particular customer to retrieve the desired details.",
-        "responses": {
-          "200": {
-            "description": "Account model instance",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Account"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          },
-          {
-            "name": "filter",
-            "in": "query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Account.Filter"
-                }
-              }
-            }
-          }
-        ],
-        "operationId": "AccountController.findById"
-      },
-      "delete": {
-        "x-controller-name": "AccountController",
-        "x-operation-name": "deleteById",
-        "tags": [
-          "Customer"
-        ],
-        "summary": "Delete a customer",
-        "description": "Deletes a specific account asynchronously.",
-        "responses": {
-          "204": {
-            "description": "Account PATCH success"
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "operationId": "AccountController.deleteById"
-      }
-    },
-    "/customers": {
-      "post": {
-        "x-controller-name": "AccountController",
-        "x-operation-name": "create",
-        "tags": [
-          "Customer"
-        ],
-        "summary": "Create a customer",
-        "description": "Creates a customer account with an optional sold-to contact. contactPerson represents sold-to contact.<br><br>The transaction is atomic; if any part fails for any reason, the entire transaction is rolled back.",
-        "responses": {
-          "200": {
-            "description": "Account model instance",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Account"
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewAccountInfo"
-              }
-            }
-          }
-        },
-        "operationId": "AccountController.create"
-      },
-      "get": {
-        "x-controller-name": "AccountController",
-        "x-operation-name": "find",
-        "tags": [
-          "Customer"
-        ],
-        "summary": "List customers",
-        "description": "Retrieves a list of customers added.",
-        "responses": {
-          "200": {
-            "description": "Array of Account model instances",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AccountWithRelations"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "filter",
-            "in": "query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Account.Filter1"
-                }
-              }
-            }
-          }
-        ],
-        "operationId": "AccountController.find"
       }
     },
     "/download/{filename}": {
@@ -3277,10 +3325,10 @@
         },
         "additionalProperties": false
       },
-      "BillToContactExcluding_accountId-tenantId_": {
-        "title": "BillToContactExcluding_accountId-tenantId_",
+      "ContactExcluding_accountId-tenantId_": {
+        "title": "ContactExcluding_accountId-tenantId_",
         "type": "object",
-        "description": "Optional <br>The term \"bill to contact\" refers to the contact information associated with the recipient or customer who will receive the bill or invoice. This property is optional. If this property is not present then bill or invoice will be sent to sold to contact. (tsType: Omit<BillToContact, 'accountId' | 'tenantId'>, schemaOptions: { exclude: [ 'accountId', 'tenantId' ] })",
+        "description": "(tsType: Omit<Contact, 'accountId' | 'tenantId'>, schemaOptions: { exclude: [ 'accountId', 'tenantId' ] })",
         "properties": {
           "contactId": {
             "type": "string",
@@ -3338,7 +3386,8 @@
           "email",
           "status"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "x-typescript-type": "Omit<Contact, 'accountId' | 'tenantId'>"
       },
       "NewAccountInfo": {
         "title": "NewAccountInfo",
@@ -3422,7 +3471,7 @@
             ]
           },
           "billToContact": {
-            "$ref": "#/components/schemas/BillToContactExcluding_accountId-tenantId_"
+            "$ref": "#/components/schemas/ContactExcluding_accountId-tenantId_"
           }
         },
         "required": [
@@ -3452,10 +3501,9 @@
         },
         "additionalProperties": false
       },
-      "BillToContact": {
-        "title": "BillToContact",
+      "Contact": {
+        "title": "Contact",
         "type": "object",
-        "description": "Optional <br>The term \"bill to contact\" refers to the contact information associated with the recipient or customer who will receive the bill or invoice. This property is optional. If this property is not present then bill or invoice will be sent to sold to contact.",
         "properties": {
           "contactId": {
             "type": "string",
@@ -3615,7 +3663,7 @@
             ]
           },
           "billToContact": {
-            "$ref": "#/components/schemas/BillToContact"
+            "$ref": "#/components/schemas/Contact"
           }
         },
         "required": [
@@ -3816,6 +3864,69 @@
         },
         "additionalProperties": false,
         "x-typescript-type": "Partial<Account>"
+      },
+      "CreditCardWithRelations": {
+        "title": "CreditCardWithRelations",
+        "type": "object",
+        "description": "(tsType: CreditCardWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "cardNumber": {
+            "type": "string"
+          },
+          "expirationDate": {
+            "type": "string"
+          },
+          "cardCode": {
+            "type": "string"
+          },
+          "cardType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "cardNumber",
+          "expirationDate"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "CreditCardWithRelations"
+      },
+      "PaymentMethodWithRelations": {
+        "title": "PaymentMethodWithRelations",
+        "type": "object",
+        "description": "(tsType: PaymentMethodWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "paymentMethodId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "extCustomerProfileId": {
+            "type": "string"
+          },
+          "extCustomerPaymentProfileId": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "paymentMethodType": {
+            "type": "string"
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/CreditCardWithRelations"
+          },
+          "isAuthorised": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "accountId",
+          "paymentMethodType"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "PaymentMethodWithRelations"
       },
       "ActionWithRelations": {
         "title": "ActionWithRelations",
@@ -4505,78 +4616,6 @@
         ],
         "additionalProperties": false,
         "x-typescript-type": "SmtpServerWithRelations"
-      },
-      "Contact": {
-        "title": "Contact",
-        "type": "object",
-        "properties": {
-          "contactId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "Bill To",
-              "Sold To",
-              "Others",
-              "Bill & Sold To"
-            ]
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "accountId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "address": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
-          "state": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string"
-          },
-          "postalcode": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "tenantId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "Active",
-              "Inactive"
-            ]
-          }
-        },
-        "required": [
-          "type",
-          "firstName",
-          "lastName",
-          "accountId",
-          "phone",
-          "email",
-          "tenantId",
-          "status"
-        ],
-        "additionalProperties": false
       },
       "NewContact": {
         "title": "NewContact",
@@ -5470,69 +5509,6 @@
         ],
         "additionalProperties": false,
         "x-typescript-type": "NotificationWithRelations"
-      },
-      "CreditCardWithRelations": {
-        "title": "CreditCardWithRelations",
-        "type": "object",
-        "description": "(tsType: CreditCardWithRelations, schemaOptions: { includeRelations: true })",
-        "properties": {
-          "cardNumber": {
-            "type": "string"
-          },
-          "expirationDate": {
-            "type": "string"
-          },
-          "cardCode": {
-            "type": "string"
-          },
-          "cardType": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "cardNumber",
-          "expirationDate"
-        ],
-        "additionalProperties": false,
-        "x-typescript-type": "CreditCardWithRelations"
-      },
-      "PaymentMethodWithRelations": {
-        "title": "PaymentMethodWithRelations",
-        "type": "object",
-        "description": "(tsType: PaymentMethodWithRelations, schemaOptions: { includeRelations: true })",
-        "properties": {
-          "paymentMethodId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "accountId": {
-            "type": "string"
-          },
-          "extCustomerProfileId": {
-            "type": "string"
-          },
-          "extCustomerPaymentProfileId": {
-            "type": "string"
-          },
-          "isDefault": {
-            "type": "boolean"
-          },
-          "paymentMethodType": {
-            "type": "string"
-          },
-          "paymentMethod": {
-            "$ref": "#/components/schemas/CreditCardWithRelations"
-          },
-          "isAuthorised": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "accountId",
-          "paymentMethodType"
-        ],
-        "additionalProperties": false,
-        "x-typescript-type": "PaymentMethodWithRelations"
       },
       "Payment": {
         "title": "Payment",
@@ -8380,9 +8356,9 @@
         "additionalProperties": false,
         "x-typescript-type": "Omit<WebhookDTO, 'webhookId'>"
       },
-      "Action.Filter": {
+      "PaymentMethod.Filter": {
         "type": "object",
-        "title": "Action.Filter",
+        "title": "PaymentMethod.Filter",
         "properties": {
           "offset": {
             "type": "integer",
@@ -8411,7 +8387,7 @@
             ]
           },
           "where": {
-            "title": "Action.WhereFilter",
+            "title": "PaymentMethod.WhereFilter",
             "type": "object",
             "additionalProperties": true
           },
@@ -8420,19 +8396,28 @@
               {
                 "type": "object",
                 "properties": {
-                  "module": {
+                  "paymentMethodId": {
                     "type": "boolean"
                   },
-                  "method": {
+                  "accountId": {
                     "type": "boolean"
                   },
-                  "route": {
+                  "extCustomerProfileId": {
                     "type": "boolean"
                   },
-                  "name": {
+                  "extCustomerPaymentProfileId": {
                     "type": "boolean"
                   },
-                  "notForTenant": {
+                  "isDefault": {
+                    "type": "boolean"
+                  },
+                  "paymentMethodType": {
+                    "type": "boolean"
+                  },
+                  "paymentMethod": {
+                    "type": "boolean"
+                  },
+                  "isAuthorised": {
                     "type": "boolean"
                   }
                 },
@@ -8443,142 +8428,25 @@
                 "items": {
                   "type": "string",
                   "enum": [
-                    "module",
-                    "method",
-                    "route",
-                    "name",
-                    "notForTenant"
+                    "paymentMethodId",
+                    "accountId",
+                    "extCustomerProfileId",
+                    "extCustomerPaymentProfileId",
+                    "isDefault",
+                    "paymentMethodType",
+                    "paymentMethod",
+                    "isAuthorised"
                   ],
-                  "example": "module"
+                  "example": "paymentMethodId"
                 },
                 "uniqueItems": true
               }
             ],
-            "title": "Action.Fields"
+            "title": "PaymentMethod.Fields"
           }
         },
         "additionalProperties": false,
-        "x-typescript-type": "@loopback/repository#Filter<Action>"
-      },
-      "Charge.Filter": {
-        "type": "object",
-        "title": "Charge.Filter",
-        "properties": {
-          "offset": {
-            "type": "integer",
-            "minimum": 0
-          },
-          "limit": {
-            "type": "integer",
-            "minimum": 1,
-            "example": 100
-          },
-          "skip": {
-            "type": "integer",
-            "minimum": 0
-          },
-          "order": {
-            "oneOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            ]
-          },
-          "where": {
-            "title": "Charge.WhereFilter",
-            "type": "object",
-            "additionalProperties": true
-          },
-          "fields": {
-            "oneOf": [
-              {
-                "type": "object",
-                "properties": {
-                  "chargeId": {
-                    "type": "boolean"
-                  },
-                  "name": {
-                    "type": "boolean"
-                  },
-                  "ratePlanId": {
-                    "type": "boolean"
-                  },
-                  "chargeModel": {
-                    "type": "boolean"
-                  },
-                  "chargeType": {
-                    "type": "boolean"
-                  },
-                  "currency": {
-                    "type": "boolean"
-                  },
-                  "price": {
-                    "type": "boolean"
-                  },
-                  "status": {
-                    "type": "boolean"
-                  },
-                  "uom": {
-                    "type": "boolean"
-                  },
-                  "tenantId": {
-                    "type": "boolean"
-                  },
-                  "billingFrequency": {
-                    "type": "boolean"
-                  },
-                  "recurringPeriod": {
-                    "type": "boolean"
-                  },
-                  "originalChargeId": {
-                    "type": "boolean"
-                  },
-                  "chargeLinkType": {
-                    "type": "boolean"
-                  },
-                  "subscriptionId": {
-                    "type": "boolean"
-                  }
-                },
-                "additionalProperties": false
-              },
-              {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "enum": [
-                    "chargeId",
-                    "name",
-                    "ratePlanId",
-                    "chargeModel",
-                    "chargeType",
-                    "currency",
-                    "price",
-                    "status",
-                    "uom",
-                    "tenantId",
-                    "billingFrequency",
-                    "recurringPeriod",
-                    "originalChargeId",
-                    "chargeLinkType",
-                    "subscriptionId"
-                  ],
-                  "example": "chargeId"
-                },
-                "uniqueItems": true
-              }
-            ],
-            "title": "Charge.Fields"
-          }
-        },
-        "additionalProperties": false,
-        "x-typescript-type": "@loopback/repository#Filter<Charge>"
+        "x-typescript-type": "@loopback/repository#Filter<PaymentMethod>"
       },
       "Account.Filter": {
         "type": "object",
@@ -8822,6 +8690,206 @@
         },
         "additionalProperties": false,
         "x-typescript-type": "@loopback/repository#Filter<Account>"
+      },
+      "Action.Filter": {
+        "type": "object",
+        "title": "Action.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "where": {
+            "title": "Action.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "module": {
+                    "type": "boolean"
+                  },
+                  "method": {
+                    "type": "boolean"
+                  },
+                  "route": {
+                    "type": "boolean"
+                  },
+                  "name": {
+                    "type": "boolean"
+                  },
+                  "notForTenant": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "module",
+                    "method",
+                    "route",
+                    "name",
+                    "notForTenant"
+                  ],
+                  "example": "module"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "Action.Fields"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<Action>"
+      },
+      "Charge.Filter": {
+        "type": "object",
+        "title": "Charge.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "where": {
+            "title": "Charge.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "chargeId": {
+                    "type": "boolean"
+                  },
+                  "name": {
+                    "type": "boolean"
+                  },
+                  "ratePlanId": {
+                    "type": "boolean"
+                  },
+                  "chargeModel": {
+                    "type": "boolean"
+                  },
+                  "chargeType": {
+                    "type": "boolean"
+                  },
+                  "currency": {
+                    "type": "boolean"
+                  },
+                  "price": {
+                    "type": "boolean"
+                  },
+                  "status": {
+                    "type": "boolean"
+                  },
+                  "uom": {
+                    "type": "boolean"
+                  },
+                  "tenantId": {
+                    "type": "boolean"
+                  },
+                  "billingFrequency": {
+                    "type": "boolean"
+                  },
+                  "recurringPeriod": {
+                    "type": "boolean"
+                  },
+                  "originalChargeId": {
+                    "type": "boolean"
+                  },
+                  "chargeLinkType": {
+                    "type": "boolean"
+                  },
+                  "subscriptionId": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "chargeId",
+                    "name",
+                    "ratePlanId",
+                    "chargeModel",
+                    "chargeType",
+                    "currency",
+                    "price",
+                    "status",
+                    "uom",
+                    "tenantId",
+                    "billingFrequency",
+                    "recurringPeriod",
+                    "originalChargeId",
+                    "chargeLinkType",
+                    "subscriptionId"
+                  ],
+                  "example": "chargeId"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "Charge.Fields"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<Charge>"
       },
       "Feature.Filter": {
         "type": "object",
@@ -11103,98 +11171,6 @@
         },
         "additionalProperties": false,
         "x-typescript-type": "@loopback/repository#Filter<Contact>"
-      },
-      "PaymentMethod.Filter": {
-        "type": "object",
-        "title": "PaymentMethod.Filter",
-        "properties": {
-          "offset": {
-            "type": "integer",
-            "minimum": 0
-          },
-          "limit": {
-            "type": "integer",
-            "minimum": 1,
-            "example": 100
-          },
-          "skip": {
-            "type": "integer",
-            "minimum": 0
-          },
-          "order": {
-            "oneOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            ]
-          },
-          "where": {
-            "title": "PaymentMethod.WhereFilter",
-            "type": "object",
-            "additionalProperties": true
-          },
-          "fields": {
-            "oneOf": [
-              {
-                "type": "object",
-                "properties": {
-                  "paymentMethodId": {
-                    "type": "boolean"
-                  },
-                  "accountId": {
-                    "type": "boolean"
-                  },
-                  "extCustomerProfileId": {
-                    "type": "boolean"
-                  },
-                  "extCustomerPaymentProfileId": {
-                    "type": "boolean"
-                  },
-                  "isDefault": {
-                    "type": "boolean"
-                  },
-                  "paymentMethodType": {
-                    "type": "boolean"
-                  },
-                  "paymentMethod": {
-                    "type": "boolean"
-                  },
-                  "isAuthorised": {
-                    "type": "boolean"
-                  }
-                },
-                "additionalProperties": false
-              },
-              {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "enum": [
-                    "paymentMethodId",
-                    "accountId",
-                    "extCustomerProfileId",
-                    "extCustomerPaymentProfileId",
-                    "isDefault",
-                    "paymentMethodType",
-                    "paymentMethod",
-                    "isAuthorised"
-                  ],
-                  "example": "paymentMethodId"
-                },
-                "uniqueItems": true
-              }
-            ],
-            "title": "PaymentMethod.Fields"
-          }
-        },
-        "additionalProperties": false,
-        "x-typescript-type": "@loopback/repository#Filter<PaymentMethod>"
       }
     }
   },

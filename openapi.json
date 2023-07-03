@@ -11,22 +11,17 @@
   },
   "paths": {
     "/accounts/{accountId}/contacts/{id}": {
-      "put": {
+      "patch": {
         "x-controller-name": "AccountController",
-        "x-operation-name": "replaceById",
+        "x-operation-name": "updateContact",
         "tags": [
           "Customer"
         ],
+        "summary": "Update contacts for a customer",
+        "description": "Updates the details of a contact for a customer.",
         "responses": {
           "204": {
-            "description": "No Content",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "Contact PUT success"
-                }
-              }
-            }
+            "description": "Contact PATCH success"
           }
         },
         "parameters": [
@@ -45,19 +40,33 @@
               "type": "string"
             },
             "required": true
+          },
+          {
+            "name": "where",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Contact.WhereFilter",
+                  "additionalProperties": true,
+                  "x-typescript-type": "@loopback/repository#Where<Contact>"
+                }
+              }
+            }
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Contact"
+                "$ref": "#/components/schemas/ContactPartial"
               }
             }
           },
           "x-parameter-index": 2
         },
-        "operationId": "AccountController.replaceById"
+        "operationId": "AccountController.updateContact"
       }
     },
     "/accounts/{accountId}/contacts": {
@@ -67,6 +76,8 @@
         "tags": [
           "Customer"
         ],
+        "summary": "Add contacts to a customer",
+        "description": "Adds the required contact to a customer. You can give the First Name, Last Name, Email ID and more details as input parameters to add them under the desired customer.",
         "responses": {
           "200": {
             "description": "Contact model instance",
@@ -96,62 +107,10 @@
                 "$ref": "#/components/schemas/NewContact"
               }
             }
-          }
+          },
+          "x-parameter-index": 1
         },
         "operationId": "AccountController.createContact"
-      },
-      "patch": {
-        "x-controller-name": "AccountController",
-        "x-operation-name": "updateAll",
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "Contact PATCH success count",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/loopback.Count"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "accountId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          },
-          {
-            "name": "where",
-            "in": "query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "title": "Contact.WhereFilter",
-                  "additionalProperties": true,
-                  "x-typescript-type": "@loopback/repository#Where<Contact>"
-                }
-              }
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContactPartial"
-              }
-            }
-          }
-        },
-        "operationId": "AccountController.updateAll"
       },
       "get": {
         "x-controller-name": "AccountController",
@@ -159,6 +118,8 @@
         "tags": [
           "Customer"
         ],
+        "summary": "List of contacts for a customers",
+        "description": "This API retrieves all the contacts for a customer.",
         "responses": {
           "200": {
             "description": "Array of Contact model instances",
@@ -8493,16 +8454,6 @@
         ],
         "additionalProperties": false,
         "x-typescript-type": "Omit<WebhookDTO, 'webhookId'>"
-      },
-      "loopback.Count": {
-        "type": "object",
-        "title": "loopback.Count",
-        "x-typescript-type": "@loopback/repository#Count",
-        "properties": {
-          "count": {
-            "type": "number"
-          }
-        }
       },
       "Contact.Filter": {
         "type": "object",

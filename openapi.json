@@ -3277,10 +3277,10 @@
         },
         "additionalProperties": false
       },
-      "ContactExcluding_accountId-tenantId_": {
-        "title": "ContactExcluding_accountId-tenantId_",
+      "BillToContactExcluding_accountId-tenantId_": {
+        "title": "BillToContactExcluding_accountId-tenantId_",
         "type": "object",
-        "description": "(tsType: Omit<Contact, 'accountId' | 'tenantId'>, schemaOptions: { exclude: [ 'accountId', 'tenantId' ] })",
+        "description": "Optional <br>The term \"bill to contact\" refers to the contact information associated with the recipient or customer who will receive the bill or invoice. This property is optional. If this property is not present then bill or invoice will be sent to sold to contact. (tsType: Omit<BillToContact, 'accountId' | 'tenantId'>, schemaOptions: { exclude: [ 'accountId', 'tenantId' ] })",
         "properties": {
           "contactId": {
             "type": "string",
@@ -3338,8 +3338,7 @@
           "email",
           "status"
         ],
-        "additionalProperties": false,
-        "x-typescript-type": "Omit<Contact, 'accountId' | 'tenantId'>"
+        "additionalProperties": false
       },
       "NewAccountInfo": {
         "title": "NewAccountInfo",
@@ -3423,7 +3422,7 @@
             ]
           },
           "billToContact": {
-            "$ref": "#/components/schemas/ContactExcluding_accountId-tenantId_"
+            "$ref": "#/components/schemas/BillToContactExcluding_accountId-tenantId_"
           }
         },
         "required": [
@@ -3453,9 +3452,10 @@
         },
         "additionalProperties": false
       },
-      "Contact": {
-        "title": "Contact",
+      "BillToContact": {
+        "title": "BillToContact",
         "type": "object",
+        "description": "Optional <br>The term \"bill to contact\" refers to the contact information associated with the recipient or customer who will receive the bill or invoice. This property is optional. If this property is not present then bill or invoice will be sent to sold to contact.",
         "properties": {
           "contactId": {
             "type": "string",
@@ -3615,7 +3615,7 @@
             ]
           },
           "billToContact": {
-            "$ref": "#/components/schemas/Contact"
+            "$ref": "#/components/schemas/BillToContact"
           }
         },
         "required": [
@@ -4505,6 +4505,78 @@
         ],
         "additionalProperties": false,
         "x-typescript-type": "SmtpServerWithRelations"
+      },
+      "Contact": {
+        "title": "Contact",
+        "type": "object",
+        "properties": {
+          "contactId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Bill To",
+              "Sold To",
+              "Others",
+              "Bill & Sold To"
+            ]
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "postalcode": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Active",
+              "Inactive"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "firstName",
+          "lastName",
+          "accountId",
+          "phone",
+          "email",
+          "tenantId",
+          "status"
+        ],
+        "additionalProperties": false
       },
       "NewContact": {
         "title": "NewContact",

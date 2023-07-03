@@ -491,7 +491,7 @@
         "x-controller-name": "ChargeController",
         "x-operation-name": "deleteById",
         "tags": [
-          "ChargeController"
+          "Charge"
         ],
         "responses": {
           "204": {
@@ -523,7 +523,7 @@
         "x-controller-name": "ChargeController",
         "x-operation-name": "create",
         "tags": [
-          "ChargeController"
+          "Charge"
         ],
         "responses": {
           "200": {
@@ -552,7 +552,7 @@
         "x-controller-name": "ChargeController",
         "x-operation-name": "find",
         "tags": [
-          "ChargeController"
+          "Charge"
         ],
         "responses": {
           "200": {
@@ -590,7 +590,7 @@
         "x-controller-name": "InvoiceController",
         "x-operation-name": "downloadFile",
         "tags": [
-          "InvoiceController"
+          "Invoice"
         ],
         "responses": {
           "200": {
@@ -615,7 +615,7 @@
         "x-controller-name": "FeatureController",
         "x-operation-name": "updateById",
         "tags": [
-          "FeatureController"
+          "Feature"
         ],
         "responses": {
           "204": {
@@ -655,7 +655,7 @@
         "x-controller-name": "FeatureController",
         "x-operation-name": "deleteById",
         "tags": [
-          "FeatureController"
+          "Feature"
         ],
         "responses": {
           "204": {
@@ -687,7 +687,7 @@
         "x-controller-name": "FeatureController",
         "x-operation-name": "create",
         "tags": [
-          "FeatureController"
+          "Feature"
         ],
         "responses": {
           "200": {
@@ -716,7 +716,7 @@
         "x-controller-name": "FeatureController",
         "x-operation-name": "find",
         "tags": [
-          "FeatureController"
+          "Feature"
         ],
         "responses": {
           "200": {
@@ -845,7 +845,7 @@
         "x-controller-name": "InvoiceController",
         "x-operation-name": "findByInvoiceId",
         "tags": [
-          "InvoiceController"
+          "Invoice"
         ],
         "responses": {
           "200": {
@@ -880,7 +880,7 @@
         "x-controller-name": "InvoiceController",
         "x-operation-name": "findById",
         "tags": [
-          "InvoiceController"
+          "Invoice"
         ],
         "responses": {
           "200": {
@@ -915,7 +915,7 @@
         "x-controller-name": "InvoiceController",
         "x-operation-name": "find",
         "tags": [
-          "InvoiceController"
+          "Invoice"
         ],
         "responses": {
           "200": {
@@ -1451,7 +1451,7 @@
         "x-controller-name": "ProductController",
         "x-operation-name": "updateById",
         "tags": [
-          "ProductController"
+          "Product"
         ],
         "responses": {
           "204": {
@@ -1491,7 +1491,7 @@
         "x-controller-name": "ProductController",
         "x-operation-name": "findById",
         "tags": [
-          "ProductController"
+          "Product"
         ],
         "responses": {
           "200": {
@@ -1532,7 +1532,7 @@
         "x-controller-name": "ProductController",
         "x-operation-name": "deleteById",
         "tags": [
-          "ProductController"
+          "Product"
         ],
         "responses": {
           "204": {
@@ -1564,7 +1564,7 @@
         "x-controller-name": "ProductController",
         "x-operation-name": "create",
         "tags": [
-          "ProductController"
+          "Product"
         ],
         "responses": {
           "200": {
@@ -1593,7 +1593,7 @@
         "x-controller-name": "ProductController",
         "x-operation-name": "find",
         "tags": [
-          "ProductController"
+          "Product"
         ],
         "responses": {
           "200": {
@@ -1631,7 +1631,7 @@
         "x-controller-name": "RatePlanController",
         "x-operation-name": "findById",
         "tags": [
-          "RatePlanController"
+          "Rate Plan"
         ],
         "responses": {
           "200": {
@@ -1675,7 +1675,7 @@
         "x-controller-name": "RatePlanController",
         "x-operation-name": "deleteById",
         "tags": [
-          "RatePlanController"
+          "Rate Plan"
         ],
         "responses": {
           "204": {
@@ -1707,7 +1707,7 @@
         "x-controller-name": "RatePlanController",
         "x-operation-name": "create",
         "tags": [
-          "RatePlanController"
+          "Rate Plan"
         ],
         "responses": {
           "200": {
@@ -1736,7 +1736,7 @@
         "x-controller-name": "RatePlanController",
         "x-operation-name": "find",
         "tags": [
-          "RatePlanController"
+          "Rate Plan"
         ],
         "responses": {
           "200": {
@@ -2023,7 +2023,7 @@
         "x-controller-name": "SubscriptionController",
         "x-operation-name": "findById",
         "tags": [
-          "SubscriptionController"
+          "Subscription"
         ],
         "responses": {
           "200": {
@@ -2069,7 +2069,7 @@
         "x-controller-name": "SubscriptionController",
         "x-operation-name": "find",
         "tags": [
-          "SubscriptionController"
+          "Subscription"
         ],
         "responses": {
           "200": {
@@ -2426,7 +2426,7 @@
         "x-controller-name": "TransactionController",
         "x-operation-name": "create",
         "tags": [
-          "TransactionController"
+          "Transaction"
         ],
         "responses": {
           "200": {
@@ -2455,7 +2455,7 @@
         "x-controller-name": "TransactionController",
         "x-operation-name": "find",
         "tags": [
-          "TransactionController"
+          "Transaction"
         ],
         "responses": {
           "200": {
@@ -2632,7 +2632,7 @@
         "x-controller-name": "UsageController",
         "x-operation-name": "create",
         "tags": [
-          "UsageController"
+          "Usage"
         ],
         "responses": {
           "200": {
@@ -2661,7 +2661,7 @@
         "x-controller-name": "UsageController",
         "x-operation-name": "find",
         "tags": [
-          "UsageController"
+          "Usage"
         ],
         "responses": {
           "200": {
@@ -2699,7 +2699,7 @@
         "x-controller-name": "UserController",
         "x-operation-name": "count",
         "tags": [
-          "UserController"
+          "Access Control"
         ],
         "responses": {
           "200": {
@@ -2730,7 +2730,7 @@
         "x-controller-name": "UserController",
         "x-operation-name": "updateById",
         "tags": [
-          "UserController"
+          "Access Control"
         ],
         "responses": {
           "204": {
@@ -2770,7 +2770,7 @@
         "x-controller-name": "UserController",
         "x-operation-name": "deleteById",
         "tags": [
-          "UserController"
+          "Access Control"
         ],
         "responses": {
           "204": {
@@ -2802,7 +2802,7 @@
         "x-controller-name": "UserController",
         "x-operation-name": "create",
         "tags": [
-          "UserController"
+          "Access Control"
         ],
         "description": "Create User",
         "responses": {
@@ -2838,7 +2838,7 @@
         "x-controller-name": "UserController",
         "x-operation-name": "find",
         "tags": [
-          "UserController"
+          "Access Control"
         ],
         "responses": {
           "200": {
@@ -2948,7 +2948,7 @@
         "x-controller-name": "InvoiceController",
         "x-operation-name": "generate",
         "tags": [
-          "InvoiceController"
+          "Invoice"
         ],
         "responses": {
           "200": {
@@ -3029,7 +3029,7 @@
         "x-controller-name": "RatePlanController",
         "x-operation-name": "replaceById",
         "tags": [
-          "RatePlanController"
+          "Rate Plan"
         ],
         "responses": {
           "204": {
@@ -3079,7 +3079,7 @@
         "x-controller-name": "RatePlanController",
         "x-operation-name": "findByProductId",
         "tags": [
-          "RatePlanController"
+          "Rate Plan"
         ],
         "responses": {
           "200": {
@@ -3125,7 +3125,7 @@
         "x-controller-name": "SubscriptionController",
         "x-operation-name": "create",
         "tags": [
-          "SubscriptionController"
+          "Subscription"
         ],
         "responses": {
           "200": {
@@ -11270,7 +11270,7 @@
   ],
   "servers": [
     {
-      "url": "http://localhost:4001/"
+      "url": "/"
     }
   ]
 }

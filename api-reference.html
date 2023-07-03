@@ -62,6 +62,42 @@ nav {
   background-color: white;
 }
   </style>
+  <script>
+    // Function to set the token in localStorage
+    function setToken(token) {
+      localStorage.setItem('token', token);
+    }
+    
+    // Function to retrieve the token from localStorage
+    function getToken() {
+      return localStorage.getItem('token');
+    }
+    
+    // Function to remove the token from localStorage
+    function removeToken() {
+      localStorage.removeItem('token');
+    }
+    
+    // Example usage
+    function login() {
+      // Perform login API request and obtain the token
+      const token = 'your_token_here';
+      
+      // Store the token in localStorage
+      setToken(token);
+      
+      // Redirect to the authenticated page or refresh the Redoc UI
+      // ...
+    }
+    
+    function logout() {
+      // Remove the token from localStorage
+      removeToken();
+      
+      // Redirect to the login page or refresh the Redoc UI
+      // ...
+    }
+  </script>
 </head>
 
 <body>
@@ -87,6 +123,8 @@ nav {
       document.getElementById("redoc_container")
     )
   </script>
+    <button onclick="login()">Login</button>
+    <button onclick="logout()">Logout</button>
 </body>
 
 </html>

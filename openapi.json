@@ -491,7 +491,7 @@
         "x-controller-name": "ChargeController",
         "x-operation-name": "deleteById",
         "tags": [
-          "Charge"
+          "Catelogue.Charge"
         ],
         "responses": {
           "204": {

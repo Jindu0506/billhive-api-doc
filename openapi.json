@@ -10,6 +10,43 @@
     }
   },
   "paths": {
+    "/accounts/{accountId}/payment-methods/{id}": {
+      "patch": {
+        "x-controller-name": "AccountController",
+        "x-operation-name": "updatePaymentMethodById",
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Update payment method for a customer",
+        "description": "Updates payment method details for a customer.",
+        "responses": {
+          "204": {
+            "description": "PaymentMethod PATCH success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentMethodPartial"
+              }
+            }
+          },
+          "x-parameter-index": 1
+        },
+        "operationId": "AccountController.updatePaymentMethodById"
+      }
+    },
     "/accounts/{accountId}/payment-methods": {
       "get": {
         "x-controller-name": "AccountController",
@@ -18,7 +55,7 @@
           "Customer"
         ],
         "summary": "List payment methods for a customer",
-        "description": "Updates payment method details for a customer.",
+        "description": "Get all payment method details for a customer.",
         "responses": {
           "200": {
             "description": "Array of PaymentMethod model instances",
@@ -3927,6 +3964,99 @@
         ],
         "additionalProperties": false,
         "x-typescript-type": "PaymentMethodWithRelations"
+      },
+      "CreditCard": {
+        "title": "CreditCard",
+        "type": "object",
+        "properties": {
+          "cardNumber": {
+            "type": "string"
+          },
+          "expirationDate": {
+            "type": "string"
+          },
+          "cardCode": {
+            "type": "string"
+          },
+          "cardType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "cardNumber",
+          "expirationDate"
+        ],
+        "additionalProperties": false
+      },
+      "PaymentMethodPartial": {
+        "title": "PaymentMethodPartial",
+        "type": "object",
+        "description": "(tsType: Partial<PaymentMethod>, schemaOptions: { partial: true })",
+        "properties": {
+          "paymentMethodId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "extCustomerProfileId": {
+            "type": "string"
+          },
+          "extCustomerPaymentProfileId": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "paymentMethodType": {
+            "type": "string"
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/CreditCard"
+          },
+          "isAuthorised": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "Partial<PaymentMethod>"
+      },
+      "PaymentMethod": {
+        "title": "PaymentMethod",
+        "type": "object",
+        "properties": {
+          "paymentMethodId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "extCustomerProfileId": {
+            "type": "string"
+          },
+          "extCustomerPaymentProfileId": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "paymentMethodType": {
+            "type": "string"
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/CreditCard"
+          },
+          "isAuthorised": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "accountId",
+          "paymentMethodType"
+        ],
+        "additionalProperties": false
       },
       "ActionWithRelations": {
         "title": "ActionWithRelations",

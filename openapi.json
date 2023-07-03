@@ -11270,7 +11270,7 @@
   ],
   "servers": [
     {
-      "url": "/"
+      "url": "http://localhost:4001/"
     }
   ]
 }

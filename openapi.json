@@ -10,6 +10,194 @@
     }
   },
   "paths": {
+    "/accounts/{accountId}/contacts/{id}": {
+      "put": {
+        "x-controller-name": "AccountController",
+        "x-operation-name": "replaceById",
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Contact PUT success"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contact"
+              }
+            }
+          },
+          "x-parameter-index": 2
+        },
+        "operationId": "AccountController.replaceById"
+      }
+    },
+    "/accounts/{accountId}/contacts": {
+      "post": {
+        "x-controller-name": "AccountController",
+        "x-operation-name": "createContact",
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Contact"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewContact"
+              }
+            }
+          }
+        },
+        "operationId": "AccountController.createContact"
+      },
+      "patch": {
+        "x-controller-name": "AccountController",
+        "x-operation-name": "updateAll",
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact PATCH success count",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loopback.Count"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "where",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Contact.WhereFilter",
+                  "additionalProperties": true,
+                  "x-typescript-type": "@loopback/repository#Where<Contact>"
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactPartial"
+              }
+            }
+          }
+        },
+        "operationId": "AccountController.updateAll"
+      },
+      "get": {
+        "x-controller-name": "AccountController",
+        "x-operation-name": "findContacts",
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of Contact model instances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContactWithRelations"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Contact.Filter"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "AccountController.findContacts"
+      }
+    },
     "/accounts/{accountId}/payment-methods/{id}": {
       "patch": {
         "x-controller-name": "AccountController",
@@ -25,6 +213,14 @@
           }
         },
         "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
           {
             "name": "id",
             "in": "path",
@@ -42,7 +238,7 @@
               }
             }
           },
-          "x-parameter-index": 1
+          "x-parameter-index": 2
         },
         "operationId": "AccountController.updatePaymentMethodById"
       }
@@ -2786,194 +2982,6 @@
         "operationId": "AuthController.whoami"
       }
     },
-    "/{accountId}/contacts/{id}": {
-      "put": {
-        "x-controller-name": "ContactController",
-        "x-operation-name": "replaceById",
-        "tags": [
-          "ContactController"
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "Contact PUT success"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "accountId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Contact"
-              }
-            }
-          },
-          "x-parameter-index": 2
-        },
-        "operationId": "ContactController.replaceById"
-      }
-    },
-    "/{accountId}/contacts": {
-      "post": {
-        "x-controller-name": "ContactController",
-        "x-operation-name": "create",
-        "tags": [
-          "ContactController"
-        ],
-        "responses": {
-          "200": {
-            "description": "Contact model instance",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Contact"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "accountId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewContact"
-              }
-            }
-          }
-        },
-        "operationId": "ContactController.create"
-      },
-      "patch": {
-        "x-controller-name": "ContactController",
-        "x-operation-name": "updateAll",
-        "tags": [
-          "ContactController"
-        ],
-        "responses": {
-          "200": {
-            "description": "Contact PATCH success count",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/loopback.Count"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "accountId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          },
-          {
-            "name": "where",
-            "in": "query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "title": "Contact.WhereFilter",
-                  "additionalProperties": true,
-                  "x-typescript-type": "@loopback/repository#Where<Contact>"
-                }
-              }
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContactPartial"
-              }
-            }
-          }
-        },
-        "operationId": "ContactController.updateAll"
-      },
-      "get": {
-        "x-controller-name": "ContactController",
-        "x-operation-name": "find",
-        "tags": [
-          "ContactController"
-        ],
-        "responses": {
-          "200": {
-            "description": "Array of Contact model instances",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ContactWithRelations"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "accountId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          },
-          {
-            "name": "filter",
-            "in": "query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Contact.Filter"
-                }
-              }
-            }
-          }
-        ],
-        "operationId": "ContactController.find"
-      }
-    },
     "/{accountId}/invoices/generate": {
       "get": {
         "x-controller-name": "InvoiceController",
@@ -4058,6 +4066,196 @@
         ],
         "additionalProperties": false
       },
+      "NewContact": {
+        "title": "NewContact",
+        "type": "object",
+        "description": "(tsType: Omit<Contact, 'contactId' | 'accountId' | 'status' | 'tenantId'>, schemaOptions: { title: 'NewContact', exclude: [ 'contactId', 'accountId', 'status', 'tenantId' ] })",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "Bill To",
+              "Sold To",
+              "Others",
+              "Bill & Sold To"
+            ]
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "postalcode": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "firstName",
+          "lastName",
+          "phone",
+          "email"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "Omit<Contact, 'contactId' | 'accountId' | 'status' | 'tenantId'>"
+      },
+      "ContactPartial": {
+        "title": "ContactPartial",
+        "type": "object",
+        "description": "(tsType: Partial<Contact>, schemaOptions: { partial: true })",
+        "properties": {
+          "contactId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Bill To",
+              "Sold To",
+              "Others",
+              "Bill & Sold To"
+            ]
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "postalcode": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Active",
+              "Inactive"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "Partial<Contact>"
+      },
+      "ContactWithRelations": {
+        "title": "ContactWithRelations",
+        "type": "object",
+        "description": "(tsType: ContactWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "contactId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Bill To",
+              "Sold To",
+              "Others",
+              "Bill & Sold To"
+            ]
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "postalcode": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Active",
+              "Inactive"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "firstName",
+          "lastName",
+          "accountId",
+          "phone",
+          "email",
+          "tenantId",
+          "status"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "ContactWithRelations"
+      },
       "ActionWithRelations": {
         "title": "ActionWithRelations",
         "type": "object",
@@ -4746,196 +4944,6 @@
         ],
         "additionalProperties": false,
         "x-typescript-type": "SmtpServerWithRelations"
-      },
-      "NewContact": {
-        "title": "NewContact",
-        "type": "object",
-        "description": "(tsType: Omit<Contact, 'contactId' | 'accountId' | 'status' | 'tenantId'>, schemaOptions: { title: 'NewContact', exclude: [ 'contactId', 'accountId', 'status', 'tenantId' ] })",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "Bill To",
-              "Sold To",
-              "Others",
-              "Bill & Sold To"
-            ]
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "address": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
-          "state": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string"
-          },
-          "postalcode": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "type",
-          "firstName",
-          "lastName",
-          "phone",
-          "email"
-        ],
-        "additionalProperties": false,
-        "x-typescript-type": "Omit<Contact, 'contactId' | 'accountId' | 'status' | 'tenantId'>"
-      },
-      "ContactPartial": {
-        "title": "ContactPartial",
-        "type": "object",
-        "description": "(tsType: Partial<Contact>, schemaOptions: { partial: true })",
-        "properties": {
-          "contactId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "Bill To",
-              "Sold To",
-              "Others",
-              "Bill & Sold To"
-            ]
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "accountId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "address": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
-          "state": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string"
-          },
-          "postalcode": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "tenantId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "Active",
-              "Inactive"
-            ]
-          }
-        },
-        "additionalProperties": false,
-        "x-typescript-type": "Partial<Contact>"
-      },
-      "ContactWithRelations": {
-        "title": "ContactWithRelations",
-        "type": "object",
-        "description": "(tsType: ContactWithRelations, schemaOptions: { includeRelations: true })",
-        "properties": {
-          "contactId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "Bill To",
-              "Sold To",
-              "Others",
-              "Bill & Sold To"
-            ]
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "accountId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "address": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
-          "state": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string"
-          },
-          "postalcode": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "tenantId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "Active",
-              "Inactive"
-            ]
-          }
-        },
-        "required": [
-          "type",
-          "firstName",
-          "lastName",
-          "accountId",
-          "phone",
-          "email",
-          "tenantId",
-          "status"
-        ],
-        "additionalProperties": false,
-        "x-typescript-type": "ContactWithRelations"
       },
       "Feature": {
         "title": "Feature",
@@ -8486,6 +8494,132 @@
         "additionalProperties": false,
         "x-typescript-type": "Omit<WebhookDTO, 'webhookId'>"
       },
+      "loopback.Count": {
+        "type": "object",
+        "title": "loopback.Count",
+        "x-typescript-type": "@loopback/repository#Count",
+        "properties": {
+          "count": {
+            "type": "number"
+          }
+        }
+      },
+      "Contact.Filter": {
+        "type": "object",
+        "title": "Contact.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "where": {
+            "title": "Contact.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "contactId": {
+                    "type": "boolean"
+                  },
+                  "type": {
+                    "type": "boolean"
+                  },
+                  "firstName": {
+                    "type": "boolean"
+                  },
+                  "lastName": {
+                    "type": "boolean"
+                  },
+                  "accountId": {
+                    "type": "boolean"
+                  },
+                  "address": {
+                    "type": "boolean"
+                  },
+                  "city": {
+                    "type": "boolean"
+                  },
+                  "state": {
+                    "type": "boolean"
+                  },
+                  "country": {
+                    "type": "boolean"
+                  },
+                  "postalcode": {
+                    "type": "boolean"
+                  },
+                  "phone": {
+                    "type": "boolean"
+                  },
+                  "email": {
+                    "type": "boolean"
+                  },
+                  "tenantId": {
+                    "type": "boolean"
+                  },
+                  "status": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "contactId",
+                    "type",
+                    "firstName",
+                    "lastName",
+                    "accountId",
+                    "address",
+                    "city",
+                    "state",
+                    "country",
+                    "postalcode",
+                    "phone",
+                    "email",
+                    "tenantId",
+                    "status"
+                  ],
+                  "example": "contactId"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "Contact.Fields"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<Contact>"
+      },
       "PaymentMethod.Filter": {
         "type": "object",
         "title": "PaymentMethod.Filter",
@@ -11175,132 +11309,6 @@
         },
         "additionalProperties": false,
         "x-typescript-type": "@loopback/repository#Filter<Webhook>"
-      },
-      "loopback.Count": {
-        "type": "object",
-        "title": "loopback.Count",
-        "x-typescript-type": "@loopback/repository#Count",
-        "properties": {
-          "count": {
-            "type": "number"
-          }
-        }
-      },
-      "Contact.Filter": {
-        "type": "object",
-        "title": "Contact.Filter",
-        "properties": {
-          "offset": {
-            "type": "integer",
-            "minimum": 0
-          },
-          "limit": {
-            "type": "integer",
-            "minimum": 1,
-            "example": 100
-          },
-          "skip": {
-            "type": "integer",
-            "minimum": 0
-          },
-          "order": {
-            "oneOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            ]
-          },
-          "where": {
-            "title": "Contact.WhereFilter",
-            "type": "object",
-            "additionalProperties": true
-          },
-          "fields": {
-            "oneOf": [
-              {
-                "type": "object",
-                "properties": {
-                  "contactId": {
-                    "type": "boolean"
-                  },
-                  "type": {
-                    "type": "boolean"
-                  },
-                  "firstName": {
-                    "type": "boolean"
-                  },
-                  "lastName": {
-                    "type": "boolean"
-                  },
-                  "accountId": {
-                    "type": "boolean"
-                  },
-                  "address": {
-                    "type": "boolean"
-                  },
-                  "city": {
-                    "type": "boolean"
-                  },
-                  "state": {
-                    "type": "boolean"
-                  },
-                  "country": {
-                    "type": "boolean"
-                  },
-                  "postalcode": {
-                    "type": "boolean"
-                  },
-                  "phone": {
-                    "type": "boolean"
-                  },
-                  "email": {
-                    "type": "boolean"
-                  },
-                  "tenantId": {
-                    "type": "boolean"
-                  },
-                  "status": {
-                    "type": "boolean"
-                  }
-                },
-                "additionalProperties": false
-              },
-              {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "enum": [
-                    "contactId",
-                    "type",
-                    "firstName",
-                    "lastName",
-                    "accountId",
-                    "address",
-                    "city",
-                    "state",
-                    "country",
-                    "postalcode",
-                    "phone",
-                    "email",
-                    "tenantId",
-                    "status"
-                  ],
-                  "example": "contactId"
-                },
-                "uniqueItems": true
-              }
-            ],
-            "title": "Contact.Fields"
-          }
-        },
-        "additionalProperties": false,
-        "x-typescript-type": "@loopback/repository#Filter<Contact>"
       }
     }
   },

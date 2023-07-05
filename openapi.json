@@ -9,6 +9,24 @@
         "email": "mohitetc2008@gmail.com"
       }
     },
+    "tags": [
+      {
+        "name": "Group1 - Tag1",
+        "description": "Tag1 description"
+      },
+      {
+        "name": "Group1 - Tag2",
+        "description": "Tag2 description"
+      },
+      {
+        "name": "Group2 - Tag1",
+        "description": "Tag1 description"
+      },
+      {
+        "name": "Group2 - Tag2",
+        "description": "Tag2 description"
+      }
+    ],
     "paths": {
       "/accounts/{accountId}/contacts/{id}": {
         "patch": {

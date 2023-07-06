@@ -9,12 +9,6 @@
       "email": "mohitetc2008@gmail.com"
     }
   },
-  "x-tagGroups": [
-    {
-      "name": "Settings",
-      "tags": ["WebhookController"]
-    }
-  ],
   "paths": {
     "/accounts/{accountId}/contacts/{id}": {
       "patch": {
@@ -1383,7 +1377,7 @@
         "x-controller-name": "PolicyController",
         "x-operation-name": "updateById",
         "tags": [
-          "PolicyController"
+          "Access Management"
         ],
         "responses": {
           "204": {
@@ -1423,7 +1417,7 @@
         "x-controller-name": "PolicyController",
         "x-operation-name": "deleteById",
         "tags": [
-          "PolicyController"
+          "Access Management"
         ],
         "responses": {
           "204": {
@@ -1455,7 +1449,7 @@
         "x-controller-name": "PolicyController",
         "x-operation-name": "findByRoleId",
         "tags": [
-          "PolicyController"
+          "Access Management"
         ],
         "responses": {
           "200": {
@@ -1490,7 +1484,7 @@
         "x-controller-name": "PolicyController",
         "x-operation-name": "create",
         "tags": [
-          "PolicyController"
+          "Access Management"
         ],
         "responses": {
           "200": {
@@ -1519,7 +1513,7 @@
         "x-controller-name": "PolicyController",
         "x-operation-name": "find",
         "tags": [
-          "PolicyController"
+          "Access Management"
         ],
         "responses": {
           "200": {

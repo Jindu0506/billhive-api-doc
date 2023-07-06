@@ -9,6 +9,12 @@
       "email": "mohitetc2008@gmail.com"
     }
   },
+  "x-tagGroups": [
+    {
+      "name": "Settings",
+      "tags": ["WebhookController"]
+    }
+  ],
   "paths": {
     "/accounts/{accountId}/contacts/{id}": {
       "patch": {

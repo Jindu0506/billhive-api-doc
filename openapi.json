@@ -9,6 +9,54 @@
       "email": "mohitetc2008@gmail.com"
     }
   },
+  "x-tagGroups": [
+    {
+      "name": "Authentication",
+      "tags": [
+        "Authentication",
+        "Auth"
+      ]
+    },
+    {
+      "name": "BillHive APIs",
+      "tags": [
+        "Usage",
+        "Transaction",
+        "Subsription",
+        "Rate Plan",
+        "Product",
+        "Customer",
+        "Account",
+        "Charge",
+        "Invoice",
+        "Feature",
+        "Access Management",
+        "MetaDataController",
+        "TenantController",
+        "PaymentController"
+      ]
+    },
+    {
+      "name": "Settings",
+      "tags": [
+        "PaymentMethodController",
+        "TemplateController",
+        "TemplateVarController",
+        "Settings",
+        "SettingController",
+        "WebhookController",
+        "CallbackUrlsController",
+        "NotificationController"
+      ]
+    },
+    {
+      "name": "SuperAdmin",
+      "tags": [
+        "Action",
+        "PingController"
+      ]
+    }
+  ],
   "paths": {
     "/accounts/{accountId}/contacts/{id}": {
       "patch": {
@@ -502,7 +550,7 @@
         "x-controller-name": "ActionController",
         "x-operation-name": "find",
         "tags": [
-          "SuperAdmin - Action"
+          "Action"
         ],
         "responses": {
           "200": {
@@ -1228,7 +1276,7 @@
         "x-controller-name": "ActionController",
         "x-operation-name": "createActionsFromOpenapi",
         "tags": [
-          "SuperAdmin - Action"
+          "Action"
         ],
         "description": "fetch endpoints from openapi.json of current service and store as Actions",
         "responses": {

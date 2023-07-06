@@ -9,54 +9,6 @@
       "email": "mohitetc2008@gmail.com"
     }
   },
-  "x-tagGroups": [
-    {
-      "name": "Authentication",
-      "tags": [
-        "Authentication",
-        "Auth"
-      ]
-    },
-    {
-      "name": "BillHive APIs",
-      "tags": [
-        "Usage",
-        "Transaction",
-        "Subsription",
-        "Rate Plan",
-        "Product",
-        "Customer",
-        "Account",
-        "Charge",
-        "Invoice",
-        "Feature",
-        "Access Management",
-        "MetaDataController",
-        "TenantController",
-        "PaymentController"
-      ]
-    },
-    {
-      "name": "Settings",
-      "tags": [
-        "PaymentMethodController",
-        "TemplateController",
-        "TemplateVarController",
-        "Settings",
-        "SettingController",
-        "WebhookController",
-        "CallbackUrlsController",
-        "NotificationController"
-      ]
-    },
-    {
-      "name": "SuperAdmin",
-      "tags": [
-        "Action",
-        "PingController"
-      ]
-    }
-  ],
   "paths": {
     "/accounts/{accountId}/contacts/{id}": {
       "patch": {

@@ -10,6 +10,51 @@
     }
   },
   "paths": {
+    "/accounts/{id}/audit-log": {
+      "get": {
+        "x-controller-name": "AccountController",
+        "x-operation-name": "getAuditLog",
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Fetch a customers audit log",
+        "description": "Retrieves the audit log details of the desired customer. Information about a specific action or event related to a customer. Audit logs are often used to track and monitor activities performed on customer accounts or systems.",
+        "responses": {
+          "200": {
+            "description": "Account model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditLog"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditLog.Filter"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "AccountController.getAuditLog"
+      }
+    },
     "/accounts/{accountId}/contacts/{id}": {
       "patch": {
         "x-controller-name": "AccountController",
@@ -348,7 +393,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AccountPartial"
+                "$ref": "#/components/schemas/AccountInfoPartialExcluding_accountId_"
               }
             }
           },
@@ -430,8 +475,7 @@
         "x-controller-name": "AccountController",
         "x-operation-name": "create",
         "tags": [
-          "Customer",
-          "Account"
+          "Customer"
         ],
         "summary": "Create a customer",
         "description": "Creates a customer account with an optional sold-to contact. contactPerson represents sold-to contact.<br><br>The transaction is atomic; if any part fails for any reason, the entire transaction is rolled back.",
@@ -470,14 +514,7 @@
           "200": {
             "description": "Array of Account model instances",
             "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AccountWithRelations"
-                  }
-                }
-              }
+              "application/json": {}
             }
           }
         },
@@ -631,7 +668,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChargeWithRelations"
+                    "$ref": "#/components/schemas/ChargesWithRelations"
                   }
                 }
               }
@@ -795,7 +832,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/FeatureWithRelations"
+                    "$ref": "#/components/schemas/FeaturesWithRelations"
                   }
                 }
               }
@@ -992,10 +1029,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/InvoiceWithRelations"
-                  }
+                  "$ref": "#/components/schemas/InvoicesWithRelations"
                 }
               }
             }
@@ -1281,6 +1315,105 @@
           }
         },
         "operationId": "AccountController.authPayment"
+      }
+    },
+    "/payment-gateway/{id}": {
+      "delete": {
+        "x-controller-name": "PaymentGatewayController",
+        "x-operation-name": "deleteById",
+        "tags": [
+          "PaymentGatewayController"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "PaymentGateway DELETE success"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "operationId": "PaymentGatewayController.deleteById"
+      }
+    },
+    "/payment-gateway": {
+      "post": {
+        "x-controller-name": "PaymentGatewayController",
+        "x-operation-name": "create",
+        "tags": [
+          "PaymentGatewayController"
+        ],
+        "responses": {
+          "200": {
+            "description": "PaymentGatewaySetting model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentGateway"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewPaymentGatewaySetting"
+              }
+            }
+          }
+        },
+        "operationId": "PaymentGatewayController.create"
+      },
+      "get": {
+        "x-controller-name": "PaymentGatewayController",
+        "x-operation-name": "find",
+        "tags": [
+          "PaymentGatewayController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of PaymentGateway model instances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PaymentGatewayWithRelations"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentGateway.Filter"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "PaymentGatewayController.find"
       }
     },
     "/payments": {
@@ -1703,7 +1836,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ProductWithRelations"
+                    "$ref": "#/components/schemas/ProductsWithRelations"
                   }
                 }
               }
@@ -1846,7 +1979,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/RatePlanWithRelations"
+                    "$ref": "#/components/schemas/RatePlansWithRelations"
                   }
                 }
               }
@@ -2043,6 +2176,35 @@
         },
         "operationId": "SettingController.create"
       },
+      "patch": {
+        "x-controller-name": "SettingController",
+        "x-operation-name": "updateById",
+        "tags": [
+          "SettingController"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Setting PATCH success"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SettingPartial"
+              }
+            }
+          }
+        },
+        "operationId": "SettingController.updateById"
+      },
       "get": {
         "x-controller-name": "SettingController",
         "x-operation-name": "find",
@@ -2125,16 +2287,15 @@
         "tags": [
           "Subscription"
         ],
+        "summary": "Fetch a subscription",
+        "description": "Retrieves the details of the subscription. You can use the unique identifier to retrieve the desired details.",
         "responses": {
           "200": {
-            "description": "Array of Feature model instances",
+            "description": "Subscription model instance",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SubscriptionWithRelations"
-                  }
+                  "$ref": "#/components/schemas/Subscription"
                 }
               }
             }
@@ -2162,6 +2323,31 @@
           }
         ],
         "operationId": "SubscriptionController.findById"
+      },
+      "delete": {
+        "x-controller-name": "SubscriptionController",
+        "x-operation-name": "deleteById",
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Delete a subscription",
+        "description": "Delete a subscription",
+        "responses": {
+          "204": {
+            "description": "Subscription DELETE success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "operationId": "SubscriptionController.deleteById"
       }
     },
     "/subscriptions": {
@@ -2171,16 +2357,15 @@
         "tags": [
           "Subscription"
         ],
+        "summary": "List subscriptions",
+        "description": "Retrieves a list of subscriptions added.",
         "responses": {
           "200": {
-            "description": "Array of Feature model instances",
+            "description": "Subscription model instance",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SubscriptionWithRelations"
-                  }
+                  "$ref": "#/components/schemas/Subscriptions"
                 }
               }
             }
@@ -2565,7 +2750,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/TransactionWithRelations"
+                    "$ref": "#/components/schemas/TransactionsWithRelations"
                   }
                 }
               }
@@ -2771,7 +2956,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/UsageWithRelations"
+                    "$ref": "#/components/schemas/UsagesWithRelations"
                   }
                 }
               }
@@ -3266,9 +3451,11 @@
         "tags": [
           "Subscription"
         ],
+        "summary": "Create a subscription",
+        "description": "Creates a subscription customer account with an optional sold-to contact. contactPerson represents sold-to contact.<br><br>The transaction is atomic; if any part fails for any reason, the entire transaction is rolled back.",
         "responses": {
           "200": {
-            "description": "Product model instance",
+            "description": "Subscription model instance",
             "content": {
               "application/json": {
                 "schema": {
@@ -3420,79 +3607,24 @@
         ],
         "additionalProperties": false
       },
-      "CommunicationProfileExcluding_accountId-tenantId_": {
-        "title": "CommunicationProfileExcluding_accountId-tenantId_",
+      "AccountContactExcluding_accountId-tenantId_": {
+        "title": "AccountContactExcluding_accountId-tenantId_",
         "type": "object",
-        "description": "(tsType: Omit<CommunicationProfile, 'accountId' | 'tenantId'>, schemaOptions: { exclude: [ 'accountId', 'tenantId' ] })",
-        "properties": {
-          "address": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
-          "state": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string"
-          },
-          "postalcode": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": false,
-        "x-typescript-type": "Omit<CommunicationProfile, 'accountId' | 'tenantId'>"
-      },
-      "ContactPersonExcluding_accountId-tenantId_": {
-        "title": "ContactPersonExcluding_accountId-tenantId_",
-        "type": "object",
-        "description": "Only available for Organization. This contact is considered as sold-to contact. Product and services are sold to this contact. This contact acts as main point of contact from the organisation. (tsType: Omit<ContactPerson, 'accountId' | 'tenantId'>, schemaOptions: { exclude: [ 'accountId', 'tenantId' ] })",
-        "properties": {
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "ContactExcluding_accountId-tenantId_": {
-        "title": "ContactExcluding_accountId-tenantId_",
-        "type": "object",
-        "description": "(tsType: Omit<Contact, 'accountId' | 'tenantId'>, schemaOptions: { exclude: [ 'accountId', 'tenantId' ] })",
+        "description": "(tsType: Omit<AccountContact, 'accountId' | 'tenantId'>, schemaOptions: { exclude: [ 'accountId', 'tenantId' ] })",
         "properties": {
           "contactId": {
             "type": "string",
             "format": "uuid"
           },
-          "type": {
-            "type": "string",
-            "enum": [
-              "Bill To",
-              "Sold To",
-              "Others",
-              "Bill & Sold To"
-            ]
-          },
           "firstName": {
             "type": "string"
           },
           "lastName": {
             "type": "string"
+          },
+          "orgName": {
+            "type": "string",
+            "description": "Mandatory if accountType is Organization. As its name suggests, it is name of the organisation."
           },
           "address": {
             "type": "string"
@@ -3514,25 +3646,16 @@
           },
           "email": {
             "type": "string"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "Active",
-              "Inactive"
-            ]
           }
         },
         "required": [
-          "type",
           "firstName",
           "lastName",
           "phone",
-          "email",
-          "status"
+          "email"
         ],
         "additionalProperties": false,
-        "x-typescript-type": "Omit<Contact, 'accountId' | 'tenantId'>"
+        "x-typescript-type": "Omit<AccountContact, 'accountId' | 'tenantId'>"
       },
       "NewAccountInfo": {
         "title": "NewAccountInfo",
@@ -3543,23 +3666,9 @@
             "type": "string",
             "description": "Optional <br>Name of the account. It will be organization name if accountType is \"Organisation\" and concatenation of first name and last name if accountType is \"Individual\""
           },
-          "communicationProfile": {
-            "$ref": "#/components/schemas/CommunicationProfileExcluding_accountId-tenantId_"
-          },
-          "contactPerson": {
-            "$ref": "#/components/schemas/ContactPersonExcluding_accountId-tenantId_"
-          },
-          "orgName": {
+          "email": {
             "type": "string",
-            "description": "Mandatory if accountType is Organization. As its name suggests, it is name of the organisation."
-          },
-          "firstName": {
-            "type": "string",
-            "description": "Mandatory if accountType is Individual. First name of the customer"
-          },
-          "lastName": {
-            "type": "string",
-            "description": "Optional <br> Lirst name of the customer"
+            "description": "root email id of the user."
           },
           "accountType": {
             "type": "string",
@@ -3573,6 +3682,16 @@
             "type": "string",
             "description": "Optional <br>In an account hierarchy, the parent account ID refers to the unique identifier of the account that is considered the parent or superior account in the hierarchy. It represents the relationship between different accounts within a hierarchical structure.",
             "format": "uuid"
+          },
+          "communicationProfile": {
+            "$ref": "#/components/schemas/AccountContactExcluding_accountId-tenantId_"
+          },
+          "sameAsSoldTo": {
+            "type": "boolean",
+            "description": "Set to true if billing contact is same as sold to contact otherwise false."
+          },
+          "billingProfile": {
+            "$ref": "#/components/schemas/AccountContactExcluding_accountId-tenantId_"
           },
           "autoPay": {
             "type": "boolean",
@@ -3615,59 +3734,40 @@
               "Dormant"
             ]
           },
-          "billToContact": {
-            "$ref": "#/components/schemas/ContactExcluding_accountId-tenantId_"
+          "stage": {
+            "type": "string",
+            "enum": [
+              "Stage1",
+              "Stage2",
+              "Stage3",
+              "Stage4",
+              "Completed"
+            ]
           }
         },
         "required": [
-          "communicationProfile",
-          "accountType"
+          "email"
         ],
         "additionalProperties": false,
         "x-typescript-type": "Omit<AccountInfo, 'accountId' | 'tenantId'>"
       },
-      "ContactPerson": {
-        "title": "ContactPerson",
-        "type": "object",
-        "description": "Only available for Organization. This contact is considered as sold-to contact. Product and services are sold to this contact. This contact acts as main point of contact from the organisation.",
-        "properties": {
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Contact": {
-        "title": "Contact",
+      "AccountContact": {
+        "title": "AccountContact",
         "type": "object",
         "properties": {
           "contactId": {
             "type": "string",
             "format": "uuid"
           },
-          "type": {
-            "type": "string",
-            "enum": [
-              "Bill To",
-              "Sold To",
-              "Others",
-              "Bill & Sold To"
-            ]
-          },
           "firstName": {
             "type": "string"
           },
           "lastName": {
             "type": "string"
+          },
+          "orgName": {
+            "type": "string",
+            "description": "Mandatory if accountType is Organization. As its name suggests, it is name of the organisation."
           },
           "accountId": {
             "type": "string",
@@ -3693,28 +3793,14 @@
           },
           "email": {
             "type": "string"
-          },
-          "tenantId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "Active",
-              "Inactive"
-            ]
           }
         },
         "required": [
-          "type",
           "firstName",
           "lastName",
           "accountId",
           "phone",
-          "email",
-          "tenantId",
-          "status"
+          "email"
         ],
         "additionalProperties": false
       },
@@ -3735,23 +3821,9 @@
             "type": "string",
             "description": "Optional <br>Name of the account. It will be organization name if accountType is \"Organisation\" and concatenation of first name and last name if accountType is \"Individual\""
           },
-          "communicationProfile": {
-            "$ref": "#/components/schemas/CommunicationProfile"
-          },
-          "contactPerson": {
-            "$ref": "#/components/schemas/ContactPerson"
-          },
-          "orgName": {
+          "email": {
             "type": "string",
-            "description": "Mandatory if accountType is Organization. As its name suggests, it is name of the organisation."
-          },
-          "firstName": {
-            "type": "string",
-            "description": "Mandatory if accountType is Individual. First name of the customer"
-          },
-          "lastName": {
-            "type": "string",
-            "description": "Optional <br> Lirst name of the customer"
+            "description": "root email id of the user."
           },
           "accountType": {
             "type": "string",
@@ -3765,6 +3837,16 @@
             "type": "string",
             "description": "Optional <br>In an account hierarchy, the parent account ID refers to the unique identifier of the account that is considered the parent or superior account in the hierarchy. It represents the relationship between different accounts within a hierarchical structure.",
             "format": "uuid"
+          },
+          "communicationProfile": {
+            "$ref": "#/components/schemas/AccountContact"
+          },
+          "sameAsSoldTo": {
+            "type": "boolean",
+            "description": "Set to true if billing contact is same as sold to contact otherwise false."
+          },
+          "billingProfile": {
+            "$ref": "#/components/schemas/AccountContact"
           },
           "autoPay": {
             "type": "boolean",
@@ -3807,23 +3889,43 @@
               "Dormant"
             ]
           },
-          "billToContact": {
-            "$ref": "#/components/schemas/Contact"
+          "stage": {
+            "type": "string",
+            "enum": [
+              "Stage1",
+              "Stage2",
+              "Stage3",
+              "Stage4",
+              "Completed"
+            ]
           }
         },
         "required": [
           "tenantId",
           "accountId",
-          "communicationProfile",
-          "accountType"
+          "email"
         ],
         "additionalProperties": false
       },
-      "CommunicationProfileWithRelations": {
-        "title": "CommunicationProfileWithRelations",
+      "AccountContactExcluding_accountId_": {
+        "title": "AccountContactExcluding_accountId_",
         "type": "object",
-        "description": "(tsType: CommunicationProfileWithRelations, schemaOptions: { includeRelations: true })",
+        "description": "(tsType: Omit<AccountContact, 'accountId'>, schemaOptions: { exclude: [ 'accountId' ] })",
         "properties": {
+          "contactId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "orgName": {
+            "type": "string",
+            "description": "Mandatory if accountType is Organization. As its name suggests, it is name of the organisation."
+          },
           "address": {
             "type": "string"
           },
@@ -3846,122 +3948,35 @@
             "type": "string"
           }
         },
-        "additionalProperties": false,
-        "x-typescript-type": "CommunicationProfileWithRelations"
-      },
-      "AccountWithRelations": {
-        "title": "AccountWithRelations",
-        "type": "object",
-        "description": "(tsType: AccountWithRelations, schemaOptions: { includeRelations: true })",
-        "properties": {
-          "tenantId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "accountId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string"
-          },
-          "communicationProfile": {
-            "$ref": "#/components/schemas/CommunicationProfileWithRelations"
-          },
-          "orgName": {
-            "type": "string"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "accountType": {
-            "type": "string",
-            "enum": [
-              "Organisation",
-              "Individual"
-            ]
-          },
-          "parentAccountId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "autoPay": {
-            "type": "boolean"
-          },
-          "currency": {
-            "type": "string",
-            "enum": [
-              "INR",
-              "USD",
-              "CAD",
-              "GBP"
-            ]
-          },
-          "balance": {
-            "type": "number"
-          },
-          "mrr": {
-            "type": "number"
-          },
-          "netTermDays": {
-            "type": "number"
-          },
-          "createdOn": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "Draft",
-              "In Trial",
-              "Active",
-              "Inactive",
-              "Dormant"
-            ]
-          }
-        },
         "required": [
-          "tenantId",
-          "accountId",
-          "accountType"
+          "firstName",
+          "lastName",
+          "phone",
+          "email"
         ],
         "additionalProperties": false,
-        "x-typescript-type": "AccountWithRelations"
+        "x-typescript-type": "Omit<AccountContact, 'accountId'>"
       },
-      "AccountPartial": {
-        "title": "AccountPartial",
+      "AccountInfoPartialExcluding_accountId_": {
+        "title": "AccountInfoPartialExcluding_accountId_",
         "type": "object",
-        "description": "(tsType: Partial<Account>, schemaOptions: { partial: true })",
+        "description": "(tsType: Omit<Partial<AccountInfo>, 'accountId'>, schemaOptions: { partial: true, exclude: [ 'accountId' ] })",
         "properties": {
           "tenantId": {
             "type": "string",
             "format": "uuid"
           },
-          "accountId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Optional <br>Name of the account. It will be organization name if accountType is \"Organisation\" and concatenation of first name and last name if accountType is \"Individual\""
           },
-          "communicationProfile": {
-            "$ref": "#/components/schemas/CommunicationProfile"
-          },
-          "orgName": {
-            "type": "string"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
+          "email": {
+            "type": "string",
+            "description": "root email id of the user."
           },
           "accountType": {
             "type": "string",
+            "description": "Represents the type of customer.",
             "enum": [
               "Organisation",
               "Individual"
@@ -3969,13 +3984,26 @@
           },
           "parentAccountId": {
             "type": "string",
+            "description": "Optional <br>In an account hierarchy, the parent account ID refers to the unique identifier of the account that is considered the parent or superior account in the hierarchy. It represents the relationship between different accounts within a hierarchical structure.",
             "format": "uuid"
           },
+          "communicationProfile": {
+            "$ref": "#/components/schemas/AccountContactExcluding_accountId_"
+          },
+          "sameAsSoldTo": {
+            "type": "boolean",
+            "description": "Set to true if billing contact is same as sold to contact otherwise false."
+          },
+          "billingProfile": {
+            "$ref": "#/components/schemas/AccountContactExcluding_accountId_"
+          },
           "autoPay": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Optional <br>Auto Pay refers to the automatic collection of payment for a subscription or service.<br>Default value: false"
           },
           "currency": {
             "type": "string",
+            "description": "Preferred currency customer would like to deal in. <br>Not mandatory to create a customer but it should be updated before subscription to any service.",
             "enum": [
               "INR",
               "USD",
@@ -3984,20 +4012,24 @@
             ]
           },
           "balance": {
-            "type": "number"
+            "type": "number",
+            "description": "Balance of the account"
           },
           "mrr": {
             "type": "number"
           },
           "netTermDays": {
-            "type": "number"
+            "type": "number",
+            "description": "Optional <br>Net term days, also known as payment terms or credit terms, refer to the number of days a buyer has to pay an invoice or outstanding balance to a seller or vendor. It specifies the timeframe within which payment is expected to be made after the delivery of goods or completion of services."
           },
           "createdOn": {
             "type": "string",
+            "description": "Timestamp when customer is created. No need to mention as system automatically capture this.",
             "format": "date-time"
           },
           "status": {
             "type": "string",
+            "description": "Represents current status of customer.",
             "enum": [
               "Draft",
               "In Trial",
@@ -4005,10 +4037,20 @@
               "Inactive",
               "Dormant"
             ]
+          },
+          "stage": {
+            "type": "string",
+            "enum": [
+              "Stage1",
+              "Stage2",
+              "Stage3",
+              "Stage4",
+              "Completed"
+            ]
           }
         },
         "additionalProperties": false,
-        "x-typescript-type": "Partial<Account>"
+        "x-typescript-type": "Omit<Partial<AccountInfo>, 'accountId'>"
       },
       "CreditCard": {
         "title": "CreditCard",
@@ -4097,24 +4139,27 @@
       "NewPaymentMethodReq": {
         "title": "NewPaymentMethodReq",
         "type": "object",
-        "description": "(tsType: Omit<PaymentMethod, 'paymentMethodId'>, schemaOptions: { title: 'NewPaymentMethodReq', exclude: [ 'paymentMethodId' ] })",
+        "description": "(tsType: Omit<PaymentMethodDto, 'paymentMethodId'>, schemaOptions: { title: 'NewPaymentMethodReq', exclude: [ 'paymentMethodId' ] })",
         "properties": {
-          "accountId": {
-            "type": "string"
-          },
-          "extCustomerProfileId": {
-            "type": "string"
-          },
-          "extCustomerPaymentProfileId": {
+          "name": {
             "type": "string"
           },
           "isDefault": {
             "type": "boolean"
           },
           "paymentMethodType": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "ACH",
+              "Bank Transfer",
+              "Cash",
+              "CC Reference Transaction",
+              "Cheque",
+              "Wire Transfer",
+              "Card"
+            ]
           },
-          "paymentMethod": {
+          "details": {
             "$ref": "#/components/schemas/CreditCardExcluding_paymentMethodId_"
           },
           "isAuthorised": {
@@ -4122,11 +4167,44 @@
           }
         },
         "required": [
-          "accountId",
           "paymentMethodType"
         ],
         "additionalProperties": false,
-        "x-typescript-type": "Omit<PaymentMethod, 'paymentMethodId'>"
+        "x-typescript-type": "Omit<PaymentMethodDto, 'paymentMethodId'>"
+      },
+      "PaymentMethodDto": {
+        "title": "PaymentMethodDto",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "paymentMethodType": {
+            "type": "string",
+            "enum": [
+              "ACH",
+              "Bank Transfer",
+              "Cash",
+              "CC Reference Transaction",
+              "Cheque",
+              "Wire Transfer",
+              "Card"
+            ]
+          },
+          "details": {
+            "$ref": "#/components/schemas/CreditCard"
+          },
+          "isAuthorised": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "paymentMethodType"
+        ],
+        "additionalProperties": false
       },
       "CreditCardWithRelations": {
         "title": "CreditCardWithRelations",
@@ -4247,12 +4325,16 @@
           },
           "isAuthorised": {
             "type": "boolean"
+          },
+          "isDefault": {
+            "type": "boolean"
           }
         },
         "required": [
           "paymentMethodType",
           "name",
-          "isAuthorised"
+          "isAuthorised",
+          "isDefault"
         ],
         "additionalProperties": true
       },
@@ -4279,15 +4361,100 @@
           },
           "isAuthorised": {
             "type": "boolean"
+          },
+          "isDefault": {
+            "type": "boolean"
           }
         },
         "required": [
           "paymentMethodType",
           "name",
-          "isAuthorised"
+          "isAuthorised",
+          "isDefault"
         ],
         "additionalProperties": true,
         "x-typescript-type": "PaymentAuth"
+      },
+      "Contact": {
+        "title": "Contact",
+        "type": "object",
+        "properties": {
+          "contactId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Bill To",
+              "Sold To",
+              "Others",
+              "Bill & Sold To"
+            ]
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "orgName": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "postalcode": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Active",
+              "Inactive"
+            ]
+          },
+          "billNotification": {
+            "type": "boolean"
+          },
+          "accountNotification": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "firstName",
+          "lastName",
+          "accountId",
+          "phone",
+          "email",
+          "tenantId",
+          "status"
+        ],
+        "additionalProperties": false
       },
       "NewContact": {
         "title": "NewContact",
@@ -4307,6 +4474,9 @@
             "type": "string"
           },
           "lastName": {
+            "type": "string"
+          },
+          "orgName": {
             "type": "string"
           },
           "address": {
@@ -4329,6 +4499,12 @@
           },
           "email": {
             "type": "string"
+          },
+          "billNotification": {
+            "type": "boolean"
+          },
+          "accountNotification": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -4365,6 +4541,9 @@
           "lastName": {
             "type": "string"
           },
+          "orgName": {
+            "type": "string"
+          },
           "accountId": {
             "type": "string",
             "format": "uuid"
@@ -4400,6 +4579,12 @@
               "Active",
               "Inactive"
             ]
+          },
+          "billNotification": {
+            "type": "boolean"
+          },
+          "accountNotification": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false,
@@ -4429,6 +4614,9 @@
           "lastName": {
             "type": "string"
           },
+          "orgName": {
+            "type": "string"
+          },
           "accountId": {
             "type": "string",
             "format": "uuid"
@@ -4464,6 +4652,12 @@
               "Active",
               "Inactive"
             ]
+          },
+          "billNotification": {
+            "type": "boolean"
+          },
+          "accountNotification": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -4478,6 +4672,47 @@
         ],
         "additionalProperties": false,
         "x-typescript-type": "ContactWithRelations"
+      },
+      "AuditLog": {
+        "title": "AuditLog",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "actedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "actedOn": {
+            "type": "string"
+          },
+          "actionKey": {
+            "type": "string"
+          },
+          "entityId": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "before": {
+            "type": "object"
+          },
+          "after": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "action",
+          "actedAt",
+          "actionKey",
+          "actor"
+        ],
+        "additionalProperties": false
       },
       "ActionWithRelations": {
         "title": "ActionWithRelations",
@@ -4823,6 +5058,24 @@
         ],
         "additionalProperties": false,
         "x-typescript-type": "ChargeWithRelations"
+      },
+      "ChargesWithRelations": {
+        "title": "ChargesWithRelations",
+        "type": "object",
+        "description": "(tsType: ChargesWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "charges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChargeWithRelations"
+            }
+          },
+          "count": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "ChargesWithRelations"
       },
       "Uom": {
         "title": "Uom",
@@ -5245,6 +5498,24 @@
         "additionalProperties": false,
         "x-typescript-type": "FeatureWithRelations"
       },
+      "FeaturesWithRelations": {
+        "title": "FeaturesWithRelations",
+        "type": "object",
+        "description": "(tsType: FeaturesWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "features": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FeatureWithRelations"
+            }
+          },
+          "count": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "FeaturesWithRelations"
+      },
       "FeaturePartial": {
         "title": "FeaturePartial",
         "type": "object",
@@ -5601,6 +5872,24 @@
         "additionalProperties": false,
         "x-typescript-type": "InvoiceWithRelations"
       },
+      "InvoicesWithRelations": {
+        "title": "InvoicesWithRelations",
+        "type": "object",
+        "description": "(tsType: InvoicesWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "invoices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InvoiceWithRelations"
+            }
+          },
+          "count": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "InvoicesWithRelations"
+      },
       "InvoiceItemWithRelations": {
         "title": "InvoiceItemWithRelations",
         "type": "object",
@@ -5871,6 +6160,163 @@
         "additionalProperties": false,
         "x-typescript-type": "NotificationWithRelations"
       },
+      "PaymentGateway": {
+        "title": "PaymentGateway",
+        "type": "object",
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "paymentGateway": {
+            "type": "string",
+            "enum": [
+              "RazorPay",
+              "Authorize.net"
+            ]
+          },
+          "credentials": {
+            "type": "object"
+          },
+          "paymentGatewayId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "successCallbackMethod": {
+            "type": "string",
+            "enum": [
+              "get",
+              "post",
+              "put",
+              "delete"
+            ]
+          },
+          "successCallbackUrl": {
+            "type": "string"
+          },
+          "failCallbackMethod": {
+            "type": "string",
+            "enum": [
+              "get",
+              "post",
+              "put",
+              "delete"
+            ]
+          },
+          "failCallbackUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "tenantId",
+          "paymentGateway",
+          "credentials"
+        ],
+        "additionalProperties": false
+      },
+      "NewPaymentGatewaySetting": {
+        "title": "NewPaymentGatewaySetting",
+        "type": "object",
+        "description": "(tsType: Omit<PaymentGateway, 'paymentGatewayId' | 'tenantId'>, schemaOptions: { title: 'NewPaymentGatewaySetting', exclude: [ 'paymentGatewayId', 'tenantId' ] })",
+        "properties": {
+          "paymentGateway": {
+            "type": "string",
+            "enum": [
+              "RazorPay",
+              "Authorize.net"
+            ]
+          },
+          "credentials": {
+            "type": "object"
+          },
+          "successCallbackMethod": {
+            "type": "string",
+            "enum": [
+              "get",
+              "post",
+              "put",
+              "delete"
+            ]
+          },
+          "successCallbackUrl": {
+            "type": "string"
+          },
+          "failCallbackMethod": {
+            "type": "string",
+            "enum": [
+              "get",
+              "post",
+              "put",
+              "delete"
+            ]
+          },
+          "failCallbackUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "paymentGateway",
+          "credentials"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "Omit<PaymentGateway, 'paymentGatewayId' | 'tenantId'>"
+      },
+      "PaymentGatewayWithRelations": {
+        "title": "PaymentGatewayWithRelations",
+        "type": "object",
+        "description": "(tsType: PaymentGatewayWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "paymentGateway": {
+            "type": "string",
+            "enum": [
+              "RazorPay",
+              "Authorize.net"
+            ]
+          },
+          "credentials": {
+            "type": "object"
+          },
+          "paymentGatewayId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "successCallbackMethod": {
+            "type": "string",
+            "enum": [
+              "get",
+              "post",
+              "put",
+              "delete"
+            ]
+          },
+          "successCallbackUrl": {
+            "type": "string"
+          },
+          "failCallbackMethod": {
+            "type": "string",
+            "enum": [
+              "get",
+              "post",
+              "put",
+              "delete"
+            ]
+          },
+          "failCallbackUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "tenantId",
+          "paymentGateway",
+          "credentials"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "PaymentGatewayWithRelations"
+      },
       "Payment": {
         "title": "Payment",
         "type": "object",
@@ -5947,9 +6393,8 @@
               "Cash",
               "CC Reference Transaction",
               "Cheque",
-              "Credit Card",
-              "Debit Card",
-              "Wire Transfer"
+              "Wire Transfer",
+              "Card"
             ]
           },
           "paymentDetails": {
@@ -6036,9 +6481,8 @@
               "Cash",
               "CC Reference Transaction",
               "Cheque",
-              "Credit Card",
-              "Debit Card",
-              "Wire Transfer"
+              "Wire Transfer",
+              "Card"
             ]
           },
           "paymentDetails": {
@@ -6134,9 +6578,8 @@
               "Cash",
               "CC Reference Transaction",
               "Cheque",
-              "Credit Card",
-              "Debit Card",
-              "Wire Transfer"
+              "Wire Transfer",
+              "Card"
             ]
           },
           "paymentDetails": {
@@ -6369,6 +6812,24 @@
         ],
         "additionalProperties": false,
         "x-typescript-type": "ProductWithRelations"
+      },
+      "ProductsWithRelations": {
+        "title": "ProductsWithRelations",
+        "type": "object",
+        "description": "(tsType: ProductsWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductWithRelations"
+            }
+          },
+          "count": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "ProductsWithRelations"
       },
       "FeatureJSON": {
         "title": "FeatureJSON",
@@ -7221,6 +7682,24 @@
         "additionalProperties": false,
         "x-typescript-type": "RatePlanWithRelations"
       },
+      "RatePlansWithRelations": {
+        "title": "RatePlansWithRelations",
+        "type": "object",
+        "description": "(tsType: RatePlansWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "ratePlans": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RatePlanWithRelations"
+            }
+          },
+          "count": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "RatePlansWithRelations"
+      },
       "RoleWithRelations": {
         "title": "RoleWithRelations",
         "type": "object",
@@ -7318,6 +7797,68 @@
         ],
         "additionalProperties": false
       },
+      "PauseOptions": {
+        "title": "PauseOptions",
+        "type": "object",
+        "properties": {
+          "unbilledChargesHandling": {
+            "type": "string"
+          },
+          "invoiceDunningHandling": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResumeOptions": {
+        "title": "ResumeOptions",
+        "type": "object",
+        "properties": {
+          "unpaidInvoicesHandling": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SettingPartial": {
+        "title": "SettingPartial",
+        "type": "object",
+        "description": "(tsType: Partial<Setting>, schemaOptions: { partial: true })",
+        "properties": {
+          "tenantId": {
+            "type": "string"
+          },
+          "entityType": {
+            "type": "string"
+          },
+          "pauseOptions": {
+            "$ref": "#/components/schemas/PauseOptions"
+          },
+          "resumeOptions": {
+            "$ref": "#/components/schemas/ResumeOptions"
+          },
+          "accessContinuity": {
+            "type": "boolean"
+          },
+          "prepayFlatFee": {
+            "type": "boolean"
+          },
+          "proratedBilling": {
+            "type": "boolean"
+          },
+          "upfrontCostAdjustment": {
+            "type": "boolean"
+          },
+          "netTermDays": {
+            "type": "number"
+          },
+          "dunningDays": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "Partial<Setting>"
+      },
       "Setting": {
         "title": "Setting",
         "type": "object",
@@ -7325,21 +7866,26 @@
           "tenantId": {
             "type": "string"
           },
+          "entityType": {
+            "type": "string"
+          },
+          "pauseOptions": {
+            "$ref": "#/components/schemas/PauseOptions"
+          },
+          "resumeOptions": {
+            "$ref": "#/components/schemas/ResumeOptions"
+          },
           "accessContinuity": {
             "type": "boolean"
           },
-          "prePayFlatFee": {
+          "prepayFlatFee": {
             "type": "boolean"
           },
           "proratedBilling": {
             "type": "boolean"
           },
           "upfrontCostAdjustment": {
-            "type": "string",
-            "enum": [
-              "No Adjustment",
-              "Full Adjustment"
-            ]
+            "type": "boolean"
           },
           "netTermDays": {
             "type": "number"
@@ -7350,32 +7896,64 @@
         },
         "required": [
           "tenantId",
+          "entityType",
           "accessContinuity",
-          "prePayFlatFee",
           "proratedBilling"
         ],
         "additionalProperties": false
+      },
+      "PauseOptionsExcluding_tenantId_": {
+        "title": "PauseOptionsExcluding_tenantId_",
+        "type": "object",
+        "description": "(tsType: Omit<PauseOptions, 'tenantId'>, schemaOptions: { exclude: [ 'tenantId' ] })",
+        "properties": {
+          "unbilledChargesHandling": {
+            "type": "string"
+          },
+          "invoiceDunningHandling": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "Omit<PauseOptions, 'tenantId'>"
+      },
+      "ResumeOptionsExcluding_tenantId_": {
+        "title": "ResumeOptionsExcluding_tenantId_",
+        "type": "object",
+        "description": "(tsType: Omit<ResumeOptions, 'tenantId'>, schemaOptions: { exclude: [ 'tenantId' ] })",
+        "properties": {
+          "unpaidInvoicesHandling": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "Omit<ResumeOptions, 'tenantId'>"
       },
       "NewSetting": {
         "title": "NewSetting",
         "type": "object",
         "description": "(tsType: Omit<Setting, 'tenantId'>, schemaOptions: { title: 'NewSetting', exclude: [ 'tenantId' ] })",
         "properties": {
+          "entityType": {
+            "type": "string"
+          },
+          "pauseOptions": {
+            "$ref": "#/components/schemas/PauseOptionsExcluding_tenantId_"
+          },
+          "resumeOptions": {
+            "$ref": "#/components/schemas/ResumeOptionsExcluding_tenantId_"
+          },
           "accessContinuity": {
             "type": "boolean"
           },
-          "prePayFlatFee": {
+          "prepayFlatFee": {
             "type": "boolean"
           },
           "proratedBilling": {
             "type": "boolean"
           },
           "upfrontCostAdjustment": {
-            "type": "string",
-            "enum": [
-              "No Adjustment",
-              "Full Adjustment"
-            ]
+            "type": "boolean"
           },
           "netTermDays": {
             "type": "number"
@@ -7385,12 +7963,39 @@
           }
         },
         "required": [
+          "entityType",
           "accessContinuity",
-          "prePayFlatFee",
           "proratedBilling"
         ],
         "additionalProperties": false,
         "x-typescript-type": "Omit<Setting, 'tenantId'>"
+      },
+      "PauseOptionsWithRelations": {
+        "title": "PauseOptionsWithRelations",
+        "type": "object",
+        "description": "(tsType: PauseOptionsWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "unbilledChargesHandling": {
+            "type": "string"
+          },
+          "invoiceDunningHandling": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "PauseOptionsWithRelations"
+      },
+      "ResumeOptionsWithRelations": {
+        "title": "ResumeOptionsWithRelations",
+        "type": "object",
+        "description": "(tsType: ResumeOptionsWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "unpaidInvoicesHandling": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "ResumeOptionsWithRelations"
       },
       "SettingWithRelations": {
         "title": "SettingWithRelations",
@@ -7400,21 +8005,26 @@
           "tenantId": {
             "type": "string"
           },
+          "entityType": {
+            "type": "string"
+          },
+          "pauseOptions": {
+            "$ref": "#/components/schemas/PauseOptionsWithRelations"
+          },
+          "resumeOptions": {
+            "$ref": "#/components/schemas/ResumeOptionsWithRelations"
+          },
           "accessContinuity": {
             "type": "boolean"
           },
-          "prePayFlatFee": {
+          "prepayFlatFee": {
             "type": "boolean"
           },
           "proratedBilling": {
             "type": "boolean"
           },
           "upfrontCostAdjustment": {
-            "type": "string",
-            "enum": [
-              "No Adjustment",
-              "Full Adjustment"
-            ]
+            "type": "boolean"
           },
           "netTermDays": {
             "type": "number"
@@ -7425,111 +8035,29 @@
         },
         "required": [
           "tenantId",
+          "entityType",
           "accessContinuity",
-          "prePayFlatFee",
           "proratedBilling"
         ],
         "additionalProperties": false,
         "x-typescript-type": "SettingWithRelations"
       },
-      "SubscriptionWithRelations": {
-        "title": "SubscriptionWithRelations",
+      "SubscriptionFeature": {
+        "title": "SubscriptionFeature",
         "type": "object",
-        "description": "(tsType: SubscriptionWithRelations, schemaOptions: { includeRelations: true })",
         "properties": {
-          "subscriptionId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "accountId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "accountName": {
+          "name": {
             "type": "string"
           },
-          "autoRenew": {
-            "type": "boolean"
-          },
-          "subscriptionStartDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "subscriptionEndDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "termStartDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "termEndDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "Draft",
-              "Pending Activation",
-              "Pending Acceptance",
-              "Yet-To-Start",
-              "Active",
-              "Cancelled",
-              "Expired",
-              "Suspended"
-            ]
-          },
-          "tenantId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "productId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "originalRatePlanId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "ratePlanName": {
+          "featureCode": {
             "type": "string"
-          },
-          "currency": {
-            "type": "string",
-            "enum": [
-              "INR",
-              "USD",
-              "CAD",
-              "GBP"
-            ]
-          },
-          "billingFrequency": {
-            "$ref": "#/components/schemas/TrialPeriodWithRelations"
-          },
-          "billingCycle": {
-            "type": "number"
-          },
-          "features": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FeatureWithRelations"
-            }
           }
         },
         "required": [
-          "accountId",
-          "autoRenew",
-          "status",
-          "tenantId",
-          "productId",
-          "originalRatePlanId",
-          "ratePlanName",
-          "currency",
-          "billingCycle"
+          "name",
+          "featureCode"
         ],
-        "additionalProperties": false,
-        "x-typescript-type": "SubscriptionWithRelations"
+        "additionalProperties": false
       },
       "Subscription": {
         "title": "Subscription",
@@ -7569,13 +8097,12 @@
             "type": "string",
             "enum": [
               "Draft",
-              "Pending Activation",
-              "Pending Acceptance",
-              "Yet-To-Start",
+              "Free Trial",
+              "Free Trial Expired",
+              "Paused",
               "Active",
               "Cancelled",
-              "Expired",
-              "Suspended"
+              "Expired"
             ]
           },
           "tenantId": {
@@ -7591,6 +8118,9 @@
             "format": "uuid"
           },
           "ratePlanName": {
+            "type": "string"
+          },
+          "productName": {
             "type": "string"
           },
           "currency": {
@@ -7611,8 +8141,14 @@
           "features": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Feature"
+              "$ref": "#/components/schemas/SubscriptionFeature"
             }
+          },
+          "isTrial": {
+            "type": "boolean"
+          },
+          "trialPeriod": {
+            "$ref": "#/components/schemas/TrialPeriod"
           }
         },
         "required": [
@@ -7626,6 +8162,22 @@
           "currency",
           "billingCycle"
         ],
+        "additionalProperties": false
+      },
+      "Subscriptions": {
+        "title": "Subscriptions",
+        "type": "object",
+        "properties": {
+          "subscriptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subscription"
+            }
+          },
+          "count": {
+            "type": "number"
+          }
+        },
         "additionalProperties": false
       },
       "TrialPeriodExcluding_subscriptionId-accountId-tenantId-subscriptionEndDate_": {
@@ -7700,6 +8252,9 @@
           "ratePlanName": {
             "type": "string"
           },
+          "productName": {
+            "type": "string"
+          },
           "currency": {
             "type": "string",
             "enum": [
@@ -7720,6 +8275,15 @@
             "items": {
               "$ref": "#/components/schemas/FeatureExcluding_subscriptionId-accountId-tenantId-subscriptionEndDate_"
             }
+          },
+          "isTrial": {
+            "type": "boolean"
+          },
+          "trialPeriod": {
+            "$ref": "#/components/schemas/TrialPeriodExcluding_subscriptionId-accountId-tenantId-subscriptionEndDate_"
+          },
+          "upfrontCostPayNow": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -7732,6 +8296,98 @@
         ],
         "additionalProperties": false,
         "x-typescript-type": "Omit<SubscriptionRequest, 'subscriptionId' | 'accountId' | 'tenantId' | 'subscriptionEndDate'>"
+      },
+      "SubscriptionRequest": {
+        "title": "SubscriptionRequest",
+        "type": "object",
+        "properties": {
+          "subscriptionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "autoRenew": {
+            "type": "boolean"
+          },
+          "subscriptionStartDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "subscriptionEndDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "termStartDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "termEndDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "tenantId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "productId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "originalRatePlanId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ratePlanName": {
+            "type": "string"
+          },
+          "productName": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "INR",
+              "USD",
+              "CAD",
+              "GBP"
+            ]
+          },
+          "billingFrequency": {
+            "$ref": "#/components/schemas/TrialPeriod"
+          },
+          "billingCycle": {
+            "type": "number"
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Feature"
+            }
+          },
+          "isTrial": {
+            "type": "boolean"
+          },
+          "trialPeriod": {
+            "$ref": "#/components/schemas/TrialPeriod"
+          },
+          "upfrontCostPayNow": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "accountId",
+          "autoRenew",
+          "tenantId",
+          "productId",
+          "originalRatePlanId",
+          "ratePlanName",
+          "currency",
+          "billingCycle"
+        ],
+        "additionalProperties": false
       },
       "TemplateVarWithRelations": {
         "title": "TemplateVarWithRelations",
@@ -8282,6 +8938,24 @@
         "additionalProperties": false,
         "x-typescript-type": "TransactionWithRelations"
       },
+      "TransactionsWithRelations": {
+        "title": "TransactionsWithRelations",
+        "type": "object",
+        "description": "(tsType: TransactionsWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "transactions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransactionWithRelations"
+            }
+          },
+          "count": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "TransactionsWithRelations"
+      },
       "NewUom": {
         "title": "NewUom",
         "type": "object",
@@ -8536,6 +9210,24 @@
         "additionalProperties": false,
         "x-typescript-type": "UsageWithRelations"
       },
+      "UsagesWithRelations": {
+        "title": "UsagesWithRelations",
+        "type": "object",
+        "description": "(tsType: UsagesWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "usages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UsageWithRelations"
+            }
+          },
+          "count": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "UsagesWithRelations"
+      },
       "NewUser": {
         "title": "NewUser",
         "type": "object",
@@ -8717,6 +9409,97 @@
         "additionalProperties": false,
         "x-typescript-type": "Omit<WebhookDTO, 'webhookId'>"
       },
+      "AuditLog.Filter": {
+        "type": "object",
+        "title": "AuditLog.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "boolean"
+                  },
+                  "action": {
+                    "type": "boolean"
+                  },
+                  "actedAt": {
+                    "type": "boolean"
+                  },
+                  "actedOn": {
+                    "type": "boolean"
+                  },
+                  "actionKey": {
+                    "type": "boolean"
+                  },
+                  "entityId": {
+                    "type": "boolean"
+                  },
+                  "actor": {
+                    "type": "boolean"
+                  },
+                  "before": {
+                    "type": "boolean"
+                  },
+                  "after": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "id",
+                    "action",
+                    "actedAt",
+                    "actedOn",
+                    "actionKey",
+                    "entityId",
+                    "actor",
+                    "before",
+                    "after"
+                  ],
+                  "example": "id"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "AuditLog.Fields"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<AuditLog>"
+      },
       "Contact.Filter": {
         "type": "object",
         "title": "Contact.Filter",
@@ -8769,6 +9552,9 @@
                   "lastName": {
                     "type": "boolean"
                   },
+                  "orgName": {
+                    "type": "boolean"
+                  },
                   "accountId": {
                     "type": "boolean"
                   },
@@ -8798,6 +9584,12 @@
                   },
                   "status": {
                     "type": "boolean"
+                  },
+                  "billNotification": {
+                    "type": "boolean"
+                  },
+                  "accountNotification": {
+                    "type": "boolean"
                   }
                 },
                 "additionalProperties": false
@@ -8811,6 +9603,7 @@
                     "type",
                     "firstName",
                     "lastName",
+                    "orgName",
                     "accountId",
                     "address",
                     "city",
@@ -8820,7 +9613,9 @@
                     "phone",
                     "email",
                     "tenantId",
-                    "status"
+                    "status",
+                    "billNotification",
+                    "accountNotification"
                   ],
                   "example": "contactId"
                 },
@@ -9840,6 +10635,98 @@
         "additionalProperties": false,
         "x-typescript-type": "@loopback/repository#Filter<Notification>"
       },
+      "PaymentGateway.Filter": {
+        "type": "object",
+        "title": "PaymentGateway.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "where": {
+            "title": "PaymentGateway.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "tenantId": {
+                    "type": "boolean"
+                  },
+                  "paymentGateway": {
+                    "type": "boolean"
+                  },
+                  "credentials": {
+                    "type": "boolean"
+                  },
+                  "paymentGatewayId": {
+                    "type": "boolean"
+                  },
+                  "successCallbackMethod": {
+                    "type": "boolean"
+                  },
+                  "successCallbackUrl": {
+                    "type": "boolean"
+                  },
+                  "failCallbackMethod": {
+                    "type": "boolean"
+                  },
+                  "failCallbackUrl": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "tenantId",
+                    "paymentGateway",
+                    "credentials",
+                    "paymentGatewayId",
+                    "successCallbackMethod",
+                    "successCallbackUrl",
+                    "failCallbackMethod",
+                    "failCallbackUrl"
+                  ],
+                  "example": "tenantId"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "PaymentGateway.Fields"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<PaymentGateway>"
+      },
       "Payment.Filter": {
         "type": "object",
         "title": "Payment.Filter",
@@ -10423,10 +11310,19 @@
                   "tenantId": {
                     "type": "boolean"
                   },
+                  "entityType": {
+                    "type": "boolean"
+                  },
+                  "pauseOptions": {
+                    "type": "boolean"
+                  },
+                  "resumeOptions": {
+                    "type": "boolean"
+                  },
                   "accessContinuity": {
                     "type": "boolean"
                   },
-                  "prePayFlatFee": {
+                  "prepayFlatFee": {
                     "type": "boolean"
                   },
                   "proratedBilling": {
@@ -10450,8 +11346,11 @@
                   "type": "string",
                   "enum": [
                     "tenantId",
+                    "entityType",
+                    "pauseOptions",
+                    "resumeOptions",
                     "accessContinuity",
-                    "prePayFlatFee",
+                    "prepayFlatFee",
                     "proratedBilling",
                     "upfrontCostAdjustment",
                     "netTermDays",
@@ -10635,6 +11534,9 @@
                   "ratePlanName": {
                     "type": "boolean"
                   },
+                  "productName": {
+                    "type": "boolean"
+                  },
                   "currency": {
                     "type": "boolean"
                   },
@@ -10645,6 +11547,12 @@
                     "type": "boolean"
                   },
                   "features": {
+                    "type": "boolean"
+                  },
+                  "isTrial": {
+                    "type": "boolean"
+                  },
+                  "trialPeriod": {
                     "type": "boolean"
                   }
                 },
@@ -10668,10 +11576,13 @@
                     "productId",
                     "originalRatePlanId",
                     "ratePlanName",
+                    "productName",
                     "currency",
                     "billingFrequency",
                     "billingCycle",
-                    "features"
+                    "features",
+                    "isTrial",
+                    "trialPeriod"
                   ],
                   "example": "subscriptionId"
                 },

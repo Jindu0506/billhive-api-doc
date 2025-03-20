@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>ReDoc</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .logo-single {
+      padding-left: 130px;
+      width: 185px;
+      height: 50px;
+      margin-left: -30px;
+      margin-top: -5px;
+      background: url('black.svg') no-repeat;
+      background-position: center center;
+      display: inline-block;
+      background-size: contain;
+    }
+
+    .landing-page-nav {
+      z-index: 5 !important;
+      top: 0;
+      position: fixed;
+      width: 100%;
+      background: transparent;
+      box-shadow: initial;
+    }
+
+    .container {
+      height: 55px;
+    }
+
+    .align-items-center {
+      align-items: center !important;
+    }
+
+    .justify-content-between {
+      justify-content: space-between !important;
+    }
+
+    .d-flex {
+      display: flex !important;
+    }
+
+    .redoc-box {
+      margin-top: 55px;
+    }
+
+    nav {
+      background-color: white;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="landing-page-nav">
+    <nav>
+      <div class="container d-flex align-items-center justify-content-between">
+        <a class="navbar-logo pull-left" routerLink="/home/home">
+          <span class="logo-single"></span>
+        </a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="redoc-box" id="redoc_container"></div>
+  <script>
+    function setToken(token) {
+      localStorage.setItem('token', token);
+    }
+
+    function getToken() {
+      return localStorage.getItem('token');
+    }
+
+    function removeToken() {
+      localStorage.removeItem('token');
+    }
+
+    function login() {
+      const token = 'your_token_here';
+      setToken(token);
+    }
+
+    function logout() {
+      removeToken();
+    }
+
+    function fetchAndRenderDocumentation() {
+      fetch("https://apidocs.billhive.org/openapi_bkp.json")
+        .then(response => response.json())
+        .then(spec => {
+          console.log('fetched spec :', spec)
+          const structuredSpec = structureSpec(spec);
+          renderDocumentation(structuredSpec);
+        });
+    }
+
+    function structureSpec(spec) {
+      const structured = {
+        openapi: spec.openapi,
+        info: spec.info,
+        paths: {}
+      };
+
+      for (const [path, methods] of Object.entries(spec.paths)) {
+        const tags = methods['get']?.tags || methods['post']?.tags || [];
+        tags.forEach(tag => {
+          if (tag.startsWith("Product - ")) {
+            const category = "Product";
+            if (!structured.paths[category]) {
+              structured.paths[category] = {};
+            }
+            const subCategory = tag.replace("Product - ", "");
+            if (!structured.paths[category][subCategory]) {
+              structured.paths[category][subCategory] = [];
+            }
+            structured.paths[category][subCategory].push({ path, methods });
+          }
+        });
+      }
+
+      return structured;
+    }
+
+    function renderDocumentation(spec) {
+      try {
+    const container = document.getElementById("redoc_container");
+    console.log('spec :', spec);
+    console.log(RedocTryItOut);
+    console.log(container)
+    RedocTryItOut.init(
+      { ...spec, title: "API Documentation" },
+      container
+    );
+  } catch (error) {
+    console.error('Error rendering ReDoc:', error);
+  }
+    }
+
+    window.onload = fetchAndRenderDocumentation;
+  </script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/redoc-try-it-out/dist/try-it-out.min.js"></script>
+  <button onclick="login()">Login</button>
+  <button onclick="logout()">Logout</button>
+</body>
+
+</html>
